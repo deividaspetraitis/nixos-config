@@ -43,6 +43,8 @@
     pkgs._1password
     pkgs._1password-gui
     pkgs.pcmanfm
+    pkgs.nix-prefetch-github
+
     #  Required by zplug
 	pkgs.python3
   ];
@@ -93,6 +95,9 @@
     enable = true;
     createDirectories = true;
   };
+
+  # Set vim as default editor
+  programs.vim.defaultEditor = true;
 
   # Enable GPG
   programs.gpg = {
