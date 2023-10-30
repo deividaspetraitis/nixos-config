@@ -45,8 +45,16 @@
     pkgs.pcmanfm
     pkgs.nix-prefetch-github
 
+    # Go related packages
+    pkgs.go
+    pkgs.gopls
+    pkgs.golangci-lint
+
     #  Required by zplug
-	pkgs.python3
+    pkgs.python3
+
+    # fzf is used in shell
+    pkgs.fzf
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -140,6 +148,13 @@
 
       # Autocomplete hidden files
       _comp_options+=(globdots)
+
+      # Enable fzf in zsh.
+      # fzf provides additional key bindings (CTRL-T, CTRL-R, and ALT-C) for shells  
+      if [ -n "''${commands[fzf-share]}" ]; then
+        source "$(fzf-share)/key-bindings.zsh"
+        source "$(fzf-share)/completion.zsh"
+      fi
    '';
 
    shellAliases = {
