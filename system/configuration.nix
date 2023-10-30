@@ -18,7 +18,6 @@
     evdi
   ];
 
-
   # The set of kernel modules to be loaded in the second stage of the boot process.
   # Note that modules that are needed to mount the root file system should be added to boot.initrd.availableKernelModules or boot.initrd.kernelModules.
   # boot.kernelModules = [ "evdi" ];
@@ -89,9 +88,18 @@
     ];
   };
 
+  # Installing fonts on NixOS.
+  # Be aware that sometimes font names and packages name differ and there is no universal convention in NixOS.
+  fonts.fonts = with pkgs; [
+    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+  ];
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    # Used by vim
+    ripgrep
+
     (pkgs.callPackage ./programs/vim.nix {})
     wget
     displaylink 

@@ -70,6 +70,7 @@
     ".gitconfig".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/.gitconfig";
     ".config/sway".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/sway";
     ".config/qutebrowser".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/qutebrowser";
+    ".config/foot".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/foot";
 
     # # You can also set the file content immediately.
     # ".gradle/gradle.properties".text = ''
