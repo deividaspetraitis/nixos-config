@@ -65,7 +65,7 @@
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
 
-    ".vimrc".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/.vim/.vimrc";
+    ".vim".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/.vim";
     ".tmux.conf".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/.tmux.conf";
     ".gitconfig".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/.gitconfig";
     ".config/sway".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/sway";

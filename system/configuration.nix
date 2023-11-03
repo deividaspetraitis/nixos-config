@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports =
@@ -54,10 +54,16 @@
   services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
 
   # Enable the X11 windowing system.
-  # services.xserver.enable = true;
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e,caps:escape";
+
+  services.xserver.displayManager.sessionCommands = ''
+    ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
+  '';
+
+  # Install docker
+  virtualisation.docker.enable = true;
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -73,7 +79,7 @@
   users.defaultUserShell = pkgs.zsh;
 
   # A list of permissible login shells for user accounts.
-  # /binsh is placed into this list implicitly.
+  # /bin/sh is placed into this list implicitly.
   environment.shells = with pkgs; [ zsh ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -82,6 +88,7 @@
     extraGroups = [ 
       "wheel" # Enable ‘sudo’ for the user.
       "networkmanager" 
+      "docker" # Provide them access to the socket
     ]; 
     packages = with pkgs; [
       tree

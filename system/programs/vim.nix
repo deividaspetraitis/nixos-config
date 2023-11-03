@@ -32,8 +32,9 @@ in vim-full.customize {
   vimrcConfig.customRC = ''
     " Use Vim settings, rather than Vi settings
     set nocompatible
-    
-    filetype off
+
+    " Enable loading the indent file for specific file types
+    filetype plugin indent on
     
     "###########################################################################
     " Vim system settings
@@ -204,14 +205,14 @@ in vim-full.customize {
     " Plugin(s) settings  ---------------------- {{{
     " This section is intentionally moved after initial settings defined above 
     " because some of the plugins might alter those.
-    " TODO:
+    " TODO: pomodoro
     source $DOTDIR/.vim/plugins/committia.vim
     source $DOTDIR/.vim/plugins/ultisnips.vim
     source $DOTDIR/.vim/plugins/vimhardtime.vim
     source $DOTDIR/.vim/plugins/tmux.vim
     source $DOTDIR/.vim/plugins/fzf.vim
     source $DOTDIR/.vim/plugins/ycm.vim
-    source $DOTDIR/.vim/plugins/pomodoro.vim
+    " source $DOTDIR/.vim/plugins/pomodoro.vim
     " }}}
     
     " Add optional packages. ------------------{{{
