@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, xdg, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -34,12 +34,15 @@
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
+    pkgs.alacritty
     pkgs.tmux
     pkgs.git
     pkgs.git-crypt
     pkgs.gnupg
     pkgs.pinentry_qt
-    pkgs.qutebrowser
+    pkgs.qutebrowser-qt6
+    pkgs.firefox
+    pkgs.chromium
     pkgs._1password
     pkgs._1password-gui
     pkgs.pcmanfm
@@ -68,7 +71,7 @@
     ".vim".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/.vim";
     ".tmux.conf".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/.tmux.conf";
     ".gitconfig".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/.gitconfig";
-    ".config/sway".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/sway";
+    # ".config/sway".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/sway";
     ".config/qutebrowser".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/qutebrowser";
     ".config/foot".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/foot";
 

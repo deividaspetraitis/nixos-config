@@ -6,8 +6,13 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [ 
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
+
+      # Services
+      ../services/swaywm.nix
+      ../services/pipewire.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -70,7 +75,14 @@
 
   # Enable sound.
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  # hardware.pulseaudio.enable = true;
+
+  hardware.opengl = {
+    enable = true;
+    # package = (pkgs.mesa.override {
+    #   galliumDrivers = ["i915" "swrast"];
+    # }).drivers;
+  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true;
@@ -119,11 +131,6 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-
-  # Sway
-  programs.sway = {
-    enable = true;
-  };
 
   # Z Shell must be enabled system-wide.
   # Otherwise it won't source the necessary files.
