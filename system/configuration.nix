@@ -25,7 +25,7 @@
 
   # The set of kernel modules to be loaded in the second stage of the boot process.
   # Note that modules that are needed to mount the root file system should be added to boot.initrd.availableKernelModules or boot.initrd.kernelModules.
-  # boot.kernelModules = [ "evdi" ];
+  # boot.kernelModules = [ ];
 
   # networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -54,18 +54,9 @@
   # };
 
   # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-
-  services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
-
-  # Enable the X11 windowing system.
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e,caps:escape";
-
-  services.xserver.displayManager.sessionCommands = ''
-    ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
-  '';
 
   # Install docker
   virtualisation.docker.enable = true;
@@ -79,13 +70,7 @@
 
   hardware.opengl = {
     enable = true;
-    # package = (pkgs.mesa.override {
-    #   galliumDrivers = ["i915" "swrast"];
-    # }).drivers;
   };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true;
 
   # Define the default shell assigned to user accounts.
   users.defaultUserShell = pkgs.zsh;

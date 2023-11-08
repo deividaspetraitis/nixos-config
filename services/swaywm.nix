@@ -70,6 +70,7 @@ in
     };
   };
 
+  # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
     displayManager = {
@@ -77,7 +78,15 @@ in
       # gdm.enable = true;
       # gdm.wayland = true;
       sddm.enable = true;
+      sessionCommands = ''
+        ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
+      '';
+
     };
+    # Enable touchpad support (enabled default in most desktopManager).
+    libinput.enable = true;
+
+    videoDrivers = [ "displaylink" "modesetting" ];
   };
 
   environment = {
