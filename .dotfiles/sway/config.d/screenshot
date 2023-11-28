@@ -1,0 +1,2 @@
+# Current display to file
+bindsym $mod+Print exec grimshot --notify save output

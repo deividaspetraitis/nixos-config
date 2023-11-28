@@ -1,0 +1,4 @@
+# Wayland default floats
+for_window [app_id="(pavucontrol|psensor)"] floating enable
+
+for_window [instance="1password" class="1Password"] floating enable

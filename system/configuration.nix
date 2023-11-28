@@ -13,15 +13,16 @@
       # Services
       ../services/swaywm.nix
       ../services/pipewire.nix
+
+      # Programs
+      ../programs/vim.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.extraModulePackages = with config.boot.kernelPackages; [
-    evdi
-  ];
+  boot.kernelModules = [ "udl" ];
 
   # The set of kernel modules to be loaded in the second stage of the boot process.
   # Note that modules that are needed to mount the root file system should be added to boot.initrd.availableKernelModules or boot.initrd.kernelModules.
@@ -68,8 +69,20 @@
   sound.enable = true;
   # hardware.pulseaudio.enable = true;
 
+  nixpkgs.config.packageOverrides = pkgs: {
+    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+  };
+
   hardware.opengl = {
     enable = true;
+    driSupport = true;
+    extraPackages = with pkgs; [
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      intel-ocl
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
   };
 
   # Define the default shell assigned to user accounts.
@@ -94,19 +107,18 @@
 
   # Installing fonts on NixOS.
   # Be aware that sometimes font names and packages name differ and there is no universal convention in NixOS.
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
   ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    # Used by vim
-    ripgrep
+  environment.systemPackages = [
+    pkgs.wget
 
-    (pkgs.callPackage ./programs/vim.nix {})
-    wget
-    displaylink 
+    # used by vim
+    # ripgrep
+    # (pkgs.callPackage ../programs/vim.nix {})
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

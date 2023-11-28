@@ -8,17 +8,20 @@
 #
 # Logo key. Use Mod1 for Alt.
 set $mod Mod1
+
 # Home row direction keys, like vim
 set $left h
 set $down j
 set $up k
 set $right l
+
 # Your preferred terminal emulator
 set $term foot
+
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_path | dmenu | xargs swaymsg exec --
+set $menu wofi --show run
 
 ### Output configuration
 #
@@ -194,6 +197,7 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
+
 bindsym $mod+r mode "resize"
 
 #
@@ -201,26 +205,15 @@ bindsym $mod+r mode "resize"
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar {
-    position top
-
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
-
-    colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
-    }
+	swaybar_command waybar
 }
-
-# Disable laptop display on lid close.
-set $laptop eDP-1
-bindswitch --locked lid:on output $laptop disable
-bindswitch --locked lid:off output $laptop enable
 
 # Make GTK work
 exec dbus-sway-environment
 exec configure-gtk
 
+# Include my custom configuration
+include /etc/sway/conf.d/*
+
+# System global configuration
 include /etc/sway/config.d/*

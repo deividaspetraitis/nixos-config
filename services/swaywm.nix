@@ -43,24 +43,26 @@ let
 in
 {
   environment.systemPackages = with pkgs; [
-    configure-gtk
     dbus-sway-environment
-    xdg-utils # for opening default programs when clicking links
-    dracula-theme # gtk theme
-    glib # gsettings
-    grim # screenshot functionality
-    gnome.adwaita-icon-theme  # default gnome cursors
-    mako # notification system developed by swaywm maintainer
-    sway
-    swayidle
-    swaylock
-    xwayland
+    configure-gtk
     wayland
+    xdg-utils # for opening default programs when clicking links
+    glib # gsettings
+    glibc
+    libva-utils
+    glxinfo
+    dracula-theme # gtk theme
+    gnome.adwaita-icon-theme  # default gnome cursors
+    swaylock
+    swayidle
+    grim # screenshot functionality
+    mako # notification system developed by swaywm maintainer
     waybar
     wf-recorder
     wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
     wofi
     wdisplays # tool to configure displays
+    wlr-randr
   ];
 
   programs.sway = {
@@ -86,14 +88,15 @@ in
     # Enable touchpad support (enabled default in most desktopManager).
     libinput.enable = true;
 
-    videoDrivers = [ "displaylink" "modesetting" ];
+    videoDrivers = [ "intel" "displaylink" "modesetting" ];
   };
 
   environment = {
     etc = {
       "sway/config".source = ../.dotfiles/sway/config;
-      # "xdg/waybar/config".source = ../dotfiles/waybar/config;
-      # "xdg/waybar/styles.css".source = ../dotfiles/waybar/style.css;
+      "sway/conf.d".source = ../.dotfiles/sway/config.d;
+      "xdg/waybar/config".source = ../.dotfiles/waybar/config;
+      "xdg/waybar/styles.css".source = ../.dotfiles/waybar/style.css;
     };
   };
 
@@ -107,11 +110,10 @@ in
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-  #  # gtk portal needed to make gtk apps happy
-  #  extraPortals = with pkgs; [
-  #    xdg-desktop-portal-gtk
-  #  ];
-  #  gtkUsePortal = true;
+    # gtk portal needed to make gtk apps happy
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+    ];
   };
 
   programs.waybar.enable = true;

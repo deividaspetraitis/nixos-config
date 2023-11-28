@@ -1,0 +1,36 @@
+[user]
+	name = Deividas Petraitis
+	email = hi@deividaspetraitis.lt
+	signingkey = 90A2C4FB7CFC019C
+
+[commit]
+    gpgsign = true
+
+[core]
+	autocrlf = input
+	excludesFile = ~/.gitignore
+	hooksPath = ~/.dotfiles/gitconfig/hooks
+
+ [includeIf "gitdir:~/work/"]
+	path = ~/work/.gitconfig
+
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
+
+[merge]
+	tool = vimdiff
+
+[diff]
+	tool = vimdiff
+
+[alias]
+	d = difftool
+
+	# Files will produce a list of files changed between current branch HEAD and REVIEW_BASE.
+	# REVIEW_BASE is ENV variable with default value set in .zshenv
+	files = !git git --no-pager diff --name-only -I ^vendor/ $(git merge-base HEAD \"$REVIEW_BASE\")
+
+	# Same as files, but provides changes stats on each changed file.
+	stat = !git --no-pager diff --stat $(git merge-base HEAD \"$REVIEW_BASE\")
+
+	review = !vim -p $(git files) -c \"tabdo Gvdiffsplit staging\"

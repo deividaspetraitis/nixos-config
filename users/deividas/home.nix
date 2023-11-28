@@ -1,4 +1,4 @@
-{ config, pkgs, xdg, ... }:
+{ config, pkgs, pkgs-stable, xdg, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -39,8 +39,8 @@
     pkgs.git
     pkgs.git-crypt
     pkgs.gnupg
-    pkgs.pinentry_qt
-    pkgs.qutebrowser-qt6
+    pkgs.pinentry-qt
+    pkgs.qutebrowser
     pkgs.firefox
     pkgs.chromium
     pkgs._1password
@@ -50,11 +50,10 @@
 
     # Go related packages
     pkgs.go
-    pkgs.gopls
     pkgs.golangci-lint
 
     #  Required by zplug
-    pkgs.python3
+    # pkgs.python3
 
     # fzf is used in shell
     pkgs.fzf
@@ -68,12 +67,10 @@
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
 
-    ".vim".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/.vim";
-    ".tmux.conf".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/.tmux.conf";
-    ".gitconfig".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/.gitconfig";
-    # ".config/sway".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/sway";
-    ".config/qutebrowser".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/qutebrowser";
-    ".config/foot".source = config.lib.file.mkOutOfStoreSymlink "/home/deividas/.dotfiles/foot";
+    ".tmux.conf" = { source = ../../.dotfiles/.tmux.conf; recursive = false;  };
+    ".gitconfig" = { source = ../../.dotfiles/.gitconfig; recursive = false; };
+    ".config/qutebrowser" = { source = ../../.dotfiles/qutebrowser; recursive = true; };
+    ".config/foot" = { source = ../../.dotfiles/foot; recursive = true; };
 
     # # You can also set the file content immediately.
     # ".gradle/gradle.properties".text = ''
@@ -97,9 +94,6 @@
     # Default editor
     EDITOR = "vim";
     VISUAL = "vim";
-
-    # Dot files directory
-    DOTDIR = "/home/deividas/.dotfiles";
   };
 
   # XDG are defaults for some of the programs.
@@ -109,7 +103,11 @@
   };
 
   # Set vim as default editor
-  programs.vim.defaultEditor = true;
+  # TODO
+  # programs.vim = {
+  #   enable = true;
+  #   defaultEditor = true;
+  # };
 
   # Enable GPG
   programs.gpg = {
