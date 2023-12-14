@@ -113,12 +113,16 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = [
-    pkgs.wget
+  environment.systemPackages = with pkgs; [
+    htop
+    wget
 
+    # QMK is powering my keyboard I tune from time to time.
+    qmk
     # used by vim
     # ripgrep
     # (pkgs.callPackage ../programs/vim.nix {})
+
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -136,6 +140,11 @@
   };
 
   # List services that you want to enable:
+
+  # List of packages containing udev rules. 
+  services.udev.packages = with pkgs; [
+    qmk-udev-rules
+  ];
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
