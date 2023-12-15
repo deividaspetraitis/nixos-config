@@ -149,6 +149,7 @@
   };
 
   # List services that you want to enable:
+  programs.dconf.enable = true;
 
   # List of packages containing udev rules. 
   services.udev.packages = with pkgs; [

@@ -33,6 +33,7 @@
         "temperature",
         "pulseaudio",
         "battery",
+        "privacy",
         "custom/keyboard-layout",
         "tray"
     ],
@@ -94,7 +95,7 @@
 
     "memory": {
         "interval": 5,
-        "format": "  {}%", // Icon: memory
+        "format": "  {}%", // Icon: memory
         "states": {
             "warning": 70,
             "critical": 90
@@ -177,8 +178,31 @@
 		"on-click": "blueman-manager"
 	},
 
-    "tray": {
-        "icon-size": 21,
-        "spacing": 10
-    }
+	"privacy": {
+		"icon-spacing": 4,
+		"icon-size": 18,
+		"transition-duration": 250,
+		"modules": [
+			{
+				"type": "screenshare",
+				"tooltip": true,
+				"tooltip-icon-size": 24
+			},
+			{
+				"type": "audio-out",
+				"tooltip": true,
+				"tooltip-icon-size": 24
+			},
+			{
+				"type": "audio-in",
+				"tooltip": true,
+				"tooltip-icon-size": 24
+			}
+		]
+	},
+
+	"tray": {
+		"icon-size": 15,
+		"spacing": 10
+	}
 }

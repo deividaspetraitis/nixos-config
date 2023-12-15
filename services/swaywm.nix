@@ -96,7 +96,7 @@ in
       "sway/config".source = ../.dotfiles/sway/config;
       "sway/conf.d".source = ../.dotfiles/sway/config.d;
       "xdg/waybar/config".source = ../.dotfiles/waybar/config;
-      "xdg/waybar/styles.css".source = ../.dotfiles/waybar/style.css;
+      "xdg/waybar/style.css".source = ../.dotfiles/waybar/style.css;
     };
   };
 
