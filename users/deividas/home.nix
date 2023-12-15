@@ -151,11 +151,16 @@
       # Autocomplete hidden files
       _comp_options+=(globdots)
 
-      # Enable fzf in zsh.
+      # Enable fzf in zsh
       # fzf provides additional key bindings (CTRL-T, CTRL-R, and ALT-C) for shells  
       if [ -n "''${commands[fzf-share]}" ]; then
         source "$(fzf-share)/key-bindings.zsh"
         source "$(fzf-share)/completion.zsh"
+      fi
+
+      # Start tmux on every shell login
+      if [ -x "''$(command -v tmux)" ] && [ -n "''${DISPLAY}" ] && [ -z "''${TMUX}" ]; then
+          exec tmux new-session -A -s ''${USER} >/dev/null 2>&1
       fi
    '';
 
