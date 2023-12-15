@@ -212,6 +212,9 @@ bar {
 exec dbus-sway-environment
 exec configure-gtk
 
+# Run bluetooth manager
+exec --no-startup-id blueman-applet
+
 # Include my custom configuration
 include /etc/sway/conf.d/*
 

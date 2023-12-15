@@ -69,6 +69,15 @@
   sound.enable = true;
   # hardware.pulseaudio.enable = true;
 
+  # Enables support for Bluetooth
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+  hardware.bluetooth.settings = { # modern headsets will generally try to connect using the A2DP prof
+    General = {
+      Enable = "Source,Sink,Media,Socket";
+    };
+  };
+
   nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
@@ -146,6 +155,9 @@
     qmk-udev-rules
   ];
 
+  # Enable the blueman service, which provides blueman-applet and blueman-manager.
+  services.blueman.enable = true;
+  
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 

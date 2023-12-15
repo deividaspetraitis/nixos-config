@@ -2,3 +2,5 @@
 for_window [app_id="(pavucontrol|psensor)"] floating enable
 
 for_window [instance="1password" class="1Password"] floating enable
+
+for_window [app_id="blueman-manager"] floating enable, resize set width 680 height 400,  move position center
