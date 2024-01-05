@@ -96,6 +96,13 @@
     VISUAL = "vim";
   };
 
+  # Extra directories to add to PATH.
+  # These directories are added to the PATH variable in adouble-quoted context, so expressions like $HOME are
+  # expanded by the shell. However, since expressions like ~ or* are escaped, they will end up in the PATH verbatim.
+  home.sessionPath = [
+    "$HOME/go/bin"
+  ];
+
   # XDG are defaults for some of the programs.
   xdg.userDirs = {
     enable = true;
