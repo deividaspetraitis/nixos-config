@@ -146,7 +146,12 @@
       bindkey "^P" up-line-or-search
       bindkey "^N" down-line-or-search
       
-      # vi-yank-clip is OS specific
+      # By default zsh yanks to its own internal registers.
+      # Luckily, like in Vim, it's fairly simple yank to the system clipboard.
+      function vi-yank-clip {
+          zle vi-yank
+          echo "$CUTBUFFER" | wl-copy # wl-copy is OS specific
+      }
       zle -N vi-yank-clip
       bindkey -M vicmd 'y' vi-yank-clip
 
