@@ -54,6 +54,7 @@ nnoremap <silent><buffer> <localleader>gD :YcmCompleter GoToDeclaration <CR>
 nnoremap <silent><buffer> <localleader>g] :YcmCompleter GoToReferences <CR>
 nnoremap <silent><buffer> <localleader>gi :YcmCompleter GoToImplementation <CR>
 nnoremap <silent><buffer> <localleader>] :YcmCompleter GoToDefinition <CR>
+nnoremap <silent><buffer> <localleader>f :YcmCompleter FixIt <CR>
 nnoremap <silent><buffer> <C-w>} :YcmCompleter GetDoc <CR>
 
 " Auto generate tags file on file write of *.go
