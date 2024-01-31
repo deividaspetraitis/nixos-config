@@ -57,6 +57,10 @@
 
     # fzf is used in shell
     pkgs.fzf
+
+    # Useful utilities
+    pkgs.usbutils
+    pkgs.unzip
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -136,6 +140,9 @@
       setopt PUSHD_IGNORE_DUPS
       setopt PUSHD_SILENT
 
+      # Disable sharing history across different panes.
+      setopt nosharehistory
+
       # Enable Vi mode
       bindkey -v
       bindkey "^?" backward-delete-char # Fix modes N -> I -> I backspace  not working
@@ -177,10 +184,14 @@
    '';
 
    shellAliases = {
+     # Nix related
      switch-user = "nix build '/home/deividas/nix-config/.#homeManagerConfigurations.deividas.activationPackage' --out-link /home/deividas/nix-config/result && /home/deividas/nix-config/result/activate";
 
      switch-system = "sudo nixos-rebuild switch --flake '/home/deividas/nix-config/.#'";
      update-system = "nix flake update --commit-lock-file /home/deividas/nix-config";
+
+     # Keyboard stuff
+     mntnc = "sudo mount /dev/disk/by-label/NICENANO /media/usb";
    };
 
    history = {
