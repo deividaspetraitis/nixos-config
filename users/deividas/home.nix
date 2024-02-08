@@ -15,6 +15,21 @@
   # release notes.
   home.stateVersion = "23.05"; # Please read the comment before changing.
 
+  # Package overlays
+  nixpkgs.overlays = [
+    (final: prev: {
+      postman = prev.postman.overrideAttrs(old: rec {
+        version = "20231205182607";
+        src = final.fetchurl {
+          url = "https://web.archive.org/web/${version}/https://dl.pstmn.io/download/latest/linux_64";
+          sha256 = "sha256-PthETmSLehg6eWpdDihH1juwiyZdJvzr+qyG2YYuEZI=";
+
+          name = "${old.pname}-${version}.tar.gz";
+        };
+      });
+    })
+  ];
+
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
@@ -47,6 +62,8 @@
     pkgs._1password-gui
     pkgs.pcmanfm
     pkgs.nix-prefetch-github
+    pkgs.wrk
+    pkgs.postman
 
     # Go related packages
     pkgs.go
@@ -60,7 +77,7 @@
 
     # Useful utilities
     pkgs.usbutils
-    pkgs.unzip
+    pkgs.unzip 
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
