@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs-stable, xdg, ... }:
+{ config, pkgs, pkgs-stable, xdg, lib, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -14,6 +14,10 @@
   # want to update the value, then make sure to first check the Home Manager
   # release notes.
   home.stateVersion = "23.05"; # Please read the comment before changing.
+
+  # Permitted list of insecure packages.
+  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = lib.optional (pkgs.obsidian.version == "1.5.3") "electron-25.9.0";
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
@@ -48,6 +52,7 @@
     pkgs.pcmanfm
     pkgs.nix-prefetch-github
     pkgs.wrk
+    pkgs.obsidian
 
     # Go related packages
     pkgs.go
