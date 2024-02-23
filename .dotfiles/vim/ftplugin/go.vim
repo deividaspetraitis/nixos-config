@@ -49,11 +49,13 @@ vnoremap <silent><buffer> ]] m':<C-U>exe "normal! gv"<Bar>call search('^\s*\(fu\
 " noremap <silent><buffer> ]# :call search('^\s*\<else\>\|<else if\>', "W")<CR>
 
 " YCM mappings, we want to make it to work close as possible to the defaults
-
+"
+" Originally: Jump to the definition of the keyword under the cursor.
+nnoremap <silent><buffer> <C-]> :YcmCompleter GoToDefinition <CR>
+" Originally: Like CTRL-], but use ":tselect" instead of ":tag"
+nnoremap <silent><buffer> g] :YcmCompleter GoToReferences <CR>
 nnoremap <silent><buffer> <localleader>gD :YcmCompleter GoToDeclaration <CR>
-nnoremap <silent><buffer> <localleader>g] :YcmCompleter GoToReferences <CR>
 nnoremap <silent><buffer> <localleader>gi :YcmCompleter GoToImplementation <CR>
-nnoremap <silent><buffer> <localleader>] :YcmCompleter GoToDefinition <CR>
 nnoremap <silent><buffer> <localleader>f :YcmCompleter FixIt <CR>
 nnoremap <silent><buffer> <C-w>} :YcmCompleter GetDoc <CR>
 
