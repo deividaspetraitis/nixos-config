@@ -237,6 +237,7 @@ in {
         source /etc/vim/plugins/tmux.vim
         source /etc/vim/plugins/fzf.vim
         source /etc/vim/plugins/ycm.vim
+        source /etc/vim/plugins/netrw.vim
         " source /etc/vim/plugins/pomodoro.vim
         " }}}
         
@@ -252,17 +253,7 @@ in {
         " loaded during initialization.
         if has('syntax') && has('eval')
           packadd! matchit
-        endif
-        
-        " NETRW setup
-        let g:netrw_banner = 0
-        let g:netrw_liststyle = 3
-        let g:netrw_browse_split = 4
-        let g:netrw_altv = 1
-        let g:netrw_winsize = 25
-        let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+' " hide dot files on load
-        let g:netrw_keepdir = 0 " Keep the current directory and the browsing
-        						" directory synced
+        endif 
         " }}}
         
         "###########################################################################
@@ -284,10 +275,6 @@ in {
         " TODO:
         inoremap <S-^> <Home>
         inoremap <S-$> <End>
-        
-        " NERDTree plugin specific commands
-        " Toggle ON/OFF tree F6
-        nmap <F6> :NERDTreeToggle<CR>
         
         " Navigation between splits  ---------------------- {{{
         nnoremap <C-J> <C-W><C-J>
