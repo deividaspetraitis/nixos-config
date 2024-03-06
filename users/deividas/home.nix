@@ -38,15 +38,12 @@
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
-    pkgs.alacritty
     pkgs.tmux
     pkgs.git
     pkgs.git-crypt
     pkgs.gnupg
     pkgs.pinentry-qt
     pkgs.qutebrowser
-    pkgs.firefox
-    pkgs.chromium
     pkgs._1password
     pkgs._1password-gui
     pkgs.pcmanfm
@@ -57,9 +54,6 @@
     # Go related packages
     pkgs.go
     pkgs.golangci-lint
-
-    #  Required by zplug
-    # pkgs.python3
 
     # fzf is used in shell
     pkgs.fzf
