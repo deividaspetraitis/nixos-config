@@ -265,6 +265,8 @@ in {
         omap ic :<C-U>normal! T}vt{<CR>
         omap af :<C-U>normal! [V]mz[/func<CR>N[%]`z<CR>
         
+        " File explorer shortcut
+        nnoremap <silent> <C-M> :execute "FloatermNew vifm"<CR>
         
         "This is how it worked before Vim 5.0. 
         " Otherwise the "Q" command starts Ex mode, but you will not need it.
@@ -299,9 +301,7 @@ in {
         
         " Same as fg but allows to open and edit non-existing file
         " If starts with dot?
-        noremap <leader>gf :execute "e " .. expand('%:p:h') .. "/" .. expand('<cfile>')<cr>
-        
-        noremap <leader>vw :e ~/vimwiki/index.md<cr>
+        noremap <leader>gf :execute "e " .. expand('%:p:h') .. "/" .. expand('<cfile>')<cr> 
         " }}}
         
         " Vimrc related mappings  ---------------------- {{{
@@ -463,6 +463,9 @@ in {
 
            # Allow Vim to integrate with the Wayland clipboard
            vimPlugins.vim-wayland-clipboard
+
+           # Use (neo)vim terminal in the floating/popup window.
+           vimPlugins.vim-floaterm
          ];
 
          # manually loadable by calling `:packadd $plugin-name`

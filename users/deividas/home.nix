@@ -47,6 +47,7 @@
     pkgs._1password
     pkgs._1password-gui
     pkgs.pcmanfm
+    pkgs.vifm
     pkgs.nix-prefetch-github
     pkgs.wrk
     pkgs.obsidian
@@ -74,6 +75,7 @@
     ".tmux.conf" = { source = ../../.dotfiles/.tmux.conf; recursive = false;  };
     ".gitconfig" = { source = ../../.dotfiles/.gitconfig; recursive = false; };
     ".config/qutebrowser" = { source = ../../.dotfiles/qutebrowser; recursive = true; };
+    ".config/vifm" = { source = ../../.dotfiles/vifm; recursive = true; };
     ".config/foot" = { source = ../../.dotfiles/foot; recursive = true; };
 
     # # You can also set the file content immediately.
