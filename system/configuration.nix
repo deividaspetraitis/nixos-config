@@ -5,6 +5,17 @@
 { config, lib, pkgs, ... }:
 
 {
+  # Turn on periodic optimisation of the nix store.
+  nix.optimise.automatic = true;
+  nix.optimise.dates = [ "03:45" ]; # optimisation schedule
+
+  # Automate garbage collection.
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+
   imports =
     [ 
       # Include the results of the hardware scan.
