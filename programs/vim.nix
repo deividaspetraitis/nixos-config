@@ -466,6 +466,9 @@ in {
 
            # Use (neo)vim terminal in the floating/popup window.
            vimPlugins.vim-floaterm
+
+           # GitHub Copilot for Vim and Neovim
+           vimPlugins.copilot-vim
          ];
 
          # manually loadable by calling `:packadd $plugin-name`
