@@ -153,6 +153,12 @@
   #   enableSSHSupport = true;
   # };
 
+  # Enable 1password module instead of using user level package.
+  # 1password CLI requires special permissions in order to function properly: https://github.com/NixOS/nixpkgs/issues/258139
+  programs._1password-gui.enable = true;
+  programs._1password-gui.polkitPolicyOwners = [ "deividas" ];
+  programs._1password.enable = true;
+
   # Z Shell must be enabled system-wide.
   # Otherwise it won't source the necessary files.
   programs.zsh = {

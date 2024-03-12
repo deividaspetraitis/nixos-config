@@ -9,7 +9,7 @@
 [core]
 	autocrlf = input
 	excludesFile = ~/.gitignore
-	hooksPath = ~/.dotfiles/gitconfig/hooks
+	hooksPath = ~/.config/gitconfig/hooks
 
  [includeIf "gitdir:~/work/"]
 	path = ~/work/.gitconfig

@@ -41,15 +41,13 @@
     pkgs.tmux
     pkgs.git
     pkgs.git-crypt
-    pkgs.gnupg
     pkgs.pinentry-qt
     pkgs.qutebrowser
-    pkgs._1password
-    pkgs._1password-gui
     pkgs.pcmanfm
     pkgs.vifm
     pkgs.nix-prefetch-github
     pkgs.wrk
+    pkgs.jq
     pkgs.obsidian
 
     # Go related packages
@@ -74,9 +72,11 @@
 
     ".tmux.conf" = { source = ../../.dotfiles/.tmux.conf; recursive = false;  };
     ".gitconfig" = { source = ../../.dotfiles/.gitconfig; recursive = false; };
+    ".config/gitconfig" = { source = ../../.dotfiles/gitconfig; recursive = true; };
     ".config/qutebrowser" = { source = ../../.dotfiles/qutebrowser; recursive = true; };
     ".config/vifm" = { source = ../../.dotfiles/vifm; recursive = true; };
     ".config/foot" = { source = ../../.dotfiles/foot; recursive = true; };
+    ".config/zsh" = { source = ../../.dotfiles/zsh; recursive = true; };
 
     # # You can also set the file content immediately.
     # ".gradle/gradle.properties".text = ''
@@ -127,6 +127,16 @@
     enable = true;
   };
 
+  # Enable GPG Agent
+  services.gpg-agent = {
+    enable = true;
+    pinentryFlavor = "qt";
+    defaultCacheTtl = 46000;
+    extraConfig = ''
+      allow-preset-passphrase
+    '';
+  };
+
   # Z Shell configuration.
   programs.zsh = {
     # Whether to enable Z Shell or not.
@@ -144,6 +154,9 @@
 
       # Disable sharing history across different panes.
       setopt nosharehistory
+
+      # Enable extended globbing
+      setopt EXTENDED_GLOB
 
       # Enable Vi mode
       bindkey -v
@@ -183,6 +196,11 @@
       if pgrep --exact sway > /dev/null 2>&1 && [[ -z "$TMUX" ]]; then
           tmux attach || tmux new-session
       fi
+
+      # add ~/.config/zsh/external to fpath, and then lazy autoload
+      # every file in there as a function
+      fpath=(~/.config/zsh/external $fpath);
+      autoload -U $fpath[1]/*(-.:t)
    '';
 
    shellAliases = {
@@ -230,12 +248,6 @@
         file = ".p10k.zsh";
       }
     ];
-  };
-
-  # Enable GPG Agent
-  services.gpg-agent = {
-    enable = true;
-    pinentryFlavor = "qt";
   };
 
   # Let Home Manager install and manage itself.

@@ -1,0 +1,10 @@
+# vim: filetype=sh
+
+# If any command fails, exit immediately with that command's exit status
+set -eo pipefail
+
+# Import custom gpg cache function
+. "$HOME/.config/zsh/external/gpg_cache"
+
+# Cache commits GPG signing key
+gpg_cache 64yfdeckzy5yltmqtjesddktyq

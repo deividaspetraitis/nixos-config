@@ -1,0 +1,49 @@
+#!/bin/sh
+
+# gpg_cache - a function to cache GPG password in gpg-agent.
+# It uses 1password CLI to get the password and then cache it in gpg-agent.
+# Dependencies:
+# 1password CLI: https://1password.com/downloads/command-line/
+# jq: https://stedolan.github.io/jq/
+# Usage: gpg_cache ID
+# Possible alternatives so we no need to request 1password each time is to check does cache exists and extract value:
+# gpg-connect-agent 'keyinfo <keygrip>' /bye | awk '{print $7}
+gpg_cache () {
+	if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+		echo "Usage: gpg_cache ID"
+		return
+	fi
+
+	if ! command -v op &> /dev/null
+	then
+		echo "1password CLI could not be found."
+		return
+	fi
+
+	if ! command -v jq &> /dev/null
+	then
+		echo "jq could not be found."
+		return
+	fi
+
+	if [ -z "$1" ]; then
+		echo "no GPG ID given."
+		return
+	fi
+
+	# generate usage docs
+	ITEM_ID=$1
+	ITEM=$(op item get "$ITEM_ID" --format json)
+
+	KEYGRIP=$(echo "$ITEM" | jq -r '.fields | .[] | select(.purpose=="USERNAME") | .value')
+	PASSWORD=$(echo "$ITEM" | jq -r '.fields | .[] | select(.purpose=="PASSWORD") | .value')
+
+	if [ -z "$KEYGRIP" ]; then
+		echo "no GPG item found based on provided ID."
+		return
+	fi
+
+	gpg-connect-agent /bye &> /dev/null
+
+	"$(gpgconf --list-dirs libexecdir)"/gpg-preset-passphrase --preset "$KEYGRIP" <<< "$PASSWORD"
+}
