@@ -238,6 +238,7 @@ in {
         source /etc/vim/plugins/fzf.vim
         source /etc/vim/plugins/ycm.vim
         source /etc/vim/plugins/netrw.vim
+        source /etc/vim/plugins/vifm.vim
         " source /etc/vim/plugins/pomodoro.vim
         " }}}
         
@@ -463,6 +464,9 @@ in {
 
            # Allow Vim to integrate with the Wayland clipboard
            vimPlugins.vim-wayland-clipboard
+
+           # Vim plugin that allows use of vifm as a file picker
+           vimPlugins.vifm-vim
 
            # Use (neo)vim terminal in the floating/popup window.
            vimPlugins.vim-floaterm
