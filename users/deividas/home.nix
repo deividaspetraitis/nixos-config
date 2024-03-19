@@ -41,7 +41,6 @@
     pkgs.tmux
     pkgs.git
     pkgs.git-crypt
-    pkgs.pinentry-qt
     pkgs.qutebrowser
     pkgs.pcmanfm
     pkgs.vifm
@@ -130,7 +129,7 @@
   # Enable GPG Agent
   services.gpg-agent = {
     enable = true;
-    pinentryFlavor = "qt";
+    pinentryPackage = pkgs.pinentry-qt;
     defaultCacheTtl = 46000;
     extraConfig = ''
       allow-preset-passphrase
