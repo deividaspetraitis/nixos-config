@@ -51,6 +51,9 @@ exec swayidle -w \
 
 ### Input configuration
 #
+# Pen input to the Wacom tablet.
+input 1386:236:Wacom_ISDv4_EC_Pen map_to_output eDP-1
+
 # Example configuration:
 #
 #   input "2:14:SynPS/2_Synaptics_TouchPad" {
