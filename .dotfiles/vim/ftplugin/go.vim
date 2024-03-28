@@ -1,3 +1,4 @@
+" Vim Go configuration
 setlocal tabstop=4 shiftwidth=4 softtabstop=4
 
 " Spelling settings
@@ -19,10 +20,10 @@ setlocal foldcolumn=2
 " Format
 setlocal formatexpr=go#fmt#Format(-1)
 
-" Filter 
+" Filter through gofmt
 setlocal equalprg=gofmt
 
-" Tags
+" Tags file
 setlocal tags+=~/.vim/tags/go
 
 " Match world for matchit plugin
@@ -32,6 +33,20 @@ if exists("loaded_matchit")
 	  \ '\<for\>:\<range\>:\<}\>,' .
 	  \ '\(^\s*\)\@<=\<if\>:\<else\ if\|else\>:^}'
 endif
+
+" Set tag for current definition under cursor.
+function! SetTag()
+    call settagstack(
+    \ winnr(),
+    \ {'items': [{
+    \     'bufnr': bufnr(),
+    \     'from': [0, line('.'), col('.'), 0],
+    \     'matchnr': 1,
+    \     'tagname': expand('<cword>')
+    \ }]},
+    \ 't'
+    \ )
+endfunction
 
 " TODO: mapping?
 " go list -f '{{.Dir}}' -deps ./... | xargs -I{} ctags --append=yes -R "{}"
@@ -51,12 +66,13 @@ vnoremap <silent><buffer> ]] m':<C-U>exe "normal! gv"<Bar>call search('^\s*\(fu\
 " YCM mappings, we want to make it to work close as possible to the defaults
 "
 " Originally: Jump to the definition of the keyword under the cursor.
-nnoremap <silent><buffer> <C-]> :YcmCompleter GoToDefinition <CR>
+nnoremap <silent><buffer> <C-]> <cmd>call SetTag()<cr><cmd>YcmCompleter GoToDefinition<cr>
 " Originally: Like CTRL-], but use ":tselect" instead of ":tag"
 nnoremap <silent><buffer> g] :YcmCompleter GoToReferences <CR>
 nnoremap <silent><buffer> <localleader>gD :YcmCompleter GoToDeclaration <CR>
 nnoremap <silent><buffer> <localleader>gi :YcmCompleter GoToImplementation <CR>
 nnoremap <silent><buffer> <localleader>f :YcmCompleter FixIt <CR>
+nnoremap <buffer> <localleader>r :YcmCompleter RefactorRename<Space><C-R><C-W>
 nnoremap <silent><buffer> <C-w>} :YcmCompleter GetDoc <CR>
 
 " Auto generate tags file on file write of *.go
