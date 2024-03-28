@@ -38,6 +38,8 @@
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
+    pkgs.gnumake
+    pkgs.gcc
     pkgs.tmux
     pkgs.git
     pkgs.git-crypt
