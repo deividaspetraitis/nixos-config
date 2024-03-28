@@ -55,6 +55,7 @@ in
     gnome.adwaita-icon-theme  # default gnome cursors
     swaylock
     swayidle
+    swayidle
     grim # screenshot functionality
     mako # notification system developed by swaywm maintainer
     waybar

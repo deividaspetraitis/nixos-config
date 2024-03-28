@@ -33,7 +33,20 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.kernelModules = [ "udl" ];
+  boot.kernelModules = [ 
+    # I²C or I2C (Inter-IC) is a synchronous, multi-controller/multi-target (controller/target), 
+    # packet switched, single-ended, serial communication bus invented in 1982 by Philips Semiconductors.
+    #
+    # It is used by many hardware boards to communicate with general purpose I/O (GPIO) devices.
+    "i2c-dev" 
+
+    # A pair of Linux kernel drivers for DDC/CI monitors.
+    # DDC/CI is a control protocol for monitor settings supported by most monitors since about 2005
+    "ddcci_backlight"
+
+    # udl — DisplayLink DL-120 / DL-160 USB display devices
+    "udl"
+  ];
 
   # The set of kernel modules to be loaded in the second stage of the boot process.
   # Note that modules that are needed to mount the root file system should be added to boot.initrd.availableKernelModules or boot.initrd.kernelModules.
@@ -79,6 +92,10 @@
   # Enable sound.
   sound.enable = true;
   # hardware.pulseaudio.enable = true;
+
+  # Enable i2c devices support.
+  # By default access is granted to users in the “i2c” group (will be created if non-existent) and any user with a seat, meaning logged on the computer locally.
+  hardware.i2c.enable = true;
 
   # Enables support for Bluetooth
   hardware.bluetooth.enable = true;
@@ -137,12 +154,8 @@
     htop
     wget
 
-    # QMK is powering my keyboard I tune from time to time.
-    qmk
-    # used by vim
-    # ripgrep
-    # (pkgs.callPackage ../programs/vim.nix {})
-
+    # This program allows you read and control device brightness on Linux.
+    brightnessctl
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -173,8 +186,18 @@
     qmk-udev-rules
   ];
 
+  # Enable thermald, the temperature management daemon.
+  services.thermald.enable = true;
+
   # Enable the blueman service, which provides blueman-applet and blueman-manager.
   services.blueman.enable = true;
+
+  # Power management settings.
+  services.logind.extraConfig = ''
+    HandlePowerKey=suspend
+    IdleAction=suspend
+    IdleActionSec=30min
+  '';
   
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
