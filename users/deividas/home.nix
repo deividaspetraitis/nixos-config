@@ -42,6 +42,7 @@
     pkgs.gcc
     pkgs.tmux
     pkgs.git
+    pkgs.act
     pkgs.git-crypt
     pkgs.qutebrowser
     pkgs.pcmanfm
@@ -50,6 +51,8 @@
     pkgs.wrk
     pkgs.jq
     pkgs.obsidian
+
+    pkgs.synology-drive-client
 
     # Go related packages
     pkgs.go
@@ -126,6 +129,15 @@
   # Enable GPG
   programs.gpg = {
     enable = true;
+  };
+
+  # GitHub CLI tool
+  programs.gh = {
+    enable = true;
+    settings = {
+      editor = "vim";
+      protocol = "ssh";
+    };
   };
 
   # Enable GPG Agent
