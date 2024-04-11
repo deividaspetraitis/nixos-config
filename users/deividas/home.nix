@@ -56,6 +56,7 @@
 
     # Go related packages
     pkgs.go
+    pkgs.delve
     pkgs.golangci-lint
 
     # fzf is used in shell

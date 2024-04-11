@@ -239,6 +239,7 @@ in {
         source /etc/vim/plugins/ycm.vim
         source /etc/vim/plugins/netrw.vim
         source /etc/vim/plugins/vifm.vim
+        source /etc/vim/plugins/vimspector.vim
         " source /etc/vim/plugins/pomodoro.vim
         " }}}
         
@@ -265,10 +266,7 @@ in {
         " TODO: move to go
         omap ic :<C-U>normal! T}vt{<CR>
         omap af :<C-U>normal! [V]mz[/func<CR>N[%]`z<CR>
-        
-        " File explorer shortcut
-        nnoremap <silent> <C-M> :execute "FloatermNew vifm"<CR>
-        
+         
         "This is how it worked before Vim 5.0. 
         " Otherwise the "Q" command starts Ex mode, but you will not need it.
         map Q gq
@@ -297,12 +295,20 @@ in {
         " }}}
         
         " Leader key mappings  ---------------------- {{{
+
+        " File explorer shortcut
+        nnoremap <leader>m :FloatermNew vifm<CR>
+
+        " rgrep based shortcuts
+        nnoremap <leader>f :Files<CR>
+        nnoremap <leader>g :Rg<CR>
+
         " Quick write shortcut
         nnoremap <Leader>w :w<CR>
         
-        " Same as fg but allows to open and edit non-existing file
+        " Same as gf but allows to open and edit non-existing file
         " If starts with dot?
-        noremap <leader>gf :execute "e " .. expand('%:p:h') .. "/" .. expand('<cfile>')<cr> 
+        noremap <localleader>gf :execute "e " .. expand('%:p:h') .. "/" .. expand('<cfile>')<cr> 
         " }}}
         
         " Vimrc related mappings  ---------------------- {{{
@@ -394,7 +400,7 @@ in {
         endif
       '';
 
-      # List of supported plugin names can be found: https://github.com/NixOS/nixpkgs/blob/f5458516e42cc5cb4123cc2d93f45c240548aa18/pkgs/applications/editors/vim/plugins/vim-plugin-names
+      # List of supported plugin names can be found: https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/editors/vim/plugins/vim-plugin-names
       vimrcConfig.packages.myplugins = with pkgs; {
          # loaded on launch
          start = [ 
@@ -473,6 +479,9 @@ in {
 
            # GitHub Copilot for Vim and Neovim
            vimPlugins.copilot-vim
+
+           # A multi language graphical debugger for Vim
+           vimPlugins.vimspector
          ];
 
          # manually loadable by calling `:packadd $plugin-name`
