@@ -123,7 +123,16 @@
         modules = [
           # Overlays-module makes "pkgs.unstable" available in configuration.nix
           ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-stable ]; })
-          ./system/configuration.nix
+          ./hosts/nixos/configuration.nix
+        ];
+      };
+
+      "darwin" = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          # Overlays-module makes "pkgs.unstable" available in configuration.nix
+          ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-stable ]; })
+          ./hosts/darwin/configuration.nix
         ];
       };
     };

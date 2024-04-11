@@ -22,11 +22,11 @@
       ./hardware-configuration.nix
 
       # Services
-      ../services/swaywm.nix
-      ../services/pipewire.nix
+      ../../services/swaywm.nix
+      ../../services/pipewire.nix
 
       # Programs
-      ../programs/vim.nix
+      ../../programs/vim.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
