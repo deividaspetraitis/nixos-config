@@ -192,6 +192,10 @@
   # Enable the blueman service, which provides blueman-applet and blueman-manager.
   services.blueman.enable = true;
 
+  # Enable power management. 
+  # This includes support for suspend-to-RAM and powersave features on laptops.
+  powerManagement.enable = true;
+
   # Power management settings.
   services.logind.extraConfig = ''
     HandlePowerKey=suspend
