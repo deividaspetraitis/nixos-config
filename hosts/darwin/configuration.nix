@@ -52,12 +52,24 @@
     "udl"
   ];
 
+  hardware.firmware = [
+    (pkgs.stdenvNoCC.mkDerivation {
+      name = "brcm-firmware";
+
+      buildCommand = ''
+        dir="$out/lib/firmware"
+        mkdir -p "$dir"
+        cp -r ${./firmware}/* "$dir"
+      '';
+    })
+  ];
+
   boot.initrd.kernelModules = [ "amdgpu" ];
 
   networking.hostName = "darwin"; 
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Europe/Vilnius";
@@ -107,6 +119,15 @@
   # By default access is granted to users in the “i2c” group (will be created if non-existent) and any user with a seat, meaning logged on the computer locally.
   hardware.i2c.enable = true;
 
+  # Enables support for Bluetooth
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+  hardware.bluetooth.settings = { # modern headsets will generally try to connect using the A2DP prof
+    General = {
+      Enable = "Source,Sink,Media,Socket";
+    };
+  };
+
   # Define the default shell assigned to user accounts.
   users.defaultUserShell = pkgs.zsh;
 
@@ -140,6 +161,9 @@
     wget
     htop
 
+    # NetworkManager control applet
+    networkmanagerapplet
+
     # This program allows you read and control device brightness on Linux.
     brightnessctl
    ];
@@ -153,6 +177,9 @@
   # };
 
   # List services that you want to enable:
+
+  # Enable the blueman service, which provides blueman-applet and blueman-manager.
+  services.blueman.enable = true;
 
   # Enable 1password module instead of using user level package.
   # 1password CLI requires special permissions in order to function properly: https://github.com/NixOS/nixpkgs/issues/258139
