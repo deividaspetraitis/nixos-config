@@ -17,7 +17,13 @@
 
   # Permitted list of insecure packages.
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = lib.optional (pkgs.obsidian.version == "1.5.3") "electron-25.9.0";
+  #nixpkgs.config.permittedInsecurePackages = lib.optional (pkgs.obsidian.version == "1.5.3") "electron-25.9.0";
+
+  # Enable flakes
+  nix = {
+    package = pkgs.nix;
+    settings.experimental-features = [ "nix-command" "flakes" ];
+  };
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
@@ -50,7 +56,7 @@
     pkgs.nix-prefetch-github
     pkgs.wrk
     pkgs.jq
-    pkgs.obsidian
+    #pkgs.obsidian
 
     pkgs.synology-drive-client
 
@@ -65,6 +71,7 @@
     # Useful utilities
     pkgs.usbutils
     pkgs.unzip 
+    pkgs.lz4
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -130,6 +137,15 @@
   # Enable GPG
   programs.gpg = {
     enable = true;
+  };
+
+  # SSH client configuration
+  programs.ssh = {
+    enable = true;
+    extraConfig = ''
+      Host *
+          IdentityAgent ~/.1password/agent.sock
+    '';
   };
 
   # GitHub CLI tool

@@ -16,6 +16,9 @@
     options = "--delete-older-than 30d";
   };
 
+  # Enable Flakes
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
@@ -34,6 +37,20 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.kernelModules = [ 
+    # I²C or I2C (Inter-IC) is a synchronous, multi-controller/multi-target (controller/target), 
+    # packet switched, single-ended, serial communication bus invented in 1982 by Philips Semiconductors.
+    #
+    # It is used by many hardware boards to communicate with general purpose I/O (GPIO) devices.
+    "i2c-dev" 
+
+    # A pair of Linux kernel drivers for DDC/CI monitors.
+    # DDC/CI is a control protocol for monitor settings supported by most monitors since about 2005
+    "ddcci_backlight"
+
+    # udl — DisplayLink DL-120 / DL-160 USB display devices
+    "udl"
+  ];
 
   boot.initrd.kernelModules = [ "amdgpu" ];
 
@@ -110,20 +127,6 @@
     ];
   };
 
-  users.users.alice = {
-    isNormalUser = true;
-    extraGroups = [ 
-      "wheel" # Enable ‘sudo’ for the user.
-      "networkmanager" 
-      "docker" # Provide them access to the socket
-    ]; 
-    packages = with pkgs; [
-      tree
-      git
-     firefox
-     thunderbird
-    ];
-  };
   # Installing fonts on NixOS.
   # Be aware that sometimes font names and packages name differ and there is no universal convention in NixOS.
   fonts.packages = with pkgs; [
@@ -162,6 +165,10 @@
   programs.zsh = {
     enable = true;
   };
+
+  # Specifies what to do when the laptop lid is closed and the system is on external power.
+  # By default use the same action as specified in services.logind.lidSwitch.
+  services.logind.lidSwitchExternalPower = "ignore";
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
