@@ -73,14 +73,15 @@ in
     };
   };
 
+  services.displayManager.sddm.enable = true;
+  services.displayManager.defaultSession = "sway";
+
   # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
     displayManager = {
-      defaultSession = "sway";
       # gdm.enable = true;
       # gdm.wayland = true;
-      sddm.enable = true;
       sessionCommands = ''
         ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
       '';
