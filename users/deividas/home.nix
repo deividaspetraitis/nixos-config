@@ -17,7 +17,7 @@
 
   # Permitted list of insecure packages.
   nixpkgs.config.allowUnfree = true;
-  #nixpkgs.config.permittedInsecurePackages = lib.optional (pkgs.obsidian.version == "1.5.3") "electron-25.9.0";
+  nixpkgs.config.permittedInsecurePackages = lib.optional (pkgs.obsidian.version == "1.5.3") "electron-25.9.0";
 
   # Enable flakes
   nix = {
@@ -56,7 +56,7 @@
     pkgs.nix-prefetch-github
     pkgs.wrk
     pkgs.jq
-    #pkgs.obsidian
+    pkgs.obsidian
 
     pkgs.synology-drive-client
 
