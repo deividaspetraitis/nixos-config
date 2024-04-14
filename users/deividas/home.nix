@@ -239,9 +239,6 @@
 
      switch-system = "sudo nixos-rebuild switch --flake '/home/deividas/nix-config/.#'";
      update-system = "nix flake update --commit-lock-file /home/deividas/nix-config";
-
-     # Keyboard stuff
-     mntnc = "sudo mount /dev/disk/by-label/NICENANO /media/usb";
    };
 
    history = {
