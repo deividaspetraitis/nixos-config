@@ -65,9 +65,6 @@
     pkgs.delve
     pkgs.golangci-lint
 
-    # fzf is used in shell
-    pkgs.fzf
-
     # Useful utilities
     pkgs.usbutils
     pkgs.unzip 
@@ -167,6 +164,16 @@
     '';
   };
 
+  # fzf is a general-purpose command-line fuzzy finder.
+  programs.fzf = {
+    # Enable fzf - a command-line fuzzy finder.
+    enable = true;
+
+    # Enable fzf in zsh
+    # fzf provides additional key bindings (CTRL-T, CTRL-R, and ALT-C) for shells  
+    enableBashIntegration = true;
+  };
+
   # Z Shell configuration.
   programs.zsh = {
     # Whether to enable Z Shell or not.
@@ -214,13 +221,6 @@
 
       # Autocomplete hidden files
       _comp_options+=(globdots)
-
-      # Enable fzf in zsh
-      # fzf provides additional key bindings (CTRL-T, CTRL-R, and ALT-C) for shells  
-      if [ -n "''${commands[fzf-share]}" ]; then
-        source "$(fzf-share)/key-bindings.zsh"
-        source "$(fzf-share)/completion.zsh"
-      fi
 
       # Start tmux on every shell login
       if pgrep --exact sway > /dev/null 2>&1 && [[ -z "$TMUX" ]]; then
