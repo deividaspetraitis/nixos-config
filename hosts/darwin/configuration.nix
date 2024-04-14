@@ -195,6 +195,8 @@
 
   # Specifies what to do when the laptop lid is closed and the system is on external power.
   # By default use the same action as specified in services.logind.lidSwitch.
+  services.logind.lidSwitch = "ignore";
+  services.logind.lidSwitchDocked = "ignore";
   services.logind.lidSwitchExternalPower = "ignore";
 
   # Enable the OpenSSH daemon.
