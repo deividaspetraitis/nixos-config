@@ -11,7 +11,11 @@
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+  boot.extraModulePackages = [ 
+    # A pair of Linux kernel drivers for DDC/CI monitors.
+    # DDC/CI is a control protocol for monitor settings supported by most monitors since about 2005
+    config.boot.kernelPackages.ddcci-driver
+  ];
 
   fileSystems."/" =
     { device = "/dev/disk/by-label/nixos";
