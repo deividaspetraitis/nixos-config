@@ -15,8 +15,8 @@ let
 
     text = ''
   dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-  systemctl --user stop pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
-  systemctl --user start pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
+  systemctl --user stop pipewire wireplumber xdg-desktop-portal xdg-desktop-portal-wlr
+  systemctl --user start pipewire wireplumber xdg-desktop-portal xdg-desktop-portal-wlr
       '';
   };
 
@@ -66,6 +66,8 @@ in
     wlr-randr
   ];
 
+  services.pipewire.wireplumber.enable = true;
+
   programs.sway = {
     enable = true;
     wrapperFeatures = {
@@ -73,32 +75,16 @@ in
     };
   };
 
+  # Enable SSDM
   services.displayManager.sddm.enable = true;
-  services.displayManager.defaultSession = "sway";
-
-  # Enable the X11 windowing system.
-  services.xserver = {
-    enable = true;
-    displayManager = {
-      # gdm.enable = true;
-      # gdm.wayland = true;
-      sessionCommands = ''
-        ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
-      '';
-
-    };
-    # Enable touchpad support (enabled default in most desktopManager).
-    libinput.enable = true;
-
-    videoDrivers = [ "intel" "displaylink" "modesetting" ];
-  };
+  services.displayManager.sddm.wayland.enable = true;
 
   environment = {
     etc = {
-      "sway/config".source = ../.dotfiles/sway/config;
-      "sway/conf.d".source = ../.dotfiles/sway/config.d;
-      "xdg/waybar/config".source = ../.dotfiles/waybar/config;
-      "xdg/waybar/style.css".source = ../.dotfiles/waybar/style.css;
+      "sway/config".source = ../../.dotfiles/sway/config;
+      "sway/conf.d".source = ../../.dotfiles/sway/config.d;
+      "xdg/waybar/config".source = ../../.dotfiles/waybar/config;
+      "xdg/waybar/style.css".source = ../../.dotfiles/waybar/style.css;
     };
   };
 

@@ -26,7 +26,7 @@
       rev = "e1c4bac14beb8c409d0534382cf967171706b9d9"; }}/apple/t2"
 
       # Services
-      ../../services/swaywm.nix
+      ./swaywm.nix
       ../../services/pipewire.nix
 
       # Programs

@@ -22,7 +22,7 @@
       ./hardware-configuration.nix
 
       # Services
-      ../../services/swaywm.nix
+      ./swaywm.nix
       ../../services/pipewire.nix
 
       # Programs
