@@ -74,6 +74,27 @@ input "7504:24926:ThinkCorne_Mouse" {
     pointer_accel 1
 }
 
+# TODO: it seems that IDs are not unique: https://github.com/swaywm/sway/issues/3608
+input "7504:24926:ZMK_Project_ThinkCorne_Mouse" {
+	# Enables or disables left handed mode for specified input device
+    left_handed disabled
+
+	# Enables or disables tap for specified input device
+    tap enabled
+
+	# Enables or disables natural (inverted) scrolling for the specified input device
+    natural_scroll disabled
+
+	# enables or disables disable-while-typing for the specified input device
+    dwt enabled
+
+	# Disable mouse acceleration (enabled by default; to set it manually, use "adaptive" instead of "flat")
+    accel_profile "flat" 
+
+	# Set mouse sensitivity (between -1 and 1)
+    pointer_accel 1
+}
+
 # Example configuration:
 #
 #   input "2:14:SynPS/2_Synaptics_TouchPad" {
