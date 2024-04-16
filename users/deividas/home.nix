@@ -69,6 +69,7 @@
     pkgs.usbutils
     pkgs.unzip 
     pkgs.lz4
+    pkgs.graphviz
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
