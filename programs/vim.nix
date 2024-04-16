@@ -39,6 +39,9 @@ in {
     # Required by fzf
     ripgrep
     
+    # Enable syntax highlighting in fzf preview window
+    bat
+    
     # required by YouCompleteMe, with newer than 3.10 does not work ATM.
     stable.python38
 
