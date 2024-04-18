@@ -305,6 +305,7 @@ in {
         " rgrep based shortcuts
         nnoremap <leader>f :Files<CR>
         nnoremap <leader>g :Rg<CR>
+        nnoremap <leader>b :Buffers<CR>
 
         " Quick write shortcut
         nnoremap <Leader>w :w<CR>
