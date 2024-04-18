@@ -63,6 +63,7 @@
     # Go related packages
     pkgs.go
     pkgs.delve
+    pkgs.rr
     pkgs.golangci-lint
 
     # Useful utilities
