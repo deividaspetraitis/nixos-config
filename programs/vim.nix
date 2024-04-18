@@ -112,7 +112,7 @@ in {
         " Set leader key
         nnoremap <SPACE> <Nop>
         let mapleader="\<Space>"
-        let maplocalleader="\\"
+        let maplocalleader="\<CR>"
         
         " Display line numbers
         set number
