@@ -8,5 +8,5 @@ let $FZF_DEFAULT_OPTS="--preview-window 'right:57%' --preview 'bat --theme=OneHa
 \ctrl-b:preview-page-up,ctrl-f:preview-page-down,
 \ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down"
 
-# Set bat theme
+" Set bat theme
 let $BAT_THEME = 'gruvbox-light'
