@@ -46,7 +46,6 @@
     pkgs.gnumake
     pkgs.gcc
     pkgs.tmux
-    pkgs.git
     pkgs.act
     pkgs.git-crypt
     pkgs.qutebrowser
@@ -123,6 +122,12 @@
   xdg.userDirs = {
     enable = true;
     createDirectories = true;
+  };
+
+  # Enable Git & Git LFS
+  programs.git = {
+    enable = true;
+    lfs.enable = true;
   };
 
   # Set vim as default editor
