@@ -172,6 +172,10 @@
 
     # This program allows you read and control device brightness on Linux.
     brightnessctl
+
+    # Generic graphical webcam configuration tool
+    # TODO: move to pkgs, install as a user, not system wide?
+    (callPackage ../../programs/cameractrls.nix { })
    ];
 
   # Some programs need SUID wrappers, can be configured further or are
