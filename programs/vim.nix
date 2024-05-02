@@ -25,6 +25,18 @@ let
       meta.homepage = "https://github.com/tricktux/pomodoro.vim";
     };
 
+  vim-delve = pkgs.vimUtils.buildVimPlugin {
+      name = "vim-delve";
+      version = "2022-12-13";
+      src = pkgs.fetchFromGitHub {
+        owner = "sebdah";
+        repo = "vim-delve";
+        rev = "41d6ad294fb6dd5090f5f938318fc4ed73b6e1ea";
+        sha256 = "sha256-wMDTMMvtjkPaWtlV6SWlQ5B7YVsJ4gjPZKPactW8HAE=";
+      };
+      meta.homepage = "https://github.com/sebdah/vim-delve";
+    };
+
 in {
 
   # Vim dot files
@@ -486,6 +498,9 @@ in {
 
            # A multi language graphical debugger for Vim
            vimPlugins.vimspector
+
+           # Neovim and Vim plugin for debugging Go applications using Delve.
+           vim-delve
          ];
 
          # manually loadable by calling `:packadd $plugin-name`
