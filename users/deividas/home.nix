@@ -45,7 +45,6 @@
     # '')
     pkgs.gnumake
     pkgs.gcc
-    pkgs.tmux
     pkgs.act
     pkgs.git-crypt
     pkgs.qutebrowser
@@ -79,7 +78,6 @@
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
 
-    ".tmux.conf" = { source = ../../.dotfiles/.tmux.conf; recursive = false;  };
     ".gitconfig" = { source = ../../.dotfiles/.gitconfig; recursive = false; };
     ".config/gitconfig" = { source = ../../.dotfiles/gitconfig; recursive = true; };
     ".config/qutebrowser" = { source = ../../.dotfiles/qutebrowser; recursive = true; };
@@ -122,6 +120,78 @@
   xdg.userDirs = {
     enable = true;
     createDirectories = true;
+  };
+
+  # Tmux setup
+  programs.tmux = {
+    enable = true;
+
+    # Set the prefix key. Overrules the "shortcut" option when set.
+    prefix = "C-s";
+
+    # My keyboard starts numbering from 1..9..0 but not 0..1..9 which makes default
+    # base-index of 0 weird to reach when switching between the windows.
+    baseIndex = 1;
+
+    # Set the $TERM variable.
+    terminal = "xterm-256color";
+
+    # Time in milliseconds for which tmux waits after an escape is input.
+    # Default escape time of 1s is not acceptable as a Vim user in order to be capable
+    # quickly get out of insert mode.
+    escapeTime = 10;
+
+    # Set VI style shortcuts.
+    keyMode = "vi";
+
+    # Additional configuration to add to tmux.conf.
+    extraConfig = ''
+      # Act like Vim
+      # ###########################################################################
+      is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
+          | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?|.vim-wrapped)(diff)?$'"
+
+      # Move between panes with C-direction
+      bind -n C-k run-shell "if $is_vim ; then tmux send-keys C-k ; else tmux select-pane -U; fi"
+      bind -n C-j run-shell "if $is_vim ; then tmux send-keys C-j; else tmux select-pane -D; fi"
+      bind -n C-h run-shell "if $is_vim ; then tmux send-keys C-h; else tmux select-pane -L; fi"
+      bind -n C-l run-shell "if $is_vim ; then tmux send-keys C-l; else tmux select-pane -R; fi"
+
+      # Split window/panes
+
+      # Default: split window horizontally
+      unbind-key \"
+
+      bind s split-window -d
+      bind v split-window -h
+
+      # Tmux copy mode as Vim
+      bind P paste-buffer
+      bind-key -T copy-mode-vi v send-keys -X begin-selection
+      bind-key -T copy-mode-vi y send-keys -X copy-selection
+      bind-key -T copy-mode-vi r send-keys -X rectangle-toggle
+      bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'pbcopy'
+
+      # Custom mappings
+      # ###########################################################################
+
+      # Source config
+
+      bind r source-file ~/.config/tmux/tmux.conf \; display-message "Config sourced..."
+    '';
+    plugins = with pkgs; [
+        {
+          plugin = tmuxPlugins.resurrect;
+          extraConfig = "set -g @resurrect-strategy-nvim 'session'";
+        }
+        {
+          plugin = tmuxPlugins.continuum;
+          extraConfig = ''
+            set -g @continuum-restore 'on'
+            set -g @continuum-save-interval '5' # minutes
+          '';
+        }
+    ];
   };
 
   # Enable Git & Git LFS
