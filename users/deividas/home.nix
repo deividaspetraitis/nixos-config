@@ -182,7 +182,13 @@
     plugins = with pkgs; [
         {
           plugin = tmuxPlugins.resurrect;
-          extraConfig = "set -g @resurrect-strategy-nvim 'session'";
+          extraConfig = ''
+            set -g @resurrect-strategy-vim 'session'
+
+            resurrect_dir="$HOME/.tmux/resurrect"
+            set -g @resurrect-dir $resurrect_dir
+            set -g @resurrect-hook-post-save-all "~/nix-config/users/deividas/scripts/tmux/post_save.sh $resurrect_dir/last"
+          '';
         }
         {
           plugin = tmuxPlugins.continuum;

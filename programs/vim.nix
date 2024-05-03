@@ -487,6 +487,9 @@ in {
            # Allow Vim to integrate with the Wayland clipboard
            vimPlugins.vim-wayland-clipboard
 
+           # Vim sessions management
+           vimPlugins.vim-obsession
+
            # Vim plugin that allows use of vifm as a file picker
            vimPlugins.vifm-vim
 
