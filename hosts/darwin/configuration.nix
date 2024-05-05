@@ -146,6 +146,7 @@
     extraGroups = [ 
       "wheel" # Enable ‘sudo’ for the user.
       "networkmanager" 
+      "wireshark"
       "docker" # Provide them access to the socket
     ]; 
     packages = with pkgs; [
@@ -187,20 +188,15 @@
 
   # List services that you want to enable:
 
+  # udev rules
+  services.udev = {
+    extraRules = ''
+      SUBSYSTEM=="usbmon", GROUP="wireshark", MODE="0640"
+    '';
+  };
+
   # Enable the blueman service, which provides blueman-applet and blueman-manager.
   services.blueman.enable = true;
-
-  # Enable 1password module instead of using user level package.
-  # 1password CLI requires special permissions in order to function properly: https://github.com/NixOS/nixpkgs/issues/258139
-  programs._1password-gui.enable = true;
-  programs._1password-gui.polkitPolicyOwners = [ "deividas" ];
-  programs._1password.enable = true;
-
-  # Z Shell must be enabled system-wide.
-  # Otherwise it won't source the necessary files.
-  programs.zsh = {
-    enable = true;
-  };
 
   # Specifies what to do when the laptop lid is closed and the system is on external power.
   # By default use the same action as specified in services.logind.lidSwitch.
@@ -208,8 +204,28 @@
   services.logind.lidSwitchDocked = "ignore";
   services.logind.lidSwitchExternalPower = "ignore";
 
+  # List services that you want to install:
+
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
+  # Enable 1password module instead of using user level package.
+  # 1password CLI requires special permissions in order to function properly: https://github.com/NixOS/nixpkgs/issues/258139
+  programs._1password-gui.enable = true;
+  programs._1password-gui.polkitPolicyOwners = [ "deividas" ];
+  programs._1password.enable = true;
+
+  # Add Wireshark to the global environment and configure a setcap wrapper for ‘dumpcap’ for users in the ‘wireshark’ group.
+  # Set package to GUI application instead of default wireshark-cli.
+  programs.wireshark = {
+    enable = true;
+    package = pkgs.wireshark;
+  };
+
+  # Z Shell must be enabled system-wide.
+  # Otherwise it won't source the necessary files.
+  programs.zsh = {
+    enable = true;
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
