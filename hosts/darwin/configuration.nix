@@ -20,14 +20,12 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   imports =
-    [ # Include the results of the hardware scan.
+    [ 
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      "${builtins.fetchGit { url = "https://github.com/NixOS/nixos-hardware.git";
-      rev = "e1c4bac14beb8c409d0534382cf967171706b9d9"; }}/apple/t2"
 
       # Services
       ./swaywm.nix
-      ../../services/pipewire.nix
 
       # Programs
       ../../programs/vim.nix
@@ -52,6 +50,7 @@
     "udl"
   ];
 
+  # BRCM firmware
   hardware.firmware = [
     (pkgs.stdenvNoCC.mkDerivation {
       name = "brcm-firmware";
@@ -113,7 +112,7 @@
 
   # Enable sound.
   # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;

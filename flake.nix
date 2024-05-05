@@ -24,6 +24,9 @@
       # to avoid problems caused by different versions of nixpkgs.
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Nix hardware quirks channel.
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
   # `outputs` are all the build result of the flake.
@@ -36,7 +39,7 @@
   # 
   # The `@` syntax here is used to alias the attribute set of the
   # inputs's parameter, making it convenient to use inside the function.
-  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, ... }: 
+  outputs = { self, nixpkgs, nixpkgs-stable, nixos-hardware, home-manager, ... }: 
   let
     # Target system
     system = "x86_64-linux";
@@ -132,6 +135,8 @@
         modules = [
           # Overlays-module makes "pkgs.unstable" available in configuration.nix
           ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-stable ]; })
+          nixos-hardware.nixosModules.apple-t2
+
           ./hosts/darwin/configuration.nix
         ];
       };
