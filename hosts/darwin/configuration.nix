@@ -167,9 +167,6 @@
     wget
     htop
 
-    # NetworkManager control applet
-    networkmanagerapplet
-
     # This program allows you read and control device brightness on Linux.
     brightnessctl
 
@@ -186,25 +183,8 @@
   #   enableSSHSupport = true;
   # };
 
-  # List services that you want to enable:
-
-  # udev rules
-  services.udev = {
-    extraRules = ''
-      SUBSYSTEM=="usbmon", GROUP="wireshark", MODE="0640"
-    '';
-  };
-
-  # Enable the blueman service, which provides blueman-applet and blueman-manager.
-  services.blueman.enable = true;
-
-  # Specifies what to do when the laptop lid is closed and the system is on external power.
-  # By default use the same action as specified in services.logind.lidSwitch.
-  services.logind.lidSwitch = "ignore";
-  services.logind.lidSwitchDocked = "ignore";
-  services.logind.lidSwitchExternalPower = "ignore";
-
-  # List services that you want to install:
+  # Enable nm-applet, a NetworkManager control applet for GNOME.
+  programs.nm-applet.enable = true;
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
@@ -226,6 +206,24 @@
   programs.zsh = {
     enable = true;
   };
+
+  # List services that you want to enable:
+
+  # udev rules
+  services.udev = {
+    extraRules = ''
+      SUBSYSTEM=="usbmon", GROUP="wireshark", MODE="0640"
+    '';
+  };
+
+  # Enable the blueman service, which provides blueman-applet and blueman-manager.
+  services.blueman.enable = true;
+
+  # Specifies what to do when the laptop lid is closed and the system is on external power.
+  # By default use the same action as specified in services.logind.lidSwitch.
+  services.logind.lidSwitch = "ignore";
+  services.logind.lidSwitchDocked = "ignore";
+  services.logind.lidSwitchExternalPower = "ignore";
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
