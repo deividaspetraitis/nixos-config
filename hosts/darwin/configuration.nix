@@ -125,11 +125,15 @@
   hardware.i2c.enable = true;
 
   # Enables support for Bluetooth
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
-  hardware.bluetooth.settings = { # modern headsets will generally try to connect using the A2DP prof
-    General = {
-      Enable = "Source,Sink,Media,Socket";
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true; # powers up the default Bluetooth controller on boot
+    package = pkgs.bluez;
+    settings = {
+      # modern headsets will generally try to connect using the A2DP prof
+      General = {
+        Enable = "Source,Sink,Media,Socket";
+      };
     };
   };
 
@@ -162,7 +166,10 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-   environment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs; [
+    bluez-alsa
+    bluez-tools
+
     git
     wget
     htop
