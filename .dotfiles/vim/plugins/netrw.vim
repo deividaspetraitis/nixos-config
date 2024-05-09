@@ -1,5 +1,5 @@
-" Prevent loading of netrw, we're using Vifm.
-let g:loaded_netrw       = 1
+" Load plugin but keep it disabled.
+" let g:loaded_netrw       = 1
 let g:loaded_netrwPlugin = 1
 
 let g:netrw_altfile      = 1 " |CTRL-^| to return to the last edited file.

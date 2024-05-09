@@ -464,20 +464,23 @@ in {
 
            # Dim all lines except the current line when turned on.
            vimPlugins.limelight-vim
-           
+
            # More Pleasant Editing on Commit Message
            vimPlugins.committia-vim
-           
+
            # Fugitive is the premier Vim plugin for Git
            vimPlugins.vim-fugitive
-           
+
+           # If fugitive.vim is the Git, rhubarb.vim is the Hub
+           vimPlugins.vim-rhubarb
+
            # Pomodoro plugin
            # TODO: fails to install
            # pomodoro
-           
+
            # Commenting plugin
            vimPlugins.vim-commentary
-           
+
            # The undo history visualizer
            vimPlugins.undotree
 
