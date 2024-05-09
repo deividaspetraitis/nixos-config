@@ -254,7 +254,7 @@ in {
         source /etc/vim/plugins/ycm.vim
         source /etc/vim/plugins/netrw.vim
         source /etc/vim/plugins/vifm.vim
-        source /etc/vim/plugins/vimspector.vim
+        source /etc/vim/plugins/delve.vim
         " source /etc/vim/plugins/pomodoro.vim
         " }}}
         
@@ -499,8 +499,8 @@ in {
            # GitHub Copilot for Vim and Neovim
            vimPlugins.copilot-vim
 
-           # A multi language graphical debugger for Vim
-           vimPlugins.vimspector
+           # A plugin making easily interact with tmux from Vim
+           vimPlugins.vimux
 
            # Neovim and Vim plugin for debugging Go applications using Delve.
            vim-delve
