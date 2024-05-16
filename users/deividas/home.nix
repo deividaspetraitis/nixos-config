@@ -54,8 +54,11 @@
     pkgs.wrk
     pkgs.jq
     pkgs.obsidian
-
+    pkgs.chromium
     pkgs.synology-drive-client
+
+    pkgs.telegram-desktop
+    pkgs.discord
 
     # Go related packages
     pkgs.go
