@@ -1225,11 +1225,11 @@ c.content.tls.certificate_errors = 'ask'
 
 ## Font used in the completion categories.
 ## Type: Font
-# c.fonts.completion.category = 'bold default_size default_family'
+c.fonts.completion.category = 'bold default_size default_family'
 
 ## Font used in the completion widget.
 ## Type: Font
-# c.fonts.completion.entry = 'default_size default_family'
+c.fonts.completion.entry = 'default_size default_family'
 
 ## Font used for the context menu. If set to null, the Qt default is
 ## used.
@@ -1238,13 +1238,13 @@ c.content.tls.certificate_errors = 'ask'
 
 ## Font used for the debugging console.
 ## Type: Font
-# c.fonts.debug_console = 'default_size default_family'
+c.fonts.debug_console = 'default_size default_family'
 
 ## Default font families to use. Whenever "default_family" is used in a
 ## font setting, it's replaced with the fonts listed here. If set to an
 ## empty value, a system-specific monospace default is used.
 ## Type: List of Font, or Font
-# c.fonts.default_family = []
+c.fonts.default_family = ["8pt monospace"]
 
 ## Default font size to use. Whenever "default_size" is used in a font
 ## setting, it's replaced with the size listed here. Valid values are
@@ -1255,43 +1255,43 @@ c.content.tls.certificate_errors = 'ask'
 
 ## Font used for the downloadbar.
 ## Type: Font
-# c.fonts.downloads = 'default_size default_family'
+c.fonts.downloads = 'default_size default_family'
 
 ## Font used for the hints.
 ## Type: Font
-# c.fonts.hints = 'bold default_size default_family'
+c.fonts.hints = 'bold default_size default_family'
 
 ## Font used in the keyhint widget.
 ## Type: Font
-# c.fonts.keyhint = 'default_size default_family'
+c.fonts.keyhint = 'default_size default_family'
 
 ## Font used for error messages.
 ## Type: Font
-# c.fonts.messages.error = 'default_size default_family'
+c.fonts.messages.error = 'default_size default_family'
 
 ## Font used for info messages.
 ## Type: Font
-# c.fonts.messages.info = 'default_size default_family'
+c.fonts.messages.info = 'default_size default_family'
 
 ## Font used for warning messages.
 ## Type: Font
-# c.fonts.messages.warning = 'default_size default_family'
+c.fonts.messages.warning = 'default_size default_family'
 
 ## Font used for prompts.
 ## Type: Font
-# c.fonts.prompts = 'default_size sans-serif'
+c.fonts.prompts = 'default_size sans-serif'
 
 ## Font used in the statusbar.
 ## Type: Font
-# c.fonts.statusbar = 'default_size default_family'
+c.fonts.statusbar = 'default_size default_family'
 
 ## Font used for selected tabs.
 ## Type: Font
-# c.fonts.tabs.selected = 'default_size default_family'
+c.fonts.tabs.selected = 'default_size default_family'
 
 ## Font used for unselected tabs.
 ## Type: Font
-# c.fonts.tabs.unselected = 'default_size default_family'
+c.fonts.tabs.unselected = 'default_size default_family'
 
 ## Font family for cursive fonts.
 ## Type: FontFamily
@@ -2204,7 +2204,7 @@ config.bind('K', 'tab-next')
 # config.bind('pP', 'open -- {primary}')
 # config.bind('pp', 'open -- {clipboard}')
 # config.bind('q', 'macro-record')
-# config.bind('r', 'reload')
+config.bind('R', 'reload')
 # config.bind('sf', 'save')
 # config.bind('sk', 'set-cmd-text -s :bind')
 # config.bind('sl', 'set-cmd-text -s :set -t')
