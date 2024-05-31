@@ -87,6 +87,7 @@
     ".config/vifm" = { source = ../../.dotfiles/vifm; recursive = true; };
     ".config/foot" = { source = ../../.dotfiles/foot; recursive = true; };
     ".config/zsh" = { source = ../../.dotfiles/zsh; recursive = true; };
+    ".vim/after" = { source = ../../.dotfiles/vim/after; recursive = true; };
 
     # # You can also set the file content immediately.
     # ".gradle/gradle.properties".text = ''
