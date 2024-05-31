@@ -26,6 +26,7 @@
 
       # Services
       ./swaywm.nix
+      ../../services/pipewire.nix
 
       # Programs
       ../../programs/vim.nix
@@ -111,8 +112,8 @@
   # services.printing.enable = true;
 
   # Enable sound.
-  # sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  sound.enable = true;
+  # hardware.pulseaudio.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -169,6 +170,8 @@
   environment.systemPackages = with pkgs; [
     bluez-alsa
     bluez-tools
+
+    pavucontrol # PulseAudio Volume Control
 
     git
     wget
