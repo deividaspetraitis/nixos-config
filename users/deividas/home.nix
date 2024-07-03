@@ -65,6 +65,7 @@
     pkgs.delve
     pkgs.rr
     pkgs.golangci-lint
+    pkgs.lychee
 
     # Useful utilities
     pkgs.usbutils
