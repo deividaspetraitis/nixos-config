@@ -55,7 +55,7 @@ in {
     bat
     
     # required by YouCompleteMe, with newer than 3.10 does not work ATM.
-    stable.python38
+    stable.python39
 
     # required by YouCompleteMe.
     # YouCompleteMe for some reason is not able to find gopls
