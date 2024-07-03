@@ -131,6 +131,9 @@ in {
         
         " Set relative numbers
         set relativenumber
+
+        " Display the current search match position
+        set shortmess-=S
         
         " Status line  ---------------------- {{{
         set laststatus=2
