@@ -59,6 +59,7 @@
 
     pkgs.telegram-desktop
     pkgs.discord
+    pkgs.slack
 
     # Go related packages
     pkgs.go
