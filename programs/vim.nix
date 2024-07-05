@@ -312,6 +312,11 @@ in {
         vnoremap K :m '<-2<CR>gv=gv
         " }}}
         
+        " Quickfix list navigation  ---------------------- {{{
+        nnoremap ]l :lnext<CR>
+        nnoremap [l :lprevious<CR>
+        " }}}
+
         " Leader key mappings  ---------------------- {{{
 
         " File explorer shortcut
