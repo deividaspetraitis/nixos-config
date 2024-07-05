@@ -24,6 +24,21 @@
     settings.experimental-features = [ "nix-command" "flakes" ];
   };
 
+  # Mime apps configuration
+  xdg.mimeApps = {
+    # Whether to manage {file}$XDG_CONFIG_HOME/mimeapps.list.
+    enable = true;
+
+    # The default application to be used for a given mimetype. 
+    defaultApplications = {
+      "text/html" = "org.qutebrowser.qutebrowser.desktop";
+      "x-scheme-handler/http" = "org.qutebrowser.qutebrowser.desktop";
+      "x-scheme-handler/https" = "org.qutebrowser.qutebrowser.desktop";
+      "x-scheme-handler/about" = "org.qutebrowser.qutebrowser.desktop";
+      "x-scheme-handler/unknown" = "org.qutebrowser.qutebrowser.desktop";
+    };
+  };
+
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
