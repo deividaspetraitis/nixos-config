@@ -62,7 +62,7 @@
     pkgs.gcc
     pkgs.act
     pkgs.git-crypt
-    pkgs.qutebrowser
+    pkgs-stable.qutebrowser
     pkgs.pcmanfm
     pkgs.vifm
     pkgs.nix-prefetch-github
@@ -71,7 +71,6 @@
     pkgs.obsidian
     pkgs.chromium
     pkgs.synology-drive-client
-
     pkgs.telegram-desktop
     pkgs.discord
     pkgs.slack
