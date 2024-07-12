@@ -480,14 +480,22 @@ config.load_autoconfig(True)
 ## Type: QtColor
 # c.colors.tabs.selected.odd.fg = 'white'
 
+## Background color of tooltips. If set to null, the Qt default is used.
+## Type: QssColor
+# c.colors.tooltip.bg = None
+
+## Foreground color of tooltips. If set to null, the Qt default is used.
+## Type: QssColor
+# c.colors.tooltip.fg = None
+
 ## Background color for webpages if unset (or empty to use the theme's
 ## color).
 ## Type: QtColor
 # c.colors.webpage.bg = 'white'
 
-## Which algorithm to use for modifying how colors are rendered with
-## darkmode. The `lightness-cielab` value was added with QtWebEngine 5.14
-## and is treated like `lightness-hsl` with older QtWebEngine versions.
+## Which algorithm to use for modifying how colors are rendered with dark
+## mode. The `lightness-cielab` value was added with QtWebEngine 5.14 and
+## is treated like `lightness-hsl` with older QtWebEngine versions.
 ## Type: String
 ## Valid values:
 ##   - lightness-cielab: Modify colors by converting them to CIELAB color space and inverting the L value. Not available with Qt < 5.14.
@@ -501,18 +509,17 @@ config.load_autoconfig(True)
 ## Type: Float
 # c.colors.webpage.darkmode.contrast = 0.0
 
-## Render all web contents using a dark theme. Example configurations
-## from Chromium's `chrome://flags`:  - "With simple HSL/CIELAB/RGB-based
-## inversion": Set   `colors.webpage.darkmode.algorithm` accordingly.  -
-## "With selective image inversion": Set
-## `colors.webpage.darkmode.policy.images` to `smart`.  - "With selective
-## inversion of non-image elements": Set
-## `colors.webpage.darkmode.threshold.text` to 150 and
-## `colors.webpage.darkmode.threshold.background` to 205.  - "With
-## selective inversion of everything": Combines the two variants   above.
+## Render all web contents using a dark theme. On QtWebEngine < 6.7, this
+## setting requires a restart and does not support URL patterns, only the
+## global setting is applied. Example configurations from Chromium's
+## `chrome://flags`: - "With simple HSL/CIELAB/RGB-based inversion": Set
+## `colors.webpage.darkmode.algorithm` accordingly, and   set
+## `colors.webpage.darkmode.policy.images` to `never`.  - "With selective
+## image inversion": qutebrowser default settings.
 ## Type: Bool
 # c.colors.webpage.darkmode.enabled = False
 
+## Which images to apply dark mode to.
 ## Render all colors as grayscale. This only has an effect when
 ## `colors.webpage.darkmode.algorithm` is set to `lightness-hsl` or
 ## `brightness-rgb`.
@@ -534,6 +541,7 @@ config.load_autoconfig(True)
 ##   - always: Apply dark mode filter to all images.
 ##   - never: Never apply dark mode filter to any images.
 ##   - smart: Apply dark mode based on image content. Not available with Qt 5.15.0.
+##   - smart-simple: On QtWebEngine 6.6, use a simpler algorithm for smart mode (based on numbers of colors and transparency), rather than an ML-based model. Same as 'smart' on older QtWebEnigne versions.
 # c.colors.webpage.darkmode.policy.images = 'smart'
 
 ## Which pages to apply dark mode to. The underlying Chromium setting has
@@ -549,7 +557,8 @@ config.load_autoconfig(True)
 ## elements with brightness above this threshold will be inverted, and
 ## below it will be left as in the original, non-dark-mode page. Set to
 ## 256 to never invert the color or to 0 to always invert it. Note: This
-## behavior is the opposite of `colors.webpage.darkmode.threshold.text`!
+## behavior is the opposite of
+## `colors.webpage.darkmode.threshold.foreground`!
 ## Type: Int
 # c.colors.webpage.darkmode.threshold.background = 0
 
@@ -558,7 +567,7 @@ config.load_autoconfig(True)
 ## left as in the original, non-dark-mode page. Set to 256 to always
 ## invert text color or to 0 to never invert text color.
 ## Type: Int
-# c.colors.webpage.darkmode.threshold.text = 256
+# c.colors.webpage.darkmode.threshold.foreground = 256
 
 ## Value to use for `prefers-color-scheme:` for websites. The "light"
 ## value is only available with QtWebEngine 5.15.2+. On older versions,
@@ -750,7 +759,9 @@ config.load_autoconfig(True)
 # c.content.cache.size = None
 
 ## Allow websites to read canvas elements. Note this is needed for some
-## websites to work properly.
+## websites to work properly. On QtWebEngine < 6.6, this setting requires
+## a restart and does not support URL patterns, only the global setting
+## is applied.
 ## Type: Bool
 # c.content.canvas_reading = True
 
@@ -844,7 +855,7 @@ config.load_autoconfig(True)
 ## the full referer. No restart is needed with QtWebKit.
 ## Type: String
 ## Valid values:
-##   - always: Always send the Referer.
+##   - always: Always send the Referer. With QtWebEngine 6.2+, this value is unavailable and will act like `same-domain`.
 ##   - never: Never send the Referer. This is not recommended, as some sites may break.
 ##   - same-domain: Only send the Referer for the same domain. This will still protect your privacy, but shouldn't break any sites. With QtWebEngine, the referer will still be sent for other domains, but with stripped path information.
 # c.content.headers.referer = 'same-domain'
@@ -877,12 +888,6 @@ config.load_autoconfig(True)
 ## Type: Bool
 # c.content.javascript.alert = True
 
-## Allow JavaScript to read from or write to the clipboard. With
-## QtWebEngine, writing the clipboard as response to a user interaction
-## is always allowed.
-## Type: Bool
-# c.content.javascript.can_access_clipboard = False
-
 ## Allow JavaScript to close tabs.
 ## Type: Bool
 # c.content.javascript.can_close_tabs = False
@@ -891,9 +896,40 @@ config.load_autoconfig(True)
 ## Type: Bool
 # c.content.javascript.can_open_tabs_automatically = False
 
+## Allow JavaScript to read from or write to the clipboard. With
+## QtWebEngine, writing the clipboard as response to a user interaction
+## is always allowed.
+## Type: String
+## Valid values:
+##   - none: Disable access to clipboard.
+##   - access: Allow reading from and writing to the clipboard.
+##   - access-paste: Allow accessing the clipboard and pasting clipboard content.
+# c.content.javascript.clipboard = 'none'
+ALLOW_JAVASCRIPT_WEBSITES = (
+  r"*://*.notion.so/*",
+  r"*://*.linear.app/*",
+  r"*://*.github.com/*",
+)
+for site in ALLOW_JAVASCRIPT_WEBSITES:
+    config.set("content.javascript.clipboard", "access-paste", site)
+
 ## Enable JavaScript.
 ## Type: Bool
 # c.content.javascript.enabled = True
+
+## Enables the legacy touch event feature. This affects JS APIs such as:
+## - ontouch* members on window, document, Element -
+## document.createTouch, document.createTouchList -
+## document.createEvent("TouchEvent") Newer Chromium versions have those
+## disabled by default:
+## https://bugs.chromium.org/p/chromium/issues/detail?id=392584
+## https://groups.google.com/a/chromium.org/g/blink-dev/c/KV6kqDJpYiE
+## Type: String
+## Valid values:
+##   - always: Legacy touch events are always enabled. This might cause some websites to assume a mobile device.
+##   - auto: Legacy touch events are only enabled if a touch screen was detected on startup.
+##   - never: Legacy touch events are always disabled.
+# c.content.javascript.legacy_touch_events = 'never'
 
 ## Log levels to use for JavaScript console logging messages. When a
 ## JavaScript message with the level given in the dictionary key is
@@ -903,6 +939,24 @@ config.load_autoconfig(True)
 ## `error`.
 ## Type: Dict
 # c.content.javascript.log = {'unknown': 'debug', 'info': 'debug', 'warning': 'debug', 'error': 'debug'}
+
+## Javascript messages to *not* show in the UI, despite a corresponding
+## `content.javascript.log_message.levels` setting. Both keys and values
+## are glob patterns, with the key matching the location of the error,
+## and the value matching the error message. By default, the
+## https://web.dev/csp/[Content security policy] violations triggered by
+## qutebrowser's stylesheet handling are excluded, as those errors are to
+## be expected and can't be easily handled by the underlying code.
+## Type: Dict
+# c.content.javascript.log_message.excludes = {'userscript:_qute_stylesheet': ['*Refused to apply inline style because it violates the following Content Security Policy directive: *']}
+
+## Javascript message sources/levels to show in the qutebrowser UI. When
+## a JavaScript message is logged from a location matching the glob
+## pattern given in the key, and is from one of the levels listed as
+## value, it's surfaced as a message in the qutebrowser UI. By default,
+## errors happening in qutebrowser internally are shown to the user.
+## Type: Dict
+# c.content.javascript.log_message.levels = {'qute:*': ['error'], 'userscript:GM-*': [], 'userscript:*': ['error']}
 
 ## Use the standard JavaScript modal dialog for `alert()` and
 ## `confirm()`.
@@ -976,19 +1030,17 @@ config.load_autoconfig(True)
 # c.content.notifications.enabled = 'ask'
 
 ## What notification presenter to use for web notifications. Note that
-## not all implementations support all features of notifications: - With
-## PyQt 5.14, any setting other than `qt` does not support  the `click`
-## and   `close` events, as well as the `tag` option to replace existing
-## notifications. - The `qt` and `systray` options only support showing
-## one notification at the time   and ignore the `tag` option to replace
-## existing notifications. - The `herbe` option only supports showing one
+## not all implementations support all features of notifications: - The
+## `qt` and `systray` options only support showing one notification at
+## the time   and ignore the `tag` option to replace existing
+## notifications. - The `herbe` option only supports showing one
 ## notification at the time and doesn't   show icons. - The `messages`
 ## option doesn't show icons and doesn't support the `click` and
 ## `close` events.
 ## Type: String
 ## Valid values:
 ##   - auto: Tries `libnotify`, `systray` and `messages`, uses the first one available without showing error messages.
-##   - qt: Use Qt's native notification presenter, based on a system tray icon. Switching from or to this value requires a restart of qutebrowser. Recommended over `systray` on PyQt 5.14.
+##   - qt: Use Qt's native notification presenter, based on a system tray icon. Switching from or to this value requires a restart of qutebrowser.
 ##   - libnotify: Shows messages via DBus in a libnotify-compatible way. If DBus isn't available, falls back to `systray` or `messages`, but shows an error message.
 ##   - systray: Use a notification presenter based on a systray icon. Falls back to `libnotify` or `messages` if not systray is available. This is a reimplementation of the `qt` setting value, but with the possibility to switch to it at runtime.
 ##   - messages: Show notifications as qutebrowser messages. Most notification features aren't available.
@@ -1002,9 +1054,11 @@ config.load_autoconfig(True)
 ## Type: Bool
 # c.content.notifications.show_origin = True
 
-## Allow pdf.js to view PDF files in the browser. Note that the files can
-## still be downloaded by clicking the download button in the pdf.js
-## viewer.
+## Display PDF files via PDF.js in the browser without showing a download
+## prompt. Note that the files can still be downloaded by clicking the
+## download button in the pdf.js viewer. With this set to `false`, the
+## `:prompt-open-download --pdfjs` command (bound to `<Ctrl-p>` by
+## default) can be used in the download prompt.
 ## Type: Bool
 # c.content.pdfjs = False
 
@@ -1067,10 +1121,7 @@ config.load_autoconfig(True)
 ## Type: Bool
 # c.content.site_specific_quirks.enabled = True
 
-## Disable a list of named quirks. The js-string-replaceall quirk is
-## needed for Nextcloud Calendar < 2.2.0 with QtWebEngine < 5.15.3.
-## However, the workaround is not fully compliant to the ECMAScript spec
-## and might cause issues on other websites, so it's disabled by default.
+## Disable a list of named quirks.
 ## Type: FlagList
 ## Valid values:
 ##   - ua-whatsapp
@@ -1080,11 +1131,10 @@ config.load_autoconfig(True)
 ##   - js-whatsapp-web
 ##   - js-discord
 ##   - js-string-replaceall
-##   - js-globalthis
-##   - js-object-fromentries
+##   - js-array-at
 ##   - misc-krunker
 ##   - misc-mathml-darkmode
-# c.content.site_specific_quirks.skip = ['js-string-replaceall']
+# c.content.site_specific_quirks.skip = []
 
 ## How to proceed on TLS certificate errors.
 ## Type: String
@@ -1093,7 +1143,7 @@ config.load_autoconfig(True)
 ##   - ask-block-thirdparty: Ask how to proceed for normal page loads, but silently block resource loads.
 ##   - block: Automatically block loading on certificate errors.
 ##   - load-insecurely: Force loading pages despite certificate errors. This is *insecure* and should be avoided. Instead of using this, consider fixing the underlying issue or importing a self-signed certificate via `certutil` (or Chromium) instead.
-c.content.tls.certificate_errors = 'ask'
+# c.content.tls.certificate_errors = 'ask'
 
 ## How navigation requests to URLs with unknown schemes are handled.
 ## Type: String
@@ -1188,6 +1238,10 @@ c.content.tls.certificate_errors = 'ask'
 ## Type: Encoding
 # c.editor.encoding = 'utf-8'
 
+## Delete the temporary file upon closing the editor.
+## Type: Bool
+# c.editor.remove_file = True
+
 ## Command (and arguments) to use for selecting a single folder in forms.
 ## The command should write the selected folder path to the specified
 ## file or stdout. The following placeholders are defined: * `{}`:
@@ -1197,9 +1251,10 @@ c.content.tls.certificate_errors = 'ask'
 # c.fileselect.folder.command = ['xterm', '-e', 'ranger', '--choosedir={}']
 
 ## Handler for selecting file(s) in forms. If `external`, then the
-## commands specified by `fileselect.single_file.command` and
-## `fileselect.multiple_files.command` are used to select one or multiple
-## files respectively.
+## commands specified by `fileselect.single_file.command`,
+## `fileselect.multiple_files.command` and `fileselect.folder.command`
+## are used to select one file, multiple files, and folders,
+## respectively.
 ## Type: String
 ## Valid values:
 ##   - default: Use the default file selector.
@@ -1225,11 +1280,11 @@ c.content.tls.certificate_errors = 'ask'
 
 ## Font used in the completion categories.
 ## Type: Font
-c.fonts.completion.category = 'bold default_size default_family'
+# c.fonts.completion.category = 'bold default_size default_family'
 
 ## Font used in the completion widget.
 ## Type: Font
-c.fonts.completion.entry = 'default_size default_family'
+# c.fonts.completion.entry = 'default_size default_family'
 
 ## Font used for the context menu. If set to null, the Qt default is
 ## used.
@@ -1238,7 +1293,7 @@ c.fonts.completion.entry = 'default_size default_family'
 
 ## Font used for the debugging console.
 ## Type: Font
-c.fonts.debug_console = 'default_size default_family'
+# c.fonts.debug_console = 'default_size default_family'
 
 ## Default font families to use. Whenever "default_family" is used in a
 ## font setting, it's replaced with the fonts listed here. If set to an
@@ -1255,43 +1310,47 @@ c.fonts.default_family = ["8pt monospace"]
 
 ## Font used for the downloadbar.
 ## Type: Font
-c.fonts.downloads = 'default_size default_family'
+# c.fonts.downloads = 'default_size default_family'
 
 ## Font used for the hints.
 ## Type: Font
-c.fonts.hints = 'bold default_size default_family'
+# c.fonts.hints = 'bold default_size default_family'
 
 ## Font used in the keyhint widget.
 ## Type: Font
-c.fonts.keyhint = 'default_size default_family'
+# c.fonts.keyhint = 'default_size default_family'
 
 ## Font used for error messages.
 ## Type: Font
-c.fonts.messages.error = 'default_size default_family'
+# c.fonts.messages.error = 'default_size default_family'
 
 ## Font used for info messages.
 ## Type: Font
-c.fonts.messages.info = 'default_size default_family'
+# c.fonts.messages.info = 'default_size default_family'
 
 ## Font used for warning messages.
 ## Type: Font
-c.fonts.messages.warning = 'default_size default_family'
+# c.fonts.messages.warning = 'default_size default_family'
 
 ## Font used for prompts.
 ## Type: Font
-c.fonts.prompts = 'default_size sans-serif'
+# c.fonts.prompts = 'default_size sans-serif'
 
 ## Font used in the statusbar.
 ## Type: Font
-c.fonts.statusbar = 'default_size default_family'
+# c.fonts.statusbar = 'default_size default_family'
 
 ## Font used for selected tabs.
 ## Type: Font
-c.fonts.tabs.selected = 'default_size default_family'
+# c.fonts.tabs.selected = 'default_size default_family'
 
 ## Font used for unselected tabs.
 ## Type: Font
-c.fonts.tabs.unselected = 'default_size default_family'
+# c.fonts.tabs.unselected = 'default_size default_family'
+
+## Font used for tooltips. If set to null, the Qt default is used.
+## Type: Font
+# c.fonts.tooltip = None
 
 ## Font family for cursive fonts.
 ## Type: FontFamily
@@ -1411,7 +1470,7 @@ c.fonts.tabs.unselected = 'default_size default_family'
 ## CSS selectors used to determine which elements on a page should have
 ## hints.
 ## Type: Dict
-# c.hints.selectors = {'all': ['a', 'area', 'textarea', 'select', 'input:not([type="hidden"])', 'button', 'frame', 'iframe', 'img', 'link', 'summary', '[contenteditable]:not([contenteditable="false"])', '[onclick]', '[onmousedown]', '[role="link"]', '[role="option"]', '[role="button"]', '[ng-click]', '[ngClick]', '[data-ng-click]', '[x-ng-click]', '[tabindex]'], 'links': ['a[href]', 'area[href]', 'link[href]', '[role="link"][href]'], 'images': ['img'], 'media': ['audio', 'img', 'video'], 'url': ['[src]', '[href]'], 'inputs': ['input[type="text"]', 'input[type="date"]', 'input[type="datetime-local"]', 'input[type="email"]', 'input[type="month"]', 'input[type="number"]', 'input[type="password"]', 'input[type="search"]', 'input[type="tel"]', 'input[type="time"]', 'input[type="url"]', 'input[type="week"]', 'input:not([type])', '[contenteditable]:not([contenteditable="false"])', 'textarea']}
+# c.hints.selectors = {'all': ['a', 'area', 'textarea', 'select', 'input:not([type="hidden"])', 'button', 'frame', 'iframe', 'img', 'link', 'summary', '[contenteditable]:not([contenteditable="false"])', '[onclick]', '[onmousedown]', '[role="link"]', '[role="option"]', '[role="button"]', '[role="tab"]', '[role="checkbox"]', '[role="switch"]', '[role="menuitem"]', '[role="menuitemcheckbox"]', '[role="menuitemradio"]', '[role="treeitem"]', '[aria-haspopup]', '[ng-click]', '[ngClick]', '[data-ng-click]', '[x-ng-click]', '[tabindex]:not([tabindex="-1"])'], 'links': ['a[href]', 'area[href]', 'link[href]', '[role="link"][href]'], 'images': ['img'], 'media': ['audio', 'img', 'video'], 'url': ['[src]', '[href]'], 'inputs': ['input[type="text"]', 'input[type="date"]', 'input[type="datetime-local"]', 'input[type="email"]', 'input[type="month"]', 'input[type="number"]', 'input[type="password"]', 'input[type="search"]', 'input[type="tel"]', 'input[type="time"]', 'input[type="url"]', 'input[type="week"]', 'input:not([type])', '[contenteditable]:not([contenteditable="false"])', 'textarea']}
 
 ## Make characters in hint strings uppercase.
 ## Type: Bool
@@ -1463,10 +1522,25 @@ c.fonts.tabs.unselected = 'default_size default_family'
 ## Type: Bool
 # c.input.links_included_in_focus_chain = True
 
+## Interpret number prefixes as counts for bindings. This enables for vi-
+## like bindings that can be prefixed with a number to indicate a count.
+## Disabling it allows for emacs-like bindings where number keys are
+## passed through (according to `input.forward_unbound_keys`) instead.
+## Type: Bool
+# c.input.match_counts = True
+
 ## Whether the underlying Chromium should handle media keys. On Linux,
 ## disabling this also disables Chromium's MPRIS integration.
 ## Type: Bool
 # c.input.media_keys = True
+
+## Mode to change to when focusing on a tab/URL changes.
+## Type: String
+## Valid values:
+##   - normal
+##   - insert
+##   - passthrough
+# c.input.mode_override = None
 
 ## Enable back and forward buttons on the mouse.
 ## Type: Bool
@@ -1485,11 +1559,11 @@ c.fonts.tabs.unselected = 'default_size default_family'
 # c.input.partial_timeout = 0
 
 ## Enable spatial navigation. Spatial navigation consists in the ability
-## to navigate between focusable elements in a Web page, such as
-## hyperlinks and form controls, by using Left, Right, Up and Down arrow
-## keys. For example, if the user presses the Right key, heuristics
-## determine whether there is an element he might be trying to reach
-## towards the right and which element he probably wants.
+## to navigate between focusable elements, such as hyperlinks and form
+## controls, on a web page by using the Left, Right, Up and Down arrow
+## keys. For example, if a user presses the Right key, heuristics
+## determine whether there is an element they might be trying to reach
+## towards the right and which element they probably want.
 ## Type: Bool
 # c.input.spatial_navigation = False
 
@@ -1575,6 +1649,58 @@ c.fonts.tabs.unselected = 'default_size default_family'
 ## Type: List of String
 # c.qt.args = []
 
+## Enables Web Platform features that are in development. This passes the
+## `--enable-experimental-web-platform-features` flag to Chromium. By
+## default, this is enabled with Qt 5 to maximize compatibility despite
+## an aging Chromium base.
+## Type: String
+## Valid values:
+##   - always: Enable experimental web platform features.
+##   - auto: Enable experimental web platform features when using Qt 5.
+##   - never: Disable experimental web platform features.
+# c.qt.chromium.experimental_web_platform_features = 'auto'
+
+## When to use Chromium's low-end device mode. This improves the RAM
+## usage of renderer processes, at the expense of performance.
+## Type: String
+## Valid values:
+##   - always: Always use low-end device mode.
+##   - auto: Decide automatically (uses low-end mode with < 1 GB available RAM).
+##   - never: Never use low-end device mode.
+# c.qt.chromium.low_end_device_mode = 'auto'
+
+## Which Chromium process model to use. Alternative process models use
+## less resources, but decrease security and robustness. See the
+## following pages for more details:    -
+## https://www.chromium.org/developers/design-documents/process-models
+## - https://doc.qt.io/qt-6/qtwebengine-features.html#process-models
+## Type: String
+## Valid values:
+##   - process-per-site-instance: Pages from separate sites are put into separate processes and separate visits to the same site are also isolated.
+##   - process-per-site: Pages from separate sites are put into separate processes. Unlike Process per Site Instance, all visits to the same site will share an OS process. The benefit of this model is reduced memory consumption, because more web pages will share processes. The drawbacks include reduced security, robustness, and responsiveness.
+##   - single-process: Run all tabs in a single process. This should be used for debugging purposes only, and it disables `:open --private`.
+# c.qt.chromium.process_model = 'process-per-site-instance'
+
+## What sandboxing mechanisms in Chromium to use. Chromium has various
+## sandboxing layers, which should be enabled for normal browser usage.
+## Mainly for testing and development, it's possible to disable
+## individual sandboxing layers via this setting. Open `chrome://sandbox`
+## to see the current sandbox status. Changing this setting is only
+## recommended if you know what you're doing, as it **disables one of
+## Chromium's security layers**. To avoid sandboxing being accidentally
+## disabled persistently, this setting can only be set via `config.py`,
+## not via `:set`. See the Chromium documentation for more details: - htt
+## ps://chromium.googlesource.com/chromium/src/\+/HEAD/docs/linux/sandbox
+## ing.md[Linux] - https://chromium.googlesource.com/chromium/src/\+/HEAD
+## /docs/design/sandbox.md[Windows] - https://chromium.googlesource.com/c
+## hromium/src/\+/HEAD/docs/design/sandbox_faq.md[FAQ (Windows-centric)]
+## Type: String
+## Valid values:
+##   - enable-all: Enable all available sandboxing mechanisms.
+##   - disable-seccomp-bpf: Disable the Seccomp BPF filter sandbox (Linux only).
+##   - disable-all: Disable all sandboxing (**not recommended!**).
+# c.qt.chromium.sandboxing = 'enable-all'
+
 ## Additional environment variables to set. Setting an environment
 ## variable to null/None will unset it.
 ## Type: Dict
@@ -1605,33 +1731,24 @@ c.fonts.tabs.unselected = 'default_size default_family'
 # c.qt.force_software_rendering = 'none'
 
 ## Turn on Qt HighDPI scaling. This is equivalent to setting
-## QT_AUTO_SCREEN_SCALE_FACTOR=1 or QT_ENABLE_HIGHDPI_SCALING=1 (Qt >=
-## 5.14) in the environment. It's off by default as it can cause issues
-## with some bitmap fonts. As an alternative to this, it's possible to
-## set font sizes and the `zoom.default` setting.
+## QT_ENABLE_HIGHDPI_SCALING=1 (Qt >= 5.14) in the environment. It's off
+## by default as it can cause issues with some bitmap fonts. As an
+## alternative to this, it's possible to set font sizes and the
+## `zoom.default` setting.
 ## Type: Bool
 # c.qt.highdpi = False
 
-## When to use Chromium's low-end device mode. This improves the RAM
-## usage of renderer processes, at the expense of performance.
+## Disable accelerated 2d canvas to avoid graphical glitches. On some
+## setups graphical issues can occur on sites like Google sheets and
+## PDF.js. These don't occur when accelerated 2d canvas is turned off, so
+## we do that by default. So far these glitches only occur on some Intel
+## graphics devices.
 ## Type: String
 ## Valid values:
-##   - always: Always use low-end device mode.
-##   - auto: Decide automatically (uses low-end mode with < 1 GB available RAM).
-##   - never: Never use low-end device mode.
-# c.qt.low_end_device_mode = 'auto'
-
-## Which Chromium process model to use. Alternative process models use
-## less resources, but decrease security and robustness. See the
-## following pages for more details:    -
-## https://www.chromium.org/developers/design-documents/process-models
-## - https://doc.qt.io/qt-5/qtwebengine-features.html#process-models
-## Type: String
-## Valid values:
-##   - process-per-site-instance: Pages from separate sites are put into separate processes and separate visits to the same site are also isolated.
-##   - process-per-site: Pages from separate sites are put into separate processes. Unlike Process per Site Instance, all visits to the same site will share an OS process. The benefit of this model is reduced memory consumption, because more web pages will share processes. The drawbacks include reduced security, robustness, and responsiveness.
-##   - single-process: Run all tabs in a single process. This should be used for debugging purposes only, and it disables `:open --private`.
-# c.qt.process_model = 'process-per-site-instance'
+##   - always: Disable accelerated 2d canvas
+##   - auto: Disable on Qt6 < 6.6.0, enable otherwise
+##   - never: Enable accelerated 2d canvas
+# c.qt.workarounds.disable_accelerated_2d_canvas = 'auto'
 
 ## Work around locale parsing issues in QtWebEngine 5.15.3. With some
 ## locales, QtWebEngine 5.15.3 is unusable without this workaround. In
@@ -1683,6 +1800,11 @@ c.fonts.tabs.unselected = 'default_size default_family'
 ## text matches using `:search-next` and `:search-prev`.
 ## Type: Bool
 # c.search.wrap = True
+
+## Display messages when advancing through text matches at the top and
+## bottom of the page, e.g. `Search hit TOP`.
+## Type: Bool
+# c.search.wrap_messages = True
 
 ## Name of the session to save by default. If this is set to null, the
 ## session which was last loaded is saved.
@@ -1769,11 +1891,13 @@ c.fonts.tabs.unselected = 'default_size default_family'
 ##   - scroll: Percentage of the current page position like `10%`.
 ##   - scroll_raw: Raw percentage of the current page position like `10`.
 ##   - history: Display an arrow when possible to go back/forward in history.
+##   - search_match: A match count when searching, e.g. `Match [2/10]`.
 ##   - tabs: Current active tab, e.g. `2`.
 ##   - keypress: Display pressed keys when composing a vi command.
 ##   - progress: Progress bar for the current page loading.
 ##   - text:foo: Display the static text after the colon, `foo` in the example.
-# c.statusbar.widgets = ['keypress', 'url', 'scroll', 'history', 'tabs', 'progress']
+##   - clock: Display current time. The format can be changed by adding a format string via `clock:...`. For supported format strings, see https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes[the Python datetime documentation].
+# c.statusbar.widgets = ['keypress', 'search_match', 'url', 'scroll', 'history', 'tabs', 'progress']
 
 ## Open new tabs (middleclick/ctrl+click) in the background.
 ## Type: Bool
@@ -1943,13 +2067,23 @@ c.fonts.tabs.unselected = 'default_size default_family'
 ##   - center
 # c.tabs.title.alignment = 'left'
 
+## Position of ellipsis in truncated title of tabs.
+## Type: ElidePosition
+## Valid values:
+##   - left
+##   - right
+##   - middle
+##   - none
+# c.tabs.title.elide = 'right'
+
 ## Format to use for the tab title. The following placeholders are
 ## defined:  * `{perc}`: Percentage as a string like `[10%]`. *
 ## `{perc_raw}`: Raw percentage, e.g. `10`. * `{current_title}`: Title of
 ## the current web page. * `{title_sep}`: The string `" - "` if a title
 ## is set, empty otherwise. * `{index}`: Index of this tab. *
 ## `{aligned_index}`: Index of this tab padded with spaces to have the
-## same   width. * `{id}`: Internal tab ID of this tab. * `{scroll_pos}`:
+## same   width. * `{relative_index}`: Index of this tab relative to the
+## current tab. * `{id}`: Internal tab ID of this tab. * `{scroll_pos}`:
 ## Page scroll position. * `{host}`: Host of the current web page. *
 ## `{backend}`: Either `webkit` or `webengine` * `{private}`: Indicates
 ## when private mode is enabled. * `{current_url}`: URL of the current
@@ -2039,7 +2173,7 @@ c.url.searchengines = {'DEFAULT': 'https://www.google.com/search?q={}', 'ddg': '
 
 ## URL parameters to strip with `:yank url`.
 ## Type: List of String
-# c.url.yank_ignored_parameters = ['ref', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']
+# c.url.yank_ignored_parameters = ['ref', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'utm_name']
 
 ## Hide the window decoration.  This setting requires a restart on
 ## Wayland.
@@ -2081,9 +2215,9 @@ config.bind('\\', 'spawn --userscript qute_1pass.sh')
 # config.bind("'", 'mode-enter jump_mark')
 # config.bind('+', 'zoom-in')
 # config.bind('-', 'zoom-out')
-# config.bind('.', 'repeat-command')
-# config.bind('/', 'set-cmd-text /')
-# config.bind(':', 'set-cmd-text :')
+# config.bind('.', 'cmd-repeat-last')
+# config.bind('/', 'cmd-set-text /')
+# config.bind(':', 'cmd-set-text :')
 # config.bind(';I', 'hint images tab')
 # config.bind(';O', 'hint links fill :open -t -r {hint-url}')
 # config.bind(';R', 'hint --rapid links window')
@@ -2139,9 +2273,9 @@ config.bind('\\', 'spawn --userscript qute_1pass.sh')
 # config.bind('<back>', 'back')
 # config.bind('<forward>', 'forward')
 # config.bind('=', 'zoom')
-# config.bind('?', 'set-cmd-text ?')
+# config.bind('?', 'cmd-set-text ?')
 # config.bind('@', 'macro-run')
-# config.bind('B', 'set-cmd-text -s :quickmark-load -t')
+# config.bind('B', 'cmd-set-text -s :quickmark-load -t')
 # config.bind('D', 'tab-close -o')
 # config.bind('F', 'hint all tab')
 # config.bind('G', 'scroll-to-perc')
@@ -2151,7 +2285,7 @@ config.bind('K', 'tab-next')
 # config.bind('L', 'forward')
 # config.bind('M', 'bookmark-add')
 # config.bind('N', 'search-prev')
-# config.bind('O', 'set-cmd-text -s :open -t')
+# config.bind('O', 'cmd-set-text -s :open -t')
 # config.bind('PP', 'open -t -- {primary}')
 # config.bind('Pp', 'open -t -- {clipboard}')
 # config.bind('R', 'reload -f')
@@ -2159,7 +2293,7 @@ config.bind('K', 'tab-next')
 # config.bind('Sh', 'history')
 # config.bind('Sq', 'bookmark-list')
 # config.bind('Ss', 'set')
-# config.bind('T', 'set-cmd-text -sr :tab-focus')
+# config.bind('T', 'cmd-set-text -sr :tab-focus')
 # config.bind('U', 'undo -w')
 # config.bind('V', 'mode-enter caret ;; selection-toggle --line')
 # config.bind('ZQ', 'quit')
@@ -2168,30 +2302,30 @@ config.bind('K', 'tab-next')
 # config.bind(']]', 'navigate next')
 # config.bind('`', 'mode-enter set_mark')
 # config.bind('ad', 'download-cancel')
-# config.bind('b', 'set-cmd-text -s :quickmark-load')
+# config.bind('b', 'cmd-set-text -s :quickmark-load')
 # config.bind('cd', 'download-clear')
 # config.bind('co', 'tab-only')
 # config.bind('d', 'tab-close')
 # config.bind('f', 'hint')
 # config.bind('g$', 'tab-focus -1')
 # config.bind('g0', 'tab-focus 1')
-# config.bind('gB', 'set-cmd-text -s :bookmark-load -t')
+# config.bind('gB', 'cmd-set-text -s :bookmark-load -t')
 # config.bind('gC', 'tab-clone')
 # config.bind('gD', 'tab-give')
 # config.bind('gJ', 'tab-move +')
 # config.bind('gK', 'tab-move -')
-# config.bind('gO', 'set-cmd-text :open -t -r {url:pretty}')
+# config.bind('gO', 'cmd-set-text :open -t -r {url:pretty}')
 # config.bind('gU', 'navigate up -t')
 # config.bind('g^', 'tab-focus 1')
 # config.bind('ga', 'open -t')
-# config.bind('gb', 'set-cmd-text -s :bookmark-load')
+# config.bind('gb', 'cmd-set-text -s :bookmark-load')
 # config.bind('gd', 'download')
 # config.bind('gf', 'view-source')
 # config.bind('gg', 'scroll-to-perc 0')
 # config.bind('gi', 'hint inputs --first')
 # config.bind('gm', 'tab-move')
-# config.bind('go', 'set-cmd-text :open {url:pretty}')
-# config.bind('gt', 'set-cmd-text -s :tab-select')
+# config.bind('go', 'cmd-set-text :open {url:pretty}')
+# config.bind('gt', 'cmd-set-text -s :tab-select')
 # config.bind('gu', 'navigate up')
 # config.bind('h', 'scroll left')
 # config.bind('i', 'mode-enter insert')
@@ -2200,15 +2334,15 @@ config.bind('K', 'tab-next')
 # config.bind('l', 'scroll right')
 # config.bind('m', 'quickmark-save')
 # config.bind('n', 'search-next')
-# config.bind('o', 'set-cmd-text -s :open')
+# config.bind('o', 'cmd-set-text -s :open')
 # config.bind('pP', 'open -- {primary}')
 # config.bind('pp', 'open -- {clipboard}')
 # config.bind('q', 'macro-record')
 config.bind('R', 'reload')
 # config.bind('sf', 'save')
-# config.bind('sk', 'set-cmd-text -s :bind')
-# config.bind('sl', 'set-cmd-text -s :set -t')
-# config.bind('ss', 'set-cmd-text -s :set')
+# config.bind('sk', 'cmd-set-text -s :bind')
+# config.bind('sl', 'cmd-set-text -s :set -t')
+# config.bind('ss', 'cmd-set-text -s :set')
 # config.bind('tCH', 'config-cycle -p -u *://*.{url:host}/* content.cookies.accept all no-3rdparty never ;; reload')
 # config.bind('tCh', 'config-cycle -p -u *://{url:host}/* content.cookies.accept all no-3rdparty never ;; reload')
 # config.bind('tCu', 'config-cycle -p -u {url} content.cookies.accept all no-3rdparty never ;; reload')
@@ -2237,24 +2371,24 @@ config.bind('R', 'reload')
 # config.bind('tsu', 'config-cycle -p -t -u {url} content.javascript.enabled ;; reload')
 # config.bind('u', 'undo')
 # config.bind('v', 'mode-enter caret')
-# config.bind('wB', 'set-cmd-text -s :bookmark-load -w')
+# config.bind('wB', 'cmd-set-text -s :bookmark-load -w')
 # config.bind('wIf', 'devtools-focus')
 # config.bind('wIh', 'devtools left')
 # config.bind('wIj', 'devtools bottom')
 # config.bind('wIk', 'devtools top')
 # config.bind('wIl', 'devtools right')
 # config.bind('wIw', 'devtools window')
-# config.bind('wO', 'set-cmd-text :open -w {url:pretty}')
+# config.bind('wO', 'cmd-set-text :open -w {url:pretty}')
 # config.bind('wP', 'open -w -- {primary}')
-# config.bind('wb', 'set-cmd-text -s :quickmark-load -w')
+# config.bind('wb', 'cmd-set-text -s :quickmark-load -w')
 # config.bind('wf', 'hint all window')
 # config.bind('wh', 'back -w')
 # config.bind('wi', 'devtools')
 # config.bind('wl', 'forward -w')
-# config.bind('wo', 'set-cmd-text -s :open -w')
+# config.bind('wo', 'cmd-set-text -s :open -w')
 # config.bind('wp', 'open -w -- {clipboard}')
-# config.bind('xO', 'set-cmd-text :open -b -r {url:pretty}')
-# config.bind('xo', 'set-cmd-text -s :open -b')
+# config.bind('xO', 'cmd-set-text :open -b -r {url:pretty}')
+# config.bind('xo', 'cmd-set-text -s :open -b')
 # config.bind('yD', 'yank domain -s')
 # config.bind('yM', 'yank inline [{title}]({url}) -s')
 # config.bind('yP', 'yank pretty-url -s')
@@ -2318,9 +2452,10 @@ config.bind('R', 'reload')
 # config.bind('<Ctrl-Return>', 'command-accept --rapid', mode='command')
 # config.bind('<Ctrl-Shift-C>', 'completion-item-yank --sel', mode='command')
 # config.bind('<Ctrl-Shift-Tab>', 'completion-item-focus prev-category', mode='command')
+# config.bind('<Ctrl-Shift-W>', 'rl-filename-rubout', mode='command')
 # config.bind('<Ctrl-Tab>', 'completion-item-focus next-category', mode='command')
 # config.bind('<Ctrl-U>', 'rl-unix-line-discard', mode='command')
-# config.bind('<Ctrl-W>', 'rl-unix-word-rubout', mode='command')
+# config.bind('<Ctrl-W>', 'rl-rubout " "', mode='command')
 # config.bind('<Ctrl-Y>', 'rl-yank', mode='command')
 # config.bind('<Down>', 'completion-item-focus --history next', mode='command')
 # config.bind('<Escape>', 'mode-leave', mode='command')
@@ -2352,6 +2487,7 @@ config.bind('R', 'reload')
 # config.bind('<Alt-B>', 'rl-backward-word', mode='prompt')
 # config.bind('<Alt-Backspace>', 'rl-backward-kill-word', mode='prompt')
 # config.bind('<Alt-D>', 'rl-kill-word', mode='prompt')
+# config.bind('<Alt-E>', 'prompt-fileselect-external', mode='prompt')
 # config.bind('<Alt-F>', 'rl-forward-word', mode='prompt')
 # config.bind('<Alt-Shift-Y>', 'prompt-yank --sel', mode='prompt')
 # config.bind('<Alt-Y>', 'prompt-yank', mode='prompt')
@@ -2363,8 +2499,9 @@ config.bind('R', 'reload')
 # config.bind('<Ctrl-H>', 'rl-backward-delete-char', mode='prompt')
 # config.bind('<Ctrl-K>', 'rl-kill-line', mode='prompt')
 # config.bind('<Ctrl-P>', 'prompt-open-download --pdfjs', mode='prompt')
+# config.bind('<Ctrl-Shift-W>', 'rl-filename-rubout', mode='prompt')
 # config.bind('<Ctrl-U>', 'rl-unix-line-discard', mode='prompt')
-# config.bind('<Ctrl-W>', 'rl-unix-word-rubout', mode='prompt')
+# config.bind('<Ctrl-W>', 'rl-rubout " "', mode='prompt')
 # config.bind('<Ctrl-X>', 'prompt-open-download', mode='prompt')
 # config.bind('<Ctrl-Y>', 'rl-yank', mode='prompt')
 # config.bind('<Down>', 'prompt-item-focus next', mode='prompt')
