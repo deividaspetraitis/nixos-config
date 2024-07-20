@@ -327,6 +327,9 @@ in {
         nnoremap <leader>g :Rg<CR>
         nnoremap <leader>b :Buffers<CR>
 
+        imap <silent><script><expr> <C-L> copilot#Accept("\<CR>")
+        let g:copilot_no_tab_map = v:true
+
         " Quick write shortcut
         nnoremap <Leader>w :w<CR>
         
