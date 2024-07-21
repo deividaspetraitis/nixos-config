@@ -52,7 +52,7 @@ in
     libva-utils
     glxinfo
     dracula-theme # gtk theme
-    gnome.adwaita-icon-theme  # default gnome cursors
+    adwaita-icon-theme  # default gnome cursors
     swaylock
     swayidle
     swayidle
