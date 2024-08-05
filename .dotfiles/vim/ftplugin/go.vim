@@ -34,20 +34,6 @@ if exists("loaded_matchit")
 	  \ '\(^\s*\)\@<=\<if\>:\<else\ if\|else\>:^}'
 endif
 
-" Set tag for current definition under cursor.
-function! SetTag()
-    call settagstack(
-    \ winnr(),
-    \ {'items': [{
-    \     'bufnr': bufnr(),
-    \     'from': [0, line('.'), col('.'), 0],
-    \     'matchnr': 1,
-    \     'tagname': expand('<cword>')
-    \ }]},
-    \ 't'
-    \ )
-endfunction
-
 " TODO: mapping?
 " go list -f '{{.Dir}}' -deps ./... | xargs -I{} ctags --append=yes -R "{}"
 " go list <concretefile> -f '{{.Dir}}'
@@ -63,18 +49,10 @@ vnoremap <silent><buffer> ]] m':<C-U>exe "normal! gv"<Bar>call search('^\s*\(fu\
 " noremap <silent><buffer> [# :call search('^\s*\<if\>\|\<else if\>|\<else\>', "bW")<CR>
 " noremap <silent><buffer> ]# :call search('^\s*\<else\>\|<else if\>', "W")<CR>
 
-" YCM mappings, we want to make it to work close as possible to the defaults
-"
 " Originally: Jump to the definition of the keyword under the cursor.
 nnoremap <silent><buffer> <C-]> <cmd>call SetTag()<cr><cmd>YcmCompleter GoToDefinition<cr>
 " Originally: Like CTRL-], but use ":tselect" instead of ":tag"
 nnoremap <silent><buffer> g] :YcmCompleter GoToReferences <CR>
-nnoremap <silent><buffer> <localleader>gD :YcmCompleter GoToDeclaration <CR>
-nnoremap <silent><buffer> <localleader>gi :YcmCompleter GoToImplementation <CR>
-nnoremap <silent><buffer> <localleader>f :YcmCompleter FixIt <CR>
-nnoremap <buffer> <localleader>r :YcmCompleter RefactorRename<Space><C-R><C-W>
-nnoremap <silent><buffer> <C-w>} :YcmCompleter GetDoc <CR>
-
 " Auto generate tags file on file write of *.go
 augroup tags_generate
 	autocmd!

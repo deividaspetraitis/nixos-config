@@ -74,6 +74,7 @@
     pkgs.telegram-desktop
     pkgs.discord
     pkgs.slack
+    pkgs.ledger-live-desktop
 
     # Go related packages
     pkgs.go
@@ -103,6 +104,7 @@
     ".config/vifm" = { source = ../../.dotfiles/vifm; recursive = true; };
     ".config/foot" = { source = ../../.dotfiles/foot; recursive = true; };
     ".config/zsh" = { source = ../../.dotfiles/zsh; recursive = true; };
+    ".config/hypr" = { source = ../../.dotfiles/hypr; recursive = true; };
     ".vim/after" = { source = ../../.dotfiles/vim/after; recursive = true; };
 
     # # You can also set the file content immediately.

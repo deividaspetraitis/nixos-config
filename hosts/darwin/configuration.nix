@@ -30,7 +30,11 @@
 
       # Programs
       ../../programs/vim.nix
+      
+      ./hyprland.nix
     ];
+
+  services.pipewire.wireplumber.enable = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -123,6 +127,9 @@
   # By default access is granted to users in the “i2c” group (will be created if non-existent) and any user with a seat, meaning logged on the computer locally.
   hardware.i2c.enable = true;
 
+  # Enable udev rules for Ledger devices.
+  hardware.ledger.enable = true;
+
   # Enables support for Bluetooth
   hardware.bluetooth = {
     enable = true;
@@ -178,6 +185,9 @@
     # This program allows you read and control device brightness on Linux.
     brightnessctl
 
+    # FUSE-based filesystem that allows remote filesystems to be mounted over SSH
+    sshfs
+
     # Generic graphical webcam configuration tool
     # TODO: move to pkgs, install as a user, not system wide?
     (callPackage ../../programs/cameractrls.nix { })
@@ -193,6 +203,14 @@
 
   # Enable nm-applet, a NetworkManager control applet for GNOME.
   programs.nm-applet.enable = true;
+
+  # SSH client configuration
+  programs.ssh = {
+    extraConfig = ''
+      Host *
+          IdentityAgent ~/.1password/agent.sock
+    '';
+  };
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;

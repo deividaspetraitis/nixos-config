@@ -75,14 +75,24 @@ in
     };
   };
 
+  services.displayManager.defaultSession = "sway";
+  services.displayManager.sddm.wayland.enable = true;
+
   # Enable SSDM
   services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.wayland.enable = true;
+  services.displayManager.sddm.settings = {
+    General = {
+      InputMethod = "";
+    };
+  };
+
+  services.desktopManager.plasma6.enable = true;
 
   environment = {
     etc = {
       "sway/config".source = ../../.dotfiles/sway/config;
       "sway/conf.d".source = ../../.dotfiles/sway/config.d;
+
       "xdg/waybar/config".source = ../../.dotfiles/waybar/config;
       "xdg/waybar/style.css".source = ../../.dotfiles/waybar/style.css;
     };
