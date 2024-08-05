@@ -34,7 +34,7 @@
         "memory",
         "cpu",
         "temperature",
-        "pulseaudio",
+        "wireplumber",
         "battery",
         "privacy",
         "custom/keyboard-layout",
@@ -139,7 +139,7 @@
         }
     },
 
-    "pulseaudio": {
+    "wireplumber": {
         //"scroll-step": 1,
         "format": "{icon}  {volume}%",
         "format-bluetooth": "{icon}  {volume}%",
