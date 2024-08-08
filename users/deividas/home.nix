@@ -62,7 +62,7 @@
     pkgs.gcc
     pkgs.act
     pkgs.git-crypt
-    pkgs-stable.qutebrowser
+    pkgs.qutebrowser
     pkgs.pcmanfm
     pkgs.vifm
     pkgs.nix-prefetch-github
@@ -82,12 +82,14 @@
     pkgs.rr
     pkgs.golangci-lint
     pkgs.lychee
+    pkgs.teleport
 
     # Useful utilities
     pkgs.usbutils
     pkgs.unzip 
     pkgs.lz4
     pkgs.graphviz
+    pkgs.fastfetch
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
