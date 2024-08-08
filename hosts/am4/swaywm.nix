@@ -15,8 +15,8 @@ let
 
     text = ''
   dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-  systemctl --user stop pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
-  systemctl --user start pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
+  systemctl --user stop pipewire wireplumber xdg-desktop-portal xdg-desktop-portal-wlr
+  systemctl --user start pipewire wireplumber xdg-desktop-portal xdg-desktop-portal-wlr
       '';
   };
 
@@ -57,6 +57,8 @@ in
     swayidle
     swayidle
     grim # screenshot functionality
+    slurp # screenshot a region of the screen
+    swappy # native snapshot and editor tool
     mako # notification system developed by swaywm maintainer
     waybar
     wf-recorder
@@ -73,21 +75,15 @@ in
     };
   };
 
-  # Enable the X11 windowing system.
-  services.xserver = {
-    enable = true;
-    displayManager = {
-      defaultSession = "sway";
-      # gdm.enable = true;
-      # gdm.wayland = true;
-      sddm.enable = true;
-      sessionCommands = ''
-        ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
-      '';
+  services.displayManager.defaultSession = "sway";
+  services.displayManager.sddm.wayland.enable = true;
 
+  # Enable SSDM
+  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.settings = {
+    General = {
+      InputMethod = "";
     };
-    # Enable touchpad support (enabled default in most desktopManager).
-    libinput.enable = true;
   };
 
   environment = {
@@ -114,8 +110,5 @@ in
       xdg-desktop-portal-gtk
     ];
   };
-
-  programs.waybar.enable = true;
-  programs.xwayland.enable = true;
 }
 

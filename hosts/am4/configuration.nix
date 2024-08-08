@@ -120,7 +120,12 @@
   # Installing fonts on NixOS.
   # Be aware that sometimes font names and packages name differ and there is no universal convention in NixOS.
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    (nerdfonts.override { fonts = [ 
+        "SpaceMono"
+        "JetBrainsMono"
+        "DejaVuSansMono"
+      ];
+    })
   ];
 
   # List packages installed in system profile. To search, run:
@@ -134,6 +139,7 @@
     git
     wget
     htop
+    nvtopPackages.full
 
     # This program allows you read and control device brightness on Linux.
     brightnessctl
@@ -153,6 +159,12 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+
+  # X server for interfacing X11 apps with the Wayland protocol
+  programs.xwayland.enable = true;
+
+  # Highly customizable Wayland bar for Sway and Wlroots based compositors
+  programs.waybar.enable = true;
 
   # Enable nm-applet, a NetworkManager control applet for GNOME.
   programs.nm-applet.enable = true;
