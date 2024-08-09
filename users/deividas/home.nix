@@ -73,7 +73,7 @@
     pkgs.synology-drive-client
     pkgs.telegram-desktop
     pkgs.discord
-    pkgs.slack
+    pkgs-stable.slack
     pkgs.ledger-live-desktop
 
     # Go related packages
