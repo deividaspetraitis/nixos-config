@@ -61,6 +61,12 @@ in {
     # YouCompleteMe for some reason is not able to find gopls
     stable.gopls
 
+    # Required by YouCompleteMe for JavaScript and TypeScript Semantic Completion
+    # A superset of JavaScript that compiles to clean JavaScript output
+    # The TypeScript standalone server (aka tsserver) can be found in lib folder under the typescript package.
+    typescript
+    nodejs
+
     # Vim
     ((stable.vim_configurable.override {  }).customize{
       name = "vim";
