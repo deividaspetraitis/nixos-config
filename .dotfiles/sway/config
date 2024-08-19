@@ -246,6 +246,8 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+# Toggle control center
+bindsym $mod+Shift+n exec swaync-client -t -sw
 #
 # Status Bar:
 #
@@ -266,6 +268,9 @@ exec --no-startup-id synology-drive
 
 # Run 1password
 exec --no-startup-id 1password --silent
+
+# Notification Daemon
+exec swaync
 
 # Include my custom configuration
 include /etc/sway/conf.d/*

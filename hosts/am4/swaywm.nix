@@ -59,8 +59,10 @@ in
     grim # screenshot functionality
     slurp # screenshot a region of the screen
     swappy # native snapshot and editor tool
-    mako # notification system developed by swaywm maintainer
+    # mako # notification system developed by swaywm maintainer
+    swaynotificationcenter
     waybar
+    rofi
     wf-recorder
     wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
     wofi
@@ -90,6 +92,7 @@ in
     etc = {
       "sway/config".source = ../../.dotfiles/sway/config;
       "sway/conf.d".source = ../../.dotfiles/sway/config.d;
+      "sway/swaync".source = ../../.dotfiles/swaync/config.json;
       "xdg/waybar/config".source = ../../.dotfiles/waybar/config;
       "xdg/waybar/style.css".source = ../../.dotfiles/waybar/style.css;
     };
