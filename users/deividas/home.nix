@@ -45,7 +45,7 @@
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     # pkgs.hello
-    
+
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
@@ -81,14 +81,14 @@
     pkgs.delve
     pkgs.rr
     pkgs.golangci-lint
-	
-	# DevOps
+
+    # DevOps
     pkgs.lychee
     pkgs.teleport
 
     # Useful utilities
     pkgs.usbutils
-    pkgs.unzip 
+    pkgs.unzip
     pkgs.lz4
     pkgs.graphviz
     pkgs.fastfetch
@@ -125,7 +125,7 @@
   #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
   #
   # or
-  
+
   #  /etc/profiles/per-user/deividas/etc/profile.d/hm-session-vars.sh
   #
   # if you don't want to manage your shell through Home Manager.
@@ -150,7 +150,7 @@
     plugins = with pkgs; [
     ];
     extraPackages = with pkgs; [
-		cargo
+      cargo
     ];
   };
 
@@ -218,23 +218,23 @@
       bind r source-file ~/.config/tmux/tmux.conf \; display-message "Config sourced..."
     '';
     plugins = with pkgs; [
-        {
-          plugin = tmuxPlugins.resurrect;
-          extraConfig = ''
-            set -g @resurrect-strategy-vim 'session'
+      {
+        plugin = tmuxPlugins.resurrect;
+        extraConfig = ''
+          set -g @resurrect-strategy-vim 'session'
 
-            resurrect_dir="$HOME/.tmux/resurrect"
-            set -g @resurrect-dir $resurrect_dir
-            set -g @resurrect-hook-post-save-all "~/nix-config/users/deividas/scripts/tmux/post_save.sh $resurrect_dir/last"
-          '';
-        }
-        {
-          plugin = tmuxPlugins.continuum;
-          extraConfig = ''
-            set -g @continuum-restore 'on'
-            set -g @continuum-save-interval '5' # minutes
-          '';
-        }
+          resurrect_dir="$HOME/.tmux/resurrect"
+          set -g @resurrect-dir $resurrect_dir
+          set -g @resurrect-hook-post-save-all "~/nix-config/users/deividas/scripts/tmux/post_save.sh $resurrect_dir/last"
+        '';
+      }
+      {
+        plugin = tmuxPlugins.continuum;
+        extraConfig = ''
+          set -g @continuum-restore 'on'
+          set -g @continuum-save-interval '5' # minutes
+        '';
+      }
     ];
   };
 
@@ -351,29 +351,29 @@
       # every file in there as a function
       fpath=(~/.config/zsh/external $fpath);
       autoload -U $fpath[1]/*(-.:t)
-   '';
+    '';
 
-   shellAliases = {
-     # Nix related
-     switch-user = "nix build '/home/deividas/nix-config/.#homeManagerConfigurations.deividas.activationPackage' --out-link /home/deividas/nix-config/result && /home/deividas/nix-config/result/activate";
+    shellAliases = {
+      # Nix related
+      switch-user = "nix build '/home/deividas/nix-config/.#homeManagerConfigurations.deividas.activationPackage' --out-link /home/deividas/nix-config/result && /home/deividas/nix-config/result/activate";
+      switch-system = "sudo nixos-rebuild switch --flake '/home/deividas/nix-config/.#'";
+      switch-all = "switch-system && switch-user";
+      update-system = "nix flake update --commit-lock-file /home/deividas/nix-config";
+    };
 
-     switch-system = "sudo nixos-rebuild switch --flake '/home/deividas/nix-config/.#'";
-     update-system = "nix flake update --commit-lock-file /home/deividas/nix-config";
-   };
+    history = {
+      # Maximum history events for history file 
+      save = 100000;
 
-   history = {
-     # Maximum history events for history file 
-     save = 100000;
-
-     # Share command history between sessions.
-     share = true;
-   };
+      # Share command history between sessions.
+      share = true;
+    };
 
     # Named directory hash table.
     dirHashes = {
-      docs  = "$HOME/Documents";
-      vids  = "$HOME/Videos";
-      dl    = "$HOME/Downloads";
+      docs = "$HOME/Documents";
+      vids = "$HOME/Videos";
+      dl = "$HOME/Downloads";
     };
 
     zplug = {
@@ -391,7 +391,7 @@
     plugins = [
       {
         name = "powerlevel10k-config";
-        src = ./. +  "/zsh";
+        src = ./. + "/zsh";
         file = ".p10k.zsh";
       }
     ];
