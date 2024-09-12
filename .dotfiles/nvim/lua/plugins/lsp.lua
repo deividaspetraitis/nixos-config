@@ -30,6 +30,7 @@ return {
 				'lua_ls',
 				'pylsp',
 				'tsserver',
+				'jsonls',
 				'rust_analyzer',
 			},
 			handlers = {
