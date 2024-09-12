@@ -29,10 +29,11 @@ return {
 				'gopls',
 				'lua_ls',
 				'pylsp',
-				'tsserver',
+				'ts_ls',
 				'jsonls',
 				'rust_analyzer',
-				'nil_ls',
+				'rnix',
+				'bashls',
 			},
 			handlers = {
 				function(server_name) -- default handler (optional)
