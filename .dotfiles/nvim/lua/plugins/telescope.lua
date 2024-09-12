@@ -14,6 +14,20 @@ local function fzf_multi_select(prompt_bufnr)
 		actions.file_edit(prompt_bufnr)
 	end
 end
+
+function vim.getVisualSelection()
+	vim.cmd('noau normal! "vy"')
+	local text = vim.fn.getreg('v')
+	vim.fn.setreg('v', {})
+
+	text = string.gsub(text, "\n", "")
+	if #text > 0 then
+		return text
+	else
+		return ''
+	end
+end
+
 return {
 	"nvim-telescope/telescope.nvim",
 
@@ -64,6 +78,14 @@ return {
 			})
 		end, {})
 		vim.keymap.set('n', '<leader>g', builtin.live_grep, {})
+		vim.keymap.set('v', '<space>g', function()
+			local text = vim.getVisualSelection()
+			builtin.grep_string({ default_text = text })
+		end, {})
+		vim.keymap.set('n', '<leader>wg', function()
+			local word = vim.fn.expand("<cword>")
+			builtin.grep_string({ search = word })
+		end)
 		vim.keymap.set('n', '<leader>r', builtin.lsp_references, {})
 		vim.keymap.set('n', '<leader>s', builtin.lsp_document_symbols, {})
 		vim.keymap.set('n', '<leader>b', builtin.buffers, {})
