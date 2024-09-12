@@ -6,7 +6,8 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
 
       # Services
@@ -26,7 +27,7 @@
 
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Europe/Vilnius";
@@ -105,12 +106,12 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.deividas = {
     isNormalUser = true;
-    extraGroups = [ 
+    extraGroups = [
       "wheel" # Enable ‘sudo’ for the user.
-      "networkmanager" 
+      "networkmanager"
       "wireshark"
       "docker" # Provide them access to the socket
-    ]; 
+    ];
     packages = with pkgs; [
       tree
     ];
@@ -123,7 +124,8 @@
   # Installing fonts on NixOS.
   # Be aware that sometimes font names and packages name differ and there is no universal convention in NixOS.
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ 
+    (nerdfonts.override {
+      fonts = [
         "SpaceMono"
         "JetBrainsMono"
         "DejaVuSansMono"
@@ -154,7 +156,7 @@
     # TODO: move to pkgs, install as a user, not system wide?
     (callPackage ../../programs/cameractrls.nix { })
 
-	protonup-qt
+    protonup-qt
   ];
 
   # Whether to enable nix-ld, documentation: https://github.com/Mic92/nix-ld.
@@ -209,9 +211,9 @@
 
   # Enable Steam
   programs.steam = {
-     enable = true;
-	 protontricks.enable = true;
-     package = with pkgs; steam.override { extraPkgs = pkgs: [ attr ]; };
+    enable = true;
+    protontricks.enable = true;
+    package = with pkgs; steam.override { extraPkgs = pkgs: [ attr ]; };
   };
 
   # List services that you want to enable:
