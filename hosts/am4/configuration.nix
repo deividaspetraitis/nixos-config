@@ -150,6 +150,8 @@
     # Generic graphical webcam configuration tool
     # TODO: move to pkgs, install as a user, not system wide?
     (callPackage ../../programs/cameractrls.nix { })
+
+	protonup-qt
   ];
 
   # Whether to enable nix-ld, documentation: https://github.com/Mic92/nix-ld.
@@ -202,7 +204,17 @@
   # List services that you want to enable:
   programs.dconf.enable = true;
 
+  # Enable Steam
+  programs.steam = {
+     enable = true;
+	 protontricks.enable = true;
+     package = with pkgs; steam.override { extraPkgs = pkgs: [ attr ]; };
+  };
+
   # List services that you want to enable:
+
+  # Enable flatpak
+  services.flatpak.enable = true;
 
   # Enable thermald, the temperature management daemon.
   services.thermald.enable = true;
