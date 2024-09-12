@@ -150,6 +150,7 @@
     plugins = with pkgs; [
     ];
     extraPackages = with pkgs; [
+		cargo
     ];
   };
 
