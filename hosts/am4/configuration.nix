@@ -85,6 +85,9 @@
     };
   };
 
+  # Enable OpenRGB
+  services.hardware.openrgb.enable = true;
+
   # Enable sound.
   # hardware.pulseaudio.enable = true;
   # OR
