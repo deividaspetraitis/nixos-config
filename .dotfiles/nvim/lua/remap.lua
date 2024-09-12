@@ -16,4 +16,4 @@ vim.api.nvim_set_keymap('n', ']l', ':lnext<CR>', { noremap = true, silent = true
 vim.api.nvim_set_keymap('n', '[l', ':lprevious<CR>', { noremap = true, silent = true })
 
 -- Quick write shortcut
-vim.api.nvim_set_keymap('n', '<Leader>w', ':w<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<localleader>w', ':w<CR>', { noremap = true, silent = true })

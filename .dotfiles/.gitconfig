@@ -18,10 +18,10 @@
 	insteadOf = https://github.com/
 
 [merge]
-	tool = vimdiff
+	tool = nvimdiff
 
 [diff]
-	tool = vimdiff
+	tool = nvimdiff
 
 [alias]
 	d = difftool

@@ -81,6 +81,8 @@
     pkgs.delve
     pkgs.rr
     pkgs.golangci-lint
+	
+	# DevOps
     pkgs.lychee
     pkgs.teleport
 
@@ -107,6 +109,7 @@
     ".config/foot" = { source = ../../.dotfiles/foot; recursive = true; };
     ".config/zsh" = { source = ../../.dotfiles/zsh; recursive = true; };
     ".config/hypr" = { source = ../../.dotfiles/hypr; recursive = true; };
+    ".config/nvim" = { source = ../../.dotfiles/nvim; recursive = true; };
     ".vim/after" = { source = ../../.dotfiles/vim/after; recursive = true; };
 
     # # You can also set the file content immediately.
@@ -129,8 +132,8 @@
 
   home.sessionVariables = {
     # Default editor
-    EDITOR = "vim";
-    VISUAL = "vim";
+    EDITOR = "nvim";
+    VISUAL = "nvim";
   };
 
   # Extra directories to add to PATH.
@@ -139,6 +142,16 @@
   home.sessionPath = [
     "$HOME/go/bin"
   ];
+
+  # Enable NeoVim.
+  programs.neovim = {
+    enable = true;
+    extraConfig = lib.fileContents ../../.dotfiles/nvim/init.lua;
+    plugins = with pkgs; [
+    ];
+    extraPackages = with pkgs; [
+    ];
+  };
 
   # XDG are defaults for some of the programs.
   xdg.userDirs = {
