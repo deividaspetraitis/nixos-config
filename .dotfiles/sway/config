@@ -21,7 +21,7 @@ set $term foot
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu wofi --show run
+set $menu rofi -show drun
 
 ### Output configuration
 #
@@ -246,8 +246,12 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+# Fill password with 1Password
+bindsym Ctrl+backslash exec 1password --fill
+
 # Toggle control center
 bindsym $mod+Shift+n exec swaync-client -t -sw
+
 #
 # Status Bar:
 #
@@ -255,10 +259,6 @@ bindsym $mod+Shift+n exec swaync-client -t -sw
 bar {
 	swaybar_command waybar
 }
-
-# Make GTK work
-exec dbus-sway-environment
-exec configure-gtk
 
 # Run bluetooth manager
 exec --no-startup-id blueman-applet

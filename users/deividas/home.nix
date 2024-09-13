@@ -75,6 +75,7 @@
     pkgs.discord
     pkgs-stable.slack
     pkgs.ledger-live-desktop
+    pkgs.protonvpn-gui
 
     # Go related packages
     pkgs.go

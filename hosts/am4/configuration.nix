@@ -86,6 +86,13 @@
     };
   };
 
+  # Enable pass secret service
+  services.passSecretService.enable = true;
+
+  # Enable the gnome-keyring secrets vault. 
+  # Will be exposed through DBus to programs willing to store secrets.
+  services.gnome.gnome-keyring.enable = true;
+
   # Enable OpenRGB
   services.hardware.openrgb.enable = true;
 
@@ -172,9 +179,6 @@
 
   # X server for interfacing X11 apps with the Wayland protocol
   programs.xwayland.enable = true;
-
-  # Highly customizable Wayland bar for Sway and Wlroots based compositors
-  programs.waybar.enable = true;
 
   # Enable nm-applet, a NetworkManager control applet for GNOME.
   programs.nm-applet.enable = true;
