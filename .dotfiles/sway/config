@@ -21,7 +21,7 @@ set $term foot
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu rofi -show drun
+set $menu rofi -show drun -show-icons
 
 ### Output configuration
 #
@@ -247,7 +247,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Fill password with 1Password
-bindsym Ctrl+backslash exec 1password --fill
+# bindsym Ctrl+backslash exec 1password --fill
 
 # Toggle control center
 bindsym $mod+Shift+n exec swaync-client -t -sw
