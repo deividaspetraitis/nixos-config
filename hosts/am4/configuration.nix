@@ -63,6 +63,9 @@
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
+  # Whether to enable all firmware regardless of license.
+  hardware.enableAllFirmware = true;
+
   # Enable i2c devices support.
   # By default access is granted to users in the “i2c” group (will be created if non-existent) and any user with a seat, meaning logged on the computer locally.
   hardware.i2c.enable = true;
@@ -71,18 +74,14 @@
   hardware.ledger.enable = true;
 
   # Enables support for Bluetooth
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = true; # powers up the default Bluetooth controller on boot
-    package = pkgs.bluez;
-    settings = {
-      # modern headsets will generally try to connect using the A2DP prof
-      General = {
-        Enable = "Source,Sink,Media,Socket";
-      };
+  hardware.bluetooth.enable = true; # enables support for Bluetooth
+  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+  hardware.bluetooth.settings = {
+    # Modern headsets will generally try to connect using the A2DP profile. 
+    General = {
+      Enable = "Source,Sink,Media,Socket";
     };
   };
-
   # Enable pass secret service
   services.passSecretService.enable = true;
 
