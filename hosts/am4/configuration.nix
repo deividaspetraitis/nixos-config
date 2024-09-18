@@ -145,6 +145,7 @@
 
     pavucontrol # PulseAudio Volume Control
 
+    time
     git
     wget
     htop
