@@ -13,9 +13,6 @@
       # Services
       ./swaywm.nix
 
-      # Programs
-      ../../programs/vim.nix
-
       ./hyprland.nix
     ];
 
