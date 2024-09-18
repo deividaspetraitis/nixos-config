@@ -1,7 +1,6 @@
-local actions = require("telescope.actions")
-local action_state = require("telescope.actions.state")
-
 local function fzf_multi_select(prompt_bufnr)
+	local actions = require("telescope.actions")
+	local action_state = require("telescope.actions.state")
 	local picker = action_state.get_current_picker(prompt_bufnr)
 	local num_selections = #picker:get_multi_selection()
 
@@ -37,6 +36,7 @@ return {
 
 	config = function()
 		local telescope = require("telescope")
+		local actions = require("telescope.actions")
 		telescope.load_extension("workspaces")
 		telescope.setup {
 			pickers = {

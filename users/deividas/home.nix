@@ -68,6 +68,7 @@
     pkgs.nix-prefetch-github
     pkgs.wrk
     pkgs.jq
+	pkgs.ripgrep
     pkgs.obsidian
     pkgs.chromium
     pkgs.synology-drive-client
@@ -82,6 +83,13 @@
     pkgs.delve
     pkgs.rr
     pkgs.golangci-lint
+
+	# Event-driven I/O framework for the V8 JavaScript engine
+	# programs: corepack node npm npx
+    pkgs.nodejs
+
+	# Python39
+    pkgs-stable.python39
 
     # DevOps
     pkgs.lychee
