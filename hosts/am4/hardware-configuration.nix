@@ -5,27 +5,38 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
+  boot.kernelModules = [
+    "drivetemp"
+    "kvm-amd"
+  ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/3186a0d2-29b6-4d71-8fbc-7373756cd175";
+    {
+      device = "/dev/disk/by-uuid/3186a0d2-29b6-4d71-8fbc-7373756cd175";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/8025-BCD8";
+    {
+      device = "/dev/disk/by-uuid/8025-BCD8";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/30f2f4ce-7805-4cf9-b342-43afe1b651d4"; }
+    [
+      { device = "/dev/disk/by-uuid/30f2f4ce-7805-4cf9-b342-43afe1b651d4"; }
+      {
+        device = "/var/swap"; # extra swap device, e.g. for hibernation
+        size = 16 * 1024; # 16GB
+      }
     ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

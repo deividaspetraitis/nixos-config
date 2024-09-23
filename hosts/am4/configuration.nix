@@ -20,6 +20,16 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Resume from file, if left empty, the swap partitions are used
+  boot.resumeDevice = "/dev/nvme0n1p3";
+
+  # Resume offset can be found with the following command:
+  # sudo filefrag -v /var/swap
+  boot.kernelParams = [
+    "resume=/var/swap"
+    "resume_offset=61270016"
+  ];
+
   networking.hostName = "am4"; # Define your hostname.
 
   # Pick only one of the below networking options.
@@ -63,8 +73,14 @@
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
+  hardware.amdgpu.amdvlk.enable = true;
+  hardware.amdgpu.initrd.enable = true;
+
   # Whether to enable all firmware regardless of license.
   hardware.enableAllFirmware = true;
+
+  # Whether to enable firmware with a license allowing redistribution.
+  hardware.enableRedistributableFirmware = true;
 
   # Enable i2c devices support.
   # By default access is granted to users in the “i2c” group (will be created if non-existent) and any user with a seat, meaning logged on the computer locally.
@@ -82,6 +98,11 @@
       Enable = "Source,Sink,Media,Socket";
     };
   };
+
+  # Whether to enable OpenGL drivers. 
+  hardware.graphics.enable = true;
+  hardware.graphics.enable32Bit = true;
+
   # Enable pass secret service
   services.passSecretService.enable = true;
 
@@ -153,6 +174,10 @@
     # This program allows you read and control device brightness on Linux.
     brightnessctl
 
+    # Tool for reading and parsing EDID data from monitors
+    read-edid
+    edid-decode
+
     # FUSE-based filesystem that allows remote filesystems to be mounted over SSH
     sshfs
 
@@ -161,6 +186,11 @@
     (callPackage ../../programs/cameractrls.nix { })
 
     protonup-qt
+
+    inxi
+    pciutils
+    lact
+    virtualgl
   ];
 
   # Whether to enable nix-ld, documentation: https://github.com/Mic92/nix-ld.
@@ -174,8 +204,6 @@
   #   enableSSHSupport = true;
   # };
 
-  # X server for interfacing X11 apps with the Wayland protocol
-  programs.xwayland.enable = true;
 
   # Enable nm-applet, a NetworkManager control applet for GNOME.
   programs.nm-applet.enable = true;

@@ -3,8 +3,9 @@
 {
   environment.systemPackages = with pkgs; [
     wayland
-	waybar # Highly customizable Wayland bar for Sway and Wlroots based compositors
-    wev  # wayland event viewer
+    kdePackages.qtwayland
+    waybar # Highly customizable Wayland bar for Sway and Wlroots based compositors
+    wev # wayland event viewer
     xdg-utils # for opening default programs when clicking links
     glib # gsettings
     glibc
@@ -21,6 +22,7 @@
     wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
     wdisplays # tool to configure displays
     wlr-randr
+    wayland-utils
   ];
 
   programs.sway = {
@@ -29,6 +31,9 @@
       gtk = true;
     };
   };
+
+  # X server for interfacing X11 apps with the Wayland protocol
+  programs.xwayland.enable = true;
 
   services.displayManager.defaultSession = "sway";
   services.displayManager.sddm.wayland.enable = true;
