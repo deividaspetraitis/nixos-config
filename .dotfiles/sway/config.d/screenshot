@@ -2,4 +2,4 @@
 bindsym $mod+Print exec grimshot --notify save output
 
 # Make a screenshot of the selected area and edit it
-bindsym $mod+p exec grim -g "$(slurp)" - | swappy -f - -o $(xdg-user-dir PICTURES)/$(date +'screenshot_%Y-%m-%d-%H%M%S.png')
+bindsym $mod+p exec grim -c -g "$(slurp)" - | swappy -f - -o $(xdg-user-dir PICTURES)/$(date +'screenshot_%Y-%m-%d-%H%M%S.png')
