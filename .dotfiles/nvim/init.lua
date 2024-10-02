@@ -2,7 +2,6 @@ require("settings")
 require("remap")
 require("config.lazy")
 
-
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
@@ -29,8 +28,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		opts.desc = "Show LSP type definitions"
 		vim.keymap.set("n", "<localleader>gt", "<cmd>Telescope lsp_type_definitions<CR>", opts)
 
-		-- opts.desc = "See available code actions"
-		-- keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
+		opts.desc = "See available code actions"
+		vim.keymap.set({ "n", "v" }, "<localleader>q", vim.lsp.buf.code_action, opts)
 
 		opts.desc = "Smart rename"
 		vim.keymap.set("n", "<localleader>r", vim.lsp.buf.rename, opts)
