@@ -181,6 +181,12 @@
     # FUSE-based filesystem that allows remote filesystems to be mounted over SSH
     sshfs
 
+    # Collection of common network programs
+    inetutils
+
+    # AMD
+    rocmPackages.clr
+
     # Generic graphical webcam configuration tool
     # TODO: move to pkgs, install as a user, not system wide?
     (callPackage ../../programs/cameractrls.nix { })
