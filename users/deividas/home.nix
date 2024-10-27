@@ -58,6 +58,11 @@
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
+
+    # Adjusts your screen to emit warmer light based on the time of day
+    pkgs.xflux
+    pkgs.xflux-gui
+	pkgs.libappindicator
     pkgs.gnumake
     pkgs.gcc
     pkgs.act
@@ -78,8 +83,12 @@
     pkgs.ledger-live-desktop
     pkgs.protonvpn-gui
 
+    # Lmstudio
+    pkgs.lmstudio
+
     # Go related packages
     pkgs.go
+    pkgs.protobuf
     pkgs.delve
     pkgs.rr
     pkgs.golangci-lint
@@ -88,12 +97,17 @@
     # programs: corepack node npm npx
     pkgs.nodejs
 
+    # The Rust toolchain installer
+    pkgs.rustup
+
     # Python39
-    pkgs-stable.python39
+    (pkgs-stable.python3.withPackages (ps: with ps; [
+      ps.jupyter
+    ]))
 
     # DevOps
     pkgs.lychee
-    pkgs.teleport
+    pkgs-stable.teleport
 
     # Useful utilities
     pkgs.usbutils
@@ -101,6 +115,7 @@
     pkgs.lz4
     pkgs.graphviz
     pkgs.fastfetch
+    pkgs.unixtools.xxd
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -318,8 +333,21 @@
       setopt PUSHD_IGNORE_DUPS
       setopt PUSHD_SILENT
 
-      # Disable sharing history across different panes.
-      setopt nosharehistory
+      # History
+      # http://zsh.sourceforge.net/Doc/Release/Options.html#History
+      setopt append_history          # append to history file
+      setopt extended_history        # write the history file in the ':start:elapsed;command' format
+      unsetopt hist_beep             # don't beep when attempting to access a missing history entry
+      setopt hist_find_no_dups       # don't display a previously found event
+      setopt hist_ignore_all_dups    # delete an old recorded event if a new event is a duplicate
+      setopt hist_ignore_dups        # don't record an event that was just recorded again
+      setopt hist_ignore_space       # don't record an event starting with a space
+      setopt hist_no_store           # don't store history commands
+      setopt hist_reduce_blanks      # remove superfluous blanks from each command line being added to the history list
+      setopt hist_save_no_dups       # don't write a duplicate event to the history file
+      setopt hist_verify             # don't execute immediately upon history expansion
+      setopt inc_append_history      # write to the history file immediately, not when the shell exits
+      setopt share_history           # share history between all sessions
 
       # Enable extended globbing
       setopt EXTENDED_GLOB
