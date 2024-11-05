@@ -60,9 +60,6 @@
     # '')
 
     # Adjusts your screen to emit warmer light based on the time of day
-    pkgs.xflux
-    pkgs.xflux-gui
-	pkgs.libappindicator
     pkgs.gnumake
     pkgs.gcc
     pkgs.act
@@ -82,6 +79,8 @@
     pkgs-stable.slack
     pkgs.ledger-live-desktop
     pkgs.protonvpn-gui
+    pkgs.kubectl
+    pkgs.direnv
 
     # Lmstudio
     pkgs.lmstudio
@@ -100,8 +99,8 @@
     # The Rust toolchain installer
     pkgs.rustup
 
-    # Python39
-    (pkgs-stable.python3.withPackages (ps: with ps; [
+    # Python
+    (pkgs.python3.withPackages (ps: with ps; [
       ps.jupyter
     ]))
 
@@ -395,7 +394,7 @@
       switch-user = "nix build '/home/deividas/nix-config/.#homeManagerConfigurations.deividas.activationPackage' --out-link /home/deividas/nix-config/result && /home/deividas/nix-config/result/activate";
       switch-system = "sudo nixos-rebuild switch --flake '/home/deividas/nix-config/.#'";
       switch-all = "switch-system && switch-user";
-      update-system = "nix flake update --commit-lock-file /home/deividas/nix-config";
+      update-system = "nix flake update --flake /home/deividas/nix-config --commit-lock-file";
     };
 
     history = {
