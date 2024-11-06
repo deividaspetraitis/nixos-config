@@ -6,6 +6,6 @@ return {
 		vim.g.vifm_replace_netrw = 1
 
 		-- Vifm leader mapping
-		vim.api.nvim_set_keymap('n', '<leader>m', ':FloatermNew vifm<CR>', { noremap = true, silent = true })
+		vim.api.nvim_set_keymap('n', '<leader>v', ':FloatermNew vifm<CR>', { noremap = true, silent = true })
 	end
 }

@@ -56,6 +56,9 @@ return {
 						}
 					}
 				},
+				lsp_document_symbols = {
+					symbol_width = 70
+				}
 			},
 			mappings = {
 				i = {
@@ -96,6 +99,7 @@ return {
 		vim.keymap.set('n', '<leader>r', builtin.lsp_references, {})
 		vim.keymap.set('n', '<leader>s', builtin.lsp_document_symbols, {})
 		vim.keymap.set('n', '<leader>b', builtin.buffers, {})
+		vim.keymap.set('n', '<leader>m', builtin.marks, {})
 		vim.keymap.set('n', '<leader>h', builtin.help_tags, {})
 		vim.keymap.set("n", "<leader>p", ":Telescope workspaces<CR>")
 	end
