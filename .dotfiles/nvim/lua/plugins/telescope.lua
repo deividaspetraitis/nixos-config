@@ -57,7 +57,7 @@ return {
 					}
 				},
 				lsp_document_symbols = {
-					symbol_width = 70
+					symbol_width = 80
 				}
 			},
 			mappings = {
