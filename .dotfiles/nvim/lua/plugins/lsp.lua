@@ -27,6 +27,7 @@ return {
 		require("mason").setup()
 		require("mason-lspconfig").setup({
 			ensure_installed = {
+				'bufls',
 				'gopls',
 				'lua_ls',
 				'pylsp',
@@ -43,7 +44,26 @@ return {
 						capabilities = capabilities
 					}
 				end,
-
+				["yamlls"] = function()
+					local lspconfig = require("lspconfig")
+					lspconfig.yamlls.setup {
+						on_attach = function(client, bufnr)
+							client.server_capabilities.documentFormattingProvider = true
+						end,
+						flags = lsp_flags,
+						capabilities = capabilities,
+						settings = {
+							yaml = {
+								format = {
+									enable = true
+								},
+								schemaStore = {
+									enable = true
+								}
+							}
+						}
+					}
+				end,
 				["lua_ls"] = function()
 					local lspconfig = require("lspconfig")
 					lspconfig.lua_ls.setup {
