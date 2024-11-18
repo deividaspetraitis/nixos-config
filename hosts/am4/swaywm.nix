@@ -16,6 +16,7 @@
     grim # screenshot functionality
     slurp # screenshot a region of the screen
     swappy # native snapshot and editor tool
+	libnotify # A library that sends desktop notifications to a notification daemon
     swaynotificationcenter # notification center for sway
     rofi # Rofi is a window switcher, application launcher and dmenu replacement
     wf-recorder # screen recorder for wlroots-based compositors
