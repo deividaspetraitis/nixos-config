@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Temporary filenames
-NAME=$(date +'recording_%Y-%m-%d-%H%M%S.png')
+NAME=$(date +'recording_%Y-%m-%d-%H%M%S')
 VIDEO_FILE="/tmp/$NAME.mp4"
 GIF_FILE="$HOME/Documents/$NAME.gif"
 STATUS_FILE="/tmp/wf-recorder-status"
@@ -38,7 +38,7 @@ wf-recorder -g "$GEOMETRY" -f "$VIDEO_FILE"
 notify-send "Recording stopped. Converting to GIF..."
 
 # Convert the video to GIF
-ffmpeg -i "$VIDEO_FILE" -vf "fps=15,scale=640:-1:flags=lanczos" -c:v gif "$GIF_FILE"
+ffmpeg -i "$VIDEO_FILE" -vf "fps=15" -c:v gif "$GIF_FILE"
 
 if [ $? -ne 0 ]; then
     notify-send "Error" "Failed to convert video to GIF."
