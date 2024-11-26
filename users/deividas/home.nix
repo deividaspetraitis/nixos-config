@@ -73,6 +73,7 @@
     pkgs.ripgrep
     pkgs.obsidian
     pkgs.chromium
+    pkgs.jellyfin-ffmpeg
     pkgs.synology-drive-client
     pkgs.telegram-desktop
     pkgs.discord
