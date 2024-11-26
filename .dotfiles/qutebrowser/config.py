@@ -2578,6 +2578,6 @@ def nunmap(key):
 
 
 # Json formatter {{{
-    c.aliases['format-json'] = 'spawn --userscript format_json'
-    nmap(leader + 'f', 'format-json')
+c.aliases['format-json'] = 'spawn --userscript format_json'
+nmap(leader + 'f', 'format-json')
 # }}}
