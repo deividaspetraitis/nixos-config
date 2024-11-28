@@ -104,3 +104,24 @@ vim.opt.foldlevelstart = 1
 
 -- Display a small column to visually indicate folds
 vim.opt.foldcolumn = '2'
+
+-- Generate a unique directory for backup and swap files based on the current working directory
+local function get_project_tmp_dir()
+  local project_dir = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h")
+  local tmp_dir = vim.fn.expand("~/.local/share/vim/") .. vim.fn.sha256(project_dir)
+  local swap_dir = tmp_dir .. "/swap"
+  local backup_dir = tmp_dir .. "/backup"
+  if vim.fn.isdirectory(swap_dir) == 0 then
+    vim.fn.mkdir(swap_dir, "p")
+  end
+  if vim.fn.isdirectory(backup_dir) == 0 then
+    vim.fn.mkdir(backup_dir, "p")
+  end
+  return tmp_dir
+end
+
+local project_tmp_dir = get_project_tmp_dir()
+
+-- Set backup and swap file directories
+vim.opt.backupdir = project_tmp_dir .. "/backup" .. ",."
+vim.opt.directory = project_tmp_dir .. "/swap" .. ",."
