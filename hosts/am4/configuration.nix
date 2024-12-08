@@ -148,13 +148,9 @@
   # Installing fonts on NixOS.
   # Be aware that sometimes font names and packages name differ and there is no universal convention in NixOS.
   fonts.packages = with pkgs; [
-    (nerdfonts.override {
-      fonts = [
-        "SpaceMono"
-        "JetBrainsMono"
-        "DejaVuSansMono"
-      ];
-    })
+    nerd-fonts.space-mono
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.dejavu-sans-mono
   ];
 
   # List packages installed in system profile. To search, run:
@@ -193,6 +189,8 @@
 
     protonup-qt
 
+    ncdu
+    i2c-tools
     inxi
     pciutils
     lact
