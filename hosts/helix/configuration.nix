@@ -52,7 +52,7 @@
   # Note that modules that are needed to mount the root file system should be added to boot.initrd.availableKernelModules or boot.initrd.kernelModules.
   # boot.kernelModules = [ ];
 
-  # networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "helix"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
@@ -90,7 +90,7 @@
   # services.printing.enable = true;
 
   # Enable sound.
-  sound.enable = true;
+  # sound.enable = true;
   # hardware.pulseaudio.enable = true;
 
   # Enable i2c devices support.
@@ -112,7 +112,6 @@
 
   hardware.opengl = {
     enable = true;
-    driSupport = true;
     extraPackages = with pkgs; [
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
       vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
@@ -145,7 +144,9 @@
   # Installing fonts on NixOS.
   # Be aware that sometimes font names and packages name differ and there is no universal convention in NixOS.
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.space-mono
+    nerd-fonts.dejavu-sans-mono
   ];
 
   # List packages installed in system profile. To search, run:

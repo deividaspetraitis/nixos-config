@@ -130,7 +130,7 @@
         ];
       };
 
-      "nixos" = nixpkgs.lib.nixosSystem {
+      "helix" = nixpkgs.lib.nixosSystem {
         inherit system;
         # nixpkgs = nixpkgs;
 
@@ -176,7 +176,7 @@
         modules = [
           # Overlays-module makes "pkgs.unstable" available in configuration.nix
           ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-stable ]; })
-          ./hosts/nixos/configuration.nix
+          ./hosts/helix/configuration.nix
         ];
       };
 

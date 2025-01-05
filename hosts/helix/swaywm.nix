@@ -43,27 +43,28 @@ let
 in
 {
   environment.systemPackages = with pkgs; [
-    dbus-sway-environment
-    configure-gtk
     wayland
+    kdePackages.qtwayland
+    waybar # Highly customizable Wayland bar for Sway and Wlroots based compositors
+    wev # wayland event viewer
     xdg-utils # for opening default programs when clicking links
     glib # gsettings
     glibc
-    libva-utils
-    glxinfo
     dracula-theme # gtk theme
-    adwaita-icon-theme  # default gnome cursors
+    adwaita-icon-theme # default gnome cursors
     swaylock
     swayidle
-    swayidle
     grim # screenshot functionality
-    mako # notification system developed by swaywm maintainer
-    waybar
-    wf-recorder
+    slurp # screenshot a region of the screen
+    swappy # native snapshot and editor tool
+	libnotify # A library that sends desktop notifications to a notification daemon
+    swaynotificationcenter # notification center for sway
+    rofi # Rofi is a window switcher, application launcher and dmenu replacement
+    wf-recorder # screen recorder for wlroots-based compositors
     wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
-    wofi
     wdisplays # tool to configure displays
     wlr-randr
+    wayland-utils
   ];
 
   programs.sway = {
@@ -71,25 +72,6 @@ in
     wrapperFeatures = {
       gtk = true;
     };
-  };
-
-  # Enable the X11 windowing system.
-  services.xserver = {
-    enable = true;
-    displayManager = {
-      defaultSession = "sway";
-      # gdm.enable = true;
-      # gdm.wayland = true;
-      sddm.enable = true;
-      sessionCommands = ''
-        ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
-      '';
-
-    };
-    # Enable touchpad support (enabled default in most desktopManager).
-    libinput.enable = true;
-
-    videoDrivers = [ "intel" "displaylink" "modesetting" ];
   };
 
   environment = {
@@ -116,8 +98,4 @@ in
       xdg-desktop-portal-gtk
     ];
   };
-
-  programs.waybar.enable = true;
-  programs.xwayland.enable = true;
 }
-
