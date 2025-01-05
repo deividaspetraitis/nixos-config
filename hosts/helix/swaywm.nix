@@ -50,6 +50,7 @@ in
     xdg-utils # for opening default programs when clicking links
     glib # gsettings
     glibc
+	libinput # input device management
     dracula-theme # gtk theme
     adwaita-icon-theme # default gnome cursors
     swaylock
