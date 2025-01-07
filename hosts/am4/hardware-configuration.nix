@@ -19,15 +19,21 @@
 
   fileSystems."/" =
     {
-      device = "/dev/disk/by-uuid/3186a0d2-29b6-4d71-8fbc-7373756cd175";
+      device = "/dev/disk/by-label/nixos";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
     {
-      device = "/dev/disk/by-uuid/8025-BCD8";
+      device = "/dev/disk/by-label/boot";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
+    };
+
+  fileSystems."/osmosis" =
+    {
+      device = "/dev/disk/by-label/osmosis";
+      fsType = "ext4";
     };
 
   swapDevices =
