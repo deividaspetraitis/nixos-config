@@ -39,21 +39,16 @@ return {
 		local actions = require("telescope.actions")
 		telescope.load_extension("workspaces")
 		telescope.setup {
-			defaults = {
-				file_ignore_patterns = {
-					".git",
-					"node_modules"
-				}
-			},
 			pickers = {
 				find_files = {
-					hidden = true
+					hidden = true,
+					file_ignore_patterns = { "%.git/" } -- Ignore .git directory
 				},
 				grep_string = {
-					additional_args = { "--hidden" }
+					additional_args = { "--hidden", "--glob", "!.git/**" }
 				},
 				live_grep = {
-					additional_args = { "--hidden" }
+					additional_args = { "--hidden", "--glob", "!.git/**" }
 				},
 				buffers = {
 					mappings = {

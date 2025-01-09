@@ -1,6 +1,6 @@
 return {
 	"neovim/nvim-lspconfig",
-	tag = "v1.0.0",
+	tag = "v1.3.0",
 	dependencies = {
 		"williamboman/mason.nvim",
 		"williamboman/mason-lspconfig.nvim",
@@ -25,9 +25,9 @@ return {
 
 		require("fidget").setup({})
 		require("mason").setup()
+
 		require("mason-lspconfig").setup({
 			ensure_installed = {
-				'bufls',
 				'gopls',
 				'lua_ls',
 				'pylsp',
