@@ -45,10 +45,10 @@ return {
 					file_ignore_patterns = { "%.git/" } -- Ignore .git directory
 				},
 				grep_string = {
-					additional_args = { "--hidden", "--glob", "!.git/**" }
+					additional_args = { "--hidden", "--glob", "!.git/**", "--fixed-strings", "--ignore-case" }
 				},
 				live_grep = {
-					additional_args = { "--hidden", "--glob", "!.git/**" }
+					additional_args = { "--hidden", "--glob", "!.git/**", "--fixed-strings", "--ignore-case" }
 				},
 				buffers = {
 					mappings = {
