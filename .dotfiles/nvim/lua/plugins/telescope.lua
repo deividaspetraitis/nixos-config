@@ -1,19 +1,3 @@
-local function fzf_multi_select(prompt_bufnr)
-	local actions = require("telescope.actions")
-	local action_state = require("telescope.actions.state")
-	local picker = action_state.get_current_picker(prompt_bufnr)
-	local num_selections = #picker:get_multi_selection()
-
-	if num_selections > 1 then
-		-- actions.file_edit throws - context of picker seems to change
-		--actions.file_edit(prompt_bufnr)
-		actions.send_selected_to_qflist(prompt_bufnr)
-		actions.open_qflist()
-	else
-		actions.file_edit(prompt_bufnr)
-	end
-end
-
 function vim.getVisualSelection()
 	vim.cmd('noau normal! "vy"')
 	local text = vim.fn.getreg('v')
@@ -31,14 +15,26 @@ return {
 	"nvim-telescope/telescope.nvim",
 	tag = "0.1.8",
 	dependencies = {
-		"nvim-lua/plenary.nvim"
+		"nvim-lua/plenary.nvim",
+		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" }
 	},
 
 	config = function()
 		local telescope = require("telescope")
 		local actions = require("telescope.actions")
+
 		telescope.load_extension("workspaces")
+		telescope.load_extension("fzf")
 		telescope.setup {
+			extensions = {
+				fzf = {
+					fuzzy = true,    -- false will only do exact matching
+					override_generic_sorter = true, -- override the generic sorter
+					override_file_sorter = true, -- override the file sorter
+					case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+					-- the default case_mode is "smart_case"
+				}
+			},
 			pickers = {
 				find_files = {
 					hidden = true,
@@ -61,20 +57,6 @@ return {
 					symbol_width = 80
 				}
 			},
-			mappings = {
-				i = {
-					-- close on escape
-					["<esc>"] = actions.close,
-					["<tab>"] = actions.toggle_selection + actions.move_selection_next,
-					["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
-					["<cr>"] = fzf_multi_select
-				},
-				n = {
-					["<tab>"] = actions.toggle_selection + actions.move_selection_next,
-					["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
-					["<cr>"] = fzf_multi_select
-				}
-			},
 		}
 
 		local builtin = require('telescope.builtin')
@@ -83,9 +65,8 @@ return {
 		vim.keymap.set('n', '<leader>F', function()
 			local current_dir = vim.fn.expand('%:p:h')
 			builtin.find_files({
-				prompt_title = "Git Files in " .. vim.fn.fnamemodify(current_dir, ":t"),
+				prompt_title = "Files in " .. vim.fn.fnamemodify(current_dir, ":t"),
 				cwd = current_dir,
-				find_command = { 'git', 'ls-files', '--exclude-standard', '--cached', '--others' },
 			})
 		end, {})
 		vim.keymap.set('n', '<leader>g', builtin.live_grep, {})
