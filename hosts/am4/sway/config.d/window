@@ -10,6 +10,7 @@ for_window [window_type="menu"] floating enable
 
 # Move windows to workspaces
 for_window [app_id="org.qutebrowser.qutebrowser"] move container to workspace 1
+for_window [instance="obsidian"] move container to workspace 1
 for_window [instance="slack"] move container to workspace 3
 for_window [app_id="foot"] move container to workspace 2
 
