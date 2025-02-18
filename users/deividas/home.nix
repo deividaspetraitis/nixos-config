@@ -81,7 +81,9 @@
     pkgs.ledger-live-desktop
     pkgs.protonvpn-gui
     pkgs.kubectl
+    pkgs.k9s
     pkgs.direnv
+	pkgs.datadog-agent
 
     # Lmstudio
     pkgs.lmstudio
@@ -103,6 +105,7 @@
     # Python
     (pkgs.python3.withPackages (ps: with ps; [
       ps.jupyter
+	  ps.ledgerwallet
     ]))
 
     # DevOps
