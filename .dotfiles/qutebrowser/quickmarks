@@ -3,5 +3,6 @@ Nix: Packages https://search.nixos.org/packages
 Nix Homemager: Options https://home-manager-options.extranix.com/?
 Mainnet snapshots https://snapshots.osmosis.zone/index.html
 SQS https://github.com/osmosis-labs/sqs
+Osmosis https://github.com/osmosis-labs/osmosis
 Infra https://github.com/osmosis-labs/infrastructure
 Datadog https://us5.datadoghq.com/apm/home
