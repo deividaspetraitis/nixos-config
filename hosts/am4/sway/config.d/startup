@@ -1,0 +1,16 @@
+# Run bluetooth manager
+exec --no-startup-id blueman-applet
+
+# Run synology drive
+exec --no-startup-id synology-drive
+
+# Run 1password
+exec --no-startup-id 1password --silent
+
+# Notification Daemon
+exec swaync
+
+# Launch programs at the startup
+exec $term
+exec $browser
+exec slack

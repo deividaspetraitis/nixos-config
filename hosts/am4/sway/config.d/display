@@ -1,0 +1,4 @@
+# Disable laptop display on lid close.
+set $laptop eDP-1
+bindswitch --locked lid:on output $laptop disable
+bindswitch --locked lid:off output $laptop enable

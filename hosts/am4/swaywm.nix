@@ -49,8 +49,8 @@
 
   environment = {
     etc = {
-      "sway/config".source = ../../.dotfiles/sway/config;
-      "sway/conf.d".source = ../../.dotfiles/sway/config.d;
+      "sway/config".source = ./sway/config;
+      "sway/conf.d".source = ./sway/config.d;
       "sway/swaync".source = ../../.dotfiles/swaync/config.json;
       "xdg/waybar/config".source = ../../.dotfiles/waybar/config;
       "xdg/waybar/style.css".source = ../../.dotfiles/waybar/style.css;
