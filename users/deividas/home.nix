@@ -83,7 +83,7 @@
     pkgs.kubectl
     pkgs.k9s
     pkgs.direnv
-	pkgs.datadog-agent
+    pkgs.datadog-agent
 
     # Lmstudio
     pkgs.lmstudio
@@ -95,6 +95,9 @@
     pkgs.rr
     pkgs.golangci-lint
 
+    # Databases
+    pkgs.postgresql
+
     # Event-driven I/O framework for the V8 JavaScript engine
     # programs: corepack node npm npx
     pkgs.nodejs
@@ -105,7 +108,7 @@
     # Python
     (pkgs.python3.withPackages (ps: with ps; [
       ps.jupyter
-	  ps.ledgerwallet
+      ps.ledgerwallet
     ]))
 
     # DevOps
