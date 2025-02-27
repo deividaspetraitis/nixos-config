@@ -95,9 +95,6 @@
     pkgs.rr
     pkgs.golangci-lint
 
-    # Databases
-    pkgs.postgresql
-
     # Event-driven I/O framework for the V8 JavaScript engine
     # programs: corepack node npm npx
     pkgs.nodejs
