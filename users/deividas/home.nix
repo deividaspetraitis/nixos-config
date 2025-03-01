@@ -58,6 +58,7 @@
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
+	(import ./scripts/osmostat.nix { inherit pkgs; })
 
     # Adjusts your screen to emit warmer light based on the time of day
     pkgs.gnumake
