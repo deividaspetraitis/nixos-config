@@ -114,6 +114,7 @@
     pkgs-stable.teleport
 
     # Useful utilities
+    pkgs.file
     pkgs.usbutils
     pkgs.unzip
     pkgs.lz4
