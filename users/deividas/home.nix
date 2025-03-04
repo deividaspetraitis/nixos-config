@@ -367,6 +367,14 @@
       # Enable CTRL-P CTRL-N
       bindkey "^P" up-line-or-search
       bindkey "^N" down-line-or-search
+
+	  # Open editor with CTRL-X
+      open_editor() {
+          $EDITOR "$@"
+      }
+      
+      zle -N open_editor  # Register as a Zsh widget
+      bindkey "^X" open_editor  # Bind Ctrl+X
       
       # By default zsh yanks to its own internal registers.
       # Luckily, like in Vim, it's fairly simple yank to the system clipboard.
