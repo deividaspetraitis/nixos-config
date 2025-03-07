@@ -86,6 +86,7 @@
     pkgs.k9s
     pkgs.direnv
     pkgs.datadog-agent
+	pkgs.harlequin
 
     # Lmstudio
     pkgs.lmstudio
