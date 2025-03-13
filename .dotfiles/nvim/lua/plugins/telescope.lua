@@ -16,7 +16,8 @@ return {
 	tag = "0.1.8",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
-		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" }
+		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+		"jmacadie/telescope-hierarchy.nvim",
 	},
 
 	config = function()
@@ -24,6 +25,7 @@ return {
 		local actions = require("telescope.actions")
 
 		telescope.load_extension("workspaces")
+		require("telescope").load_extension("hierarchy")
 		telescope.load_extension("fzf")
 		telescope.setup {
 			extensions = {
@@ -33,7 +35,11 @@ return {
 					override_file_sorter = true, -- override the file sorter
 					case_mode = "smart_case", -- or "ignore_case" or "respect_case"
 					-- the default case_mode is "smart_case"
-				}
+				},
+				hierarchy = {
+					-- telescope-hierarchy.nvim config
+					multi_depth = 10, -- How many layers deep should a multi-expand go?
+				},
 			},
 			pickers = {
 				find_files = {
@@ -79,10 +85,12 @@ return {
 			builtin.grep_string({ search = word })
 		end)
 		vim.keymap.set('n', '<leader>r', builtin.lsp_references, {})
+		vim.keymap.set("n", "<leader>hi", ":Telescope hierarchy incoming_calls<CR>")
+		vim.keymap.set("n", "<leader>ho", ":Telescope hierarchy outgoing_calls<CR>")
 		vim.keymap.set('n', '<leader>s', builtin.lsp_document_symbols, {})
 		vim.keymap.set('n', '<leader>b', builtin.buffers, {})
 		vim.keymap.set('n', '<leader>m', builtin.marks, {})
-		vim.keymap.set('n', '<leader>h', builtin.help_tags, {})
+		vim.keymap.set('n', '<leader>he', builtin.help_tags, {})
 		vim.keymap.set("n", "<leader>p", ":Telescope workspaces<CR>")
 	end
 }
