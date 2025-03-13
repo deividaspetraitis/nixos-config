@@ -72,6 +72,7 @@
     pkgs.nix-prefetch-github
     pkgs.wrk
     pkgs.jq
+	pkgs.yq
     pkgs.ripgrep
     pkgs.obsidian
     pkgs.chromium
