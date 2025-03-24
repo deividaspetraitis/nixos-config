@@ -44,6 +44,22 @@ return {
 						capabilities = capabilities
 					}
 				end,
+				["gopls"] = function()
+					local lspconfig = require("lspconfig")
+					lspconfig.gopls.setup {
+						capabilities = capabilities,
+						settings = {
+							gopls = {
+								analyses = {
+									unusedparams = true,
+									modernize = true,
+								},
+								staticcheck = true,
+								gofumpt = true,
+							},
+						},
+					}
+				end,
 				["yamlls"] = function()
 					local lspconfig = require("lspconfig")
 					lspconfig.yamlls.setup {
