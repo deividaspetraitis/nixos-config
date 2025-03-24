@@ -62,6 +62,7 @@
 	(import ./scripts/osmodenomliq.nix { inherit pkgs; })
 
     # Adjusts your screen to emit warmer light based on the time of day
+	pkgs.openssl
     pkgs.gnumake
     pkgs.gcc
     pkgs.act
