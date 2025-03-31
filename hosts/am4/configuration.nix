@@ -111,7 +111,11 @@
   services.gnome.gnome-keyring.enable = true;
 
   # Enable OpenRGB
-  services.hardware.openrgb.enable = true;
+  services.hardware.openrgb = {
+    enable = true;
+    motherboard = "amd";
+    package = pkgs.openrgb-with-all-plugins; # enable all plugins
+  };
 
   # Enable sound.
   # hardware.pulseaudio.enable = true;
@@ -135,6 +139,10 @@
       "networkmanager"
       "wireshark"
       "docker" # Provide them access to the socket
+      "i2c"
+    ];
+    openssh.authorizedKeys.keys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDa2OjDgz4VVeOLQTNjpXrLsYIX8XtJOKicgfvhOXpeCoZlMQl0mTCU80rrgLZCckoDMCGB2GRrajs3mwYvX6HSAJgXKIUpGFqVcNHigI6eNXv5dXhJ4Tw1fJl6xgInLqt6IpzYnONKiMM2ZZvNErTa/NuI5upRlpROPyn3EWbVUVTQ/cfppz7aCijoVCrkmNldpepXu8rYlyTnCWF8xZNDyL+ZYAxq2Kap5J9oIgJbqIXZqjtO0pp5oJQC64ExA8QVakC4UH9x9uzDSnvInIG8Ri3v2Jg5IFBCdGBpnK3YUU7YVVkIJ9QBLjDHyqWgrr/0p5lF+Iid6+jfY/OSieTP"
     ];
     packages = with pkgs; [
       tree
@@ -161,6 +169,7 @@
 
     pavucontrol # PulseAudio Volume Control
 
+    i2c-tools
     time
     git
     wget
@@ -266,8 +275,9 @@
       SUBSYSTEM=="usbmon", GROUP="wireshark", MODE="0640"
     '';
   };
+
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -276,6 +286,14 @@
   # networking.firewall.enable = false;
   networking.firewall = {
     enable = true;
+    allowedTCPPorts = [
+      22 # SSH
+    ];
+
+    # If you intend to route all your traffic through the wireguard tunnel, the default configuration 
+    # of the NixOS firewall will block the traffic because of rpfilter.
+    checkReversePath = "loose";
+
     extraCommands = ''
               iptables -I INPUT 1 -s 172.16.0.0/12 -p tcp -d 172.17.0.1 -j ACCEPT
               iptables -I INPUT 2 -s 172.16.0.0/12 -p udp -d 172.17.0.1 -j ACCEPT
