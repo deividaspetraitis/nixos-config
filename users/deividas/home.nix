@@ -60,6 +60,7 @@
     # '')
 	(import ./scripts/osmostat.nix { inherit pkgs; })
 	(import ./scripts/osmodenomliq.nix { inherit pkgs; })
+	(import ./scripts/osmodenom.nix { inherit pkgs; })
 
     # Adjusts your screen to emit warmer light based on the time of day
 	pkgs.openssl
@@ -81,7 +82,7 @@
     pkgs.synology-drive-client
     pkgs.telegram-desktop
     pkgs.discord
-    pkgs-stable.slack
+    pkgs.slack
     pkgs.ledger-live-desktop
     pkgs.protonvpn-gui
     pkgs.kubectl
@@ -115,7 +116,7 @@
 
     # DevOps
     pkgs.lychee
-    pkgs-stable.teleport
+    pkgs.teleport
 
     # Useful utilities
     pkgs.file
