@@ -11,6 +11,6 @@ pkgs.writeShellScriptBin "osmodenom" ''
 
   ${pkgs.curl}/bin/curl -s "$URL" | ${pkgs.jq}/bin/jq -r --arg denom "$DENOM" '
     .assets[] 
-    | select(.variantGroupKey == $denom) 
+    | select(.coinMinimalDenom == $denom)
   '
 ''
