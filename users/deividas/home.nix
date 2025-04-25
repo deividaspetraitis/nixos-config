@@ -84,7 +84,7 @@
     pkgs.discord
     pkgs.slack
     pkgs.ledger-live-desktop
-    pkgs.protonvpn-gui
+    pkgs-stable.protonvpn-gui
     pkgs.kubectl
     pkgs.k9s
     pkgs.direnv
@@ -99,7 +99,7 @@
     pkgs.protobuf
     pkgs.delve
     pkgs.rr
-    pkgs.golangci-lint
+    pkgs-stable.golangci-lint
 
     # Event-driven I/O framework for the V8 JavaScript engine
     # programs: corepack node npm npx
