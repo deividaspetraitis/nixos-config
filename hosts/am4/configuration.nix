@@ -96,6 +96,10 @@
     # Modern headsets will generally try to connect using the A2DP profile. 
     General = {
       Enable = "Source,Sink,Media,Socket";
+      Experimental = "true";
+    };
+    Policy = {
+      AutoEnable = "true";
     };
   };
 
