@@ -1,49 +1,89 @@
 { pkgs }:
 
 pkgs.writeShellScriptBin "osmodenomliq" ''
-  # Check if at least one argument (DENOM) is provided
-  if [[ -z "$1" ]]; then
-  	echo "Usage: $0 <DENOM> [GRPC_ADDR]"
-  	exit 1
-  fi
+  	  # Default values
+  	  GRPC_ADDR="grpc.osmosis.zone:443"
+  	  VERBOSE=false
 
-  # Set DENOM from first argument
-  DENOM="$1"
+  	  # Print usage/help
+  	  usage() {
+  		echo "Usage: $0 <DENOM> [--grpc-addr <GRPC_ADDR>] [--verbose]"
+  		echo ""
+  		echo "Arguments:"
+  		echo "  DENOM          (required) Denomination string (e.g., uosmo)"
+  		echo ""
+  		echo "Options:"
+  		echo "  --grpc-addr    (optional) gRPC address (default: grpc.osmosis.zone:443)"
+  		echo "  --verbose      (optional) Enable verbose output"
+  		exit 1
+  	  }
 
-  # Set GRPC_ADDR from second argument or default to osmosis-grpc.publicnode.com:443
-  GRPC_ADDR="''${2:-grpc.osmosis.zone:443}"
+  	  # Check for at least one argument
+  	  if [[ $# -lt 1 ]]; then
+  		echo "Error: DENOM argument is required"
+  		usage
+  	  fi
 
-  echo "Using DENOM: $DENOM"
-  echo "Using GRPC_ADDR: $GRPC_ADDR"
+  	  # First argument is DENOM
+  	  DENOM="$1"
+  	  shift
 
-  # Get the list of pool IDs and addresses together
-  POOLS_JSON=$(osmosisd query poolmanager list-pools-by-denom "$DENOM" --grpc-addr $GRPC_ADDR -o json)
+  	  # Parse flags
+  	  while [[ $# -gt 0 ]]; do
+  		case "$1" in
+  		  --grpc-addr)
+  			GRPC_ADDR="$2"
+  			shift 2
+  			;;
+  		  --verbose)
+  			VERBOSE=true
+  			shift
+  			;;
+  		  -*|--*)
+  			echo "Unknown option: $1"
+  			usage
+  			;;
+  		  *)
+  			echo "Unexpected argument: $1"
+  			usage
+  			;;
+  		esac
+  	  done
 
-  # Extract pool IDs and addresses as key-value pairs
-  mapfile -t POOL_LIST < <(echo "$POOLS_JSON" | jq -r '.pools[] | "\(.id // .pool_id) \(.address // .contract_address)"')
+      echo "Using DENOM: $DENOM"
+      echo "Using GRPC_ADDR: $GRPC_ADDR"
 
-  TOTAL_AMOUNT=0
+      # Get the list of pool IDs and addresses together
+      POOLS_JSON=$(osmosisd query poolmanager list-pools-by-denom "$DENOM" --grpc-addr $GRPC_ADDR -o json)
 
-  # Loop through each pool and extract information
-  for POOL_ENTRY in "''${POOL_LIST[@]}"; do
-      # Extract Pool ID and Address
-      POOL_ID=$(echo "$POOL_ENTRY" | awk '{print $1}')
-      POOL_ADDRESS=$(echo "$POOL_ENTRY" | awk '{print $2}')
+      # Extract pool IDs and addresses as key-value pairs
+      mapfile -t POOL_LIST < <(echo "$POOLS_JSON" | ${pkgs.jq}/bin/jq -r '.pools[] | "\(.id // .pool_id) \(.address // .contract_address)"')
 
-      # Query balances for the pool address
-      BALANCE_JSON=$(osmosisd query bank balances "$POOL_ADDRESS" --grpc-addr $GRPC_ADDR -o json 2>&1) # 2>&1 redirects stderr to stdout
+      TOTAL_AMOUNT=0
 
-      # Extract the amount for the specific denom
-      AMOUNT=$(echo "$BALANCE_JSON" | jq -r --arg DENOM "$DENOM" '.balances[] | select(.denom == $DENOM) | .amount')
+      # Loop through each pool and extract information
+      for POOL_ENTRY in "''${POOL_LIST[@]}"; do
+          # Extract Pool ID and Address
+          POOL_ID=$(echo "$POOL_ENTRY" | awk '{print $1}')
+          POOL_ADDRESS=$(echo "$POOL_ENTRY" | awk '{print $2}')
 
-      echo "Pool ID: $POOL_ID, Address: $POOL_ADDRESS, Amount: $AMOUNT"
+          # Query balances for the pool address
+          BALANCE_JSON=$(osmosisd query bank balances "$POOL_ADDRESS" --grpc-addr $GRPC_ADDR -o json 2>&1) # 2>&1 redirects stderr to stdout
 
-      # If amount exists, add it to total
-      if [[ -n "$AMOUNT" && "$AMOUNT" != "null" ]]; then
-  		TOTAL_AMOUNT=$(awk "BEGIN {print $TOTAL_AMOUNT + $AMOUNT}")
-          # TOTAL_AMOUNT=$((TOTAL_AMOUNT + AMOUNT))
-      fi
-  done
+          # Extract the amount for the specific denom
+          AMOUNT=$(echo "$BALANCE_JSON" | ${pkgs.jq}/bin/jq -r --arg DENOM "$DENOM" '.balances[] | select(.denom == $DENOM) | .amount')
 
-  echo "Total amount of $DENOM across all pools: $TOTAL_AMOUNT"
+          echo "Pool ID: $POOL_ID, Address: $POOL_ADDRESS, Amount: $AMOUNT"
+    	  if [[ $VERBOSE == true ]]; then
+    		  echo "Balances for pool address $POOL_ADDRESS:"
+    		  echo "$BALANCE_JSON" | ${pkgs.jq}/bin/jq
+    	  fi
+
+          # If amount exists, add it to total
+          if [[ -n "$AMOUNT" && "$AMOUNT" != "null" ]]; then
+      		TOTAL_AMOUNT=$(awk "BEGIN {print $TOTAL_AMOUNT + $AMOUNT}")
+          fi
+      done
+
+      echo "Total amount of $DENOM across all pools: $TOTAL_AMOUNT"
 ''
