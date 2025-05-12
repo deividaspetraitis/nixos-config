@@ -1152,7 +1152,9 @@ for site in ALLOW_JAVASCRIPT_WEBSITES:
 # - disallow: Disallows all navigation requests to URLs with unknown schemes.
 # - allow-from-user-interaction: Allows navigation requests to URLs with unknown schemes that are issued from user-interaction (like a mouse-click), whereas other navigation requests (for example from JavaScript) are suppressed.
 # - allow-all: Allows all navigation requests to URLs with unknown schemes.
-# c.content.unknown_url_scheme_policy = 'allow-from-user-interaction'
+c.content.unknown_url_scheme_policy = 'allow-from-user-interaction'
+with config.pattern('*.slack.com') as p:
+     p.content.unknown_url_scheme_policy = 'allow-all'
 
 # List of user stylesheet filenames to use.
 # Type: List of File, or File
