@@ -45,14 +45,15 @@ vim.opt.exrc = true
 
 -- Keep a backup copy of a file when overwriting it.
 if vim.fn.has("vms") == 1 then
-  vim.opt.backup = false
+	vim.opt.backup = false
 else
-  vim.opt.backup = true
-  vim.opt.patchmode = ".orig"
-  if vim.fn.has("persistent_undo") == 1 then
-    -- Maintain undo history between sessions
-    vim.opt.undofile = true
-  end
+	vim.opt.backup = true
+	-- Do not keep the oldest version of a file
+	-- vim.opt.patchmode = ".orig"
+	if vim.fn.has("persistent_undo") == 1 then
+		-- Maintain undo history between sessions
+		vim.opt.undofile = true
+	end
 end
 
 -- Append working directory to the PATH, so we can use find to search project files recursively.
@@ -77,11 +78,11 @@ vim.opt.listchars = { tab = "▸ ", eol = "¬" }
 
 -- Yank to system clipboard
 if vim.fn.system('uname -s') == "Darwin\n" then
-  -- OSX
-  vim.opt.clipboard = "unnamed"
+	-- OSX
+	vim.opt.clipboard = "unnamed"
 else
-  -- Linux
-  vim.opt.clipboard = "unnamedplus"
+	-- Linux
+	vim.opt.clipboard = "unnamedplus"
 end
 
 -- Tweak escape time from INSERT mode to NORMAL to switch instantly with no delay
@@ -105,23 +106,17 @@ vim.opt.foldlevelstart = 1
 -- Display a small column to visually indicate folds
 vim.opt.foldcolumn = '2'
 
--- Generate a unique directory for backup and swap files based on the current working directory
-local function get_project_tmp_dir()
-  local project_dir = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h")
-  local tmp_dir = vim.fn.expand("~/.local/share/vim/") .. vim.fn.sha256(project_dir)
-  local swap_dir = tmp_dir .. "/swap"
-  local backup_dir = tmp_dir .. "/backup"
-  if vim.fn.isdirectory(swap_dir) == 0 then
-    vim.fn.mkdir(swap_dir, "p")
-  end
-  if vim.fn.isdirectory(backup_dir) == 0 then
-    vim.fn.mkdir(backup_dir, "p")
-  end
-  return tmp_dir
+-- Set backup and swap file directories
+vim.opt.backupdir = vim.fn.expand("~/.local/state/nvim//backup//")
+vim.opt.directory = vim.fn.expand("~/.local/state/nvim/swap//")
+vim.opt.undodir = vim.fn.expand("~/.local/state/nvim/undo//")
+
+local function ensure_dir(dir)
+	if vim.fn.isdirectory(dir) == 0 then
+		vim.fn.mkdir(dir, "p")
+	end
 end
 
-local project_tmp_dir = get_project_tmp_dir()
-
--- Set backup and swap file directories
-vim.opt.backupdir = project_tmp_dir .. "/backup" .. ",."
-vim.opt.directory = project_tmp_dir .. "/swap" .. ",."
+ensure_dir(vim.opt.backupdir:get()[1])
+ensure_dir(vim.opt.directory:get()[1])
+ensure_dir(vim.opt.undodir:get()[1])
