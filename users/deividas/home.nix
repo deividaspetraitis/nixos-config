@@ -230,14 +230,6 @@
       bind -n C-h run-shell "if $is_vim ; then tmux send-keys C-h; else tmux select-pane -L; fi"
       bind -n C-l run-shell "if $is_vim ; then tmux send-keys C-l; else tmux select-pane -R; fi"
 
-      # Split window/panes
-
-      # Default: split window horizontally
-      unbind-key \"
-
-      bind s split-window -d
-      bind v split-window -h
-
       # Tmux copy mode as Vim
       bind P paste-buffer
       bind-key -T copy-mode-vi v send-keys -X begin-selection
@@ -250,24 +242,28 @@
 
       # Source config
 
-      bind r source-file ~/.config/tmux/tmux.conf \; display-message "Config sourced..."
+
+      bind r source-file ${config.home.homeDirectory}/${config.xdg.configFile."tmux/tmux.conf".target}  \; display-message "Config sourced..."
     '';
     plugins = with pkgs; [
       {
         plugin = tmuxPlugins.resurrect;
         extraConfig = ''
-          set -g @resurrect-strategy-vim 'session'
+           set -g @resurrect-strategy-vim 'session'
 
-          resurrect_dir="$HOME/.tmux/resurrect"
-          set -g @resurrect-dir $resurrect_dir
-          set -g @resurrect-hook-post-save-all "~/nix-config/users/deividas/scripts/tmux/post_save.sh $resurrect_dir/last"
+           resurrect_dir="$HOME/.tmux/resurrect"
+           set -g @resurrect-dir $resurrect_dir
+           set -g @resurrect-hook-post-save-all "${config.home.homeDirectory}/nix-config/users/${config.home.username}/scripts/tmux/post_save.sh $resurrect_dir/last"
+
+          set -g @resurrect-save 'S'
+          set -g @resurrect-restore 'R'
         '';
       }
       {
         plugin = tmuxPlugins.continuum;
         extraConfig = ''
           set -g @continuum-restore 'on'
-          set -g @continuum-save-interval '5' # minutes
+          set -g @continuum-save-interval '1' # minutes
         '';
       }
     ];
@@ -411,10 +407,10 @@
 
     shellAliases = {
       # Nix related
-      switch-user = "nix build '/home/deividas/nix-config/.#homeManagerConfigurations.deividas.activationPackage' --out-link /home/deividas/nix-config/result && /home/deividas/nix-config/result/activate";
-      switch-system = "sudo nixos-rebuild switch --flake '/home/deividas/nix-config/.#'";
+      switch-user = "nix build '${config.home.homeDirectory}/nix-config/.#homeManagerConfigurations.${config.home.username}.activationPackage' --out-link ${config.home.homeDirectory}/nix-config/result && ${config.home.homeDirectory}/nix-config/result/activate";
+      switch-system = "sudo nixos-rebuild switch --flake '${config.home.homeDirectory}/nix-config/.#'";
       switch-all = "switch-system && switch-user";
-      update-system = "nix flake update --flake /home/deividas/nix-config --commit-lock-file";
+      update-system = "nix flake update --flake ${config.home.homeDirectory}/nix-config --commit-lock-file";
     };
 
     history = {
