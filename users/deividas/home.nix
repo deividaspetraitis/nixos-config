@@ -312,7 +312,7 @@
   # Enable GPG Agent
   services.gpg-agent = {
     enable = true;
-    pinentryPackage = pkgs.pinentry-qt;
+    pinentry.package = pkgs.pinentry-qt;
     defaultCacheTtl = 46000;
     extraConfig = ''
       allow-preset-passphrase
