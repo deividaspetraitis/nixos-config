@@ -244,7 +244,7 @@
       bind s choose-tree -sZ -O name
 
       # List all windows by a name
-      bind s choose-tree -wZ -O name
+      bind w choose-tree -wZ -O name
 
       # Source config
       bind r source-file ${config.home.homeDirectory}/${config.xdg.configFile."tmux/tmux.conf".target}  \; display-message "Config sourced..."
