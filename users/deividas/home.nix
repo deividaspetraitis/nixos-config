@@ -432,7 +432,6 @@
       enable = true;
       plugins = [
         { name = "zpm-zsh/colorize"; }
-        { name = "owenvoke/quoter-zsh"; }
         { name = "zsh-users/zsh-autosuggestions"; }
         { name = "zsh-users/zsh-syntax-highlighting"; tags = [ defer:2 ]; }
         { name = "romkatv/powerlevel10k"; tags = [ as:theme depth:1 ]; }
