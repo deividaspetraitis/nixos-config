@@ -35,7 +35,7 @@ vim.opt.relativenumber = true
 
 -- Status line
 vim.opt.laststatus = 2
--- vim.opt.statusline = "" -- TODO
+vim.opt.statusline = "%<%f %h%w%m%r%=%{ObsessionStatus()} %-14.(%l,%c%V%) %P"
 
 -- Mark the line the cursor is currently in
 vim.opt.cursorline = true
