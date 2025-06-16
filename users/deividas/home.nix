@@ -253,11 +253,15 @@
       {
         plugin = tmuxPlugins.resurrect;
         extraConfig = ''
-           set -g @resurrect-strategy-vim 'session'
+          set -g @resurrect-strategy-vim 'session'
 
-           resurrect_dir="$HOME/.tmux/resurrect"
-           set -g @resurrect-dir $resurrect_dir
-           set -g @resurrect-hook-post-save-all "${config.home.homeDirectory}/nix-config/users/${config.home.username}/scripts/tmux/post_save.sh $resurrect_dir/last"
+          resurrect_dir="$HOME/.tmux/resurrect"
+          set -g @resurrect-dir $resurrect_dir
+          set -g @resurrect-hook-post-save-all "${config.home.homeDirectory}/nix-config/users/${config.home.username}/scripts/tmux/post_save.sh $resurrect_dir/last"
+
+          set -g @resurrect-processes 'nvim "-S"'
+          set -g @resurrect-processes '~nix-shell "--run'
+          set -g @resurrect-processes '"~osmosisd start"'
 
           set -g @resurrect-save 'S'
           set -g @resurrect-restore 'R'
