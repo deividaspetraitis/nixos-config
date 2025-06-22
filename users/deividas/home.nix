@@ -198,6 +198,17 @@
     ];
   };
 
+  # Enable and setup opnix module.
+  programs.onepassword-secrets = {
+    enable = true;
+    secrets = [
+      {
+        path = ".config/wireguard/private.key";
+        reference = "op://development/wireguard-am4/private.key";
+      }
+    ];
+  };
+
   # XDG are defaults for some of the programs.
   xdg.userDirs = {
     enable = true;

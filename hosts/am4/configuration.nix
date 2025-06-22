@@ -129,6 +129,17 @@
     pulse.enable = true;
   };
 
+  # Enable the 1Password secrets service.
+  services.onepassword-secrets = {
+    enable = true;
+    users = [ "deividas" ]; # Users that need secret access
+    tokenFile = "/etc/opnix-token"; # Default location
+    configFile = pkgs.writeText "opnix-config.json" (builtins.toJSON {
+      secrets = [ ]; # no system secrets
+    });
+    outputDir = "/var/lib/opnix/secrets"; # Optional, this is the default
+  };
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
 
@@ -144,6 +155,7 @@
       "wireshark"
       "docker" # Provide them access to the socket
       "i2c"
+      "onepassword-secrets"
     ];
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDa2OjDgz4VVeOLQTNjpXrLsYIX8XtJOKicgfvhOXpeCoZlMQl0mTCU80rrgLZCckoDMCGB2GRrajs3mwYvX6HSAJgXKIUpGFqVcNHigI6eNXv5dXhJ4Tw1fJl6xgInLqt6IpzYnONKiMM2ZZvNErTa/NuI5upRlpROPyn3EWbVUVTQ/cfppz7aCijoVCrkmNldpepXu8rYlyTnCWF8xZNDyL+ZYAxq2Kap5J9oIgJbqIXZqjtO0pp5oJQC64ExA8QVakC4UH9x9uzDSnvInIG8Ri3v2Jg5IFBCdGBpnK3YUU7YVVkIJ9QBLjDHyqWgrr/0p5lF+Iid6+jfY/OSieTP"
