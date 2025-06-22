@@ -68,17 +68,15 @@
     pkgs.gcc
     pkgs.act
     pkgs.git-crypt
-    pkgs.qutebrowser
     pkgs.pcmanfm
     pkgs.vifm
     pkgs.nix-prefetch-github
     pkgs.wrk
     pkgs.jq
+    pkgs.jd-diff-patch
     pkgs.yq
     pkgs.ripgrep
     pkgs.obsidian
-    pkgs.chromium
-    pkgs.brave
     pkgs.jellyfin-ffmpeg
     pkgs.synology-drive-client
     pkgs.telegram-desktop
@@ -86,11 +84,16 @@
     pkgs.slack
     pkgs.ledger-live-desktop
     pkgs-stable.protonvpn-gui
-    pkgs.kubectl
-    pkgs.k9s
     pkgs.direnv
-    pkgs.datadog-agent
     pkgs.harlequin
+
+    # Browsers
+    pkgs.qutebrowser
+    pkgs.chromium
+    pkgs.brave
+
+    # Networking
+    pkgs.nmap
 
     # Lmstudio
     pkgs.lmstudio
@@ -118,6 +121,9 @@
     # DevOps
     pkgs.lychee
     pkgs.teleport
+    pkgs.kubectl
+    pkgs.k9s
+    pkgs.datadog-agent
 
     # Useful utilities
     pkgs.file
