@@ -91,7 +91,7 @@
     pkgs.wireguard-tools
 
     # Browsers
-    pkgs.qutebrowser
+    pkgs-stable.qutebrowser
     pkgs.chromium
     pkgs.brave
 
@@ -126,7 +126,7 @@
     pkgs.teleport
     pkgs.kubectl
     pkgs.k9s
-    pkgs.datadog-agent
+    pkgs-stable.datadog-agent
 
     # Useful utilities
     pkgs.file

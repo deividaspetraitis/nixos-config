@@ -194,7 +194,7 @@
     inetutils
 
     # AMD
-    rocmPackages.clr
+    stable.rocmPackages.clr
 
     # Generic graphical webcam configuration tool
     # TODO: move to pkgs, install as a user, not system wide?
