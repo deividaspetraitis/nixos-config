@@ -83,9 +83,12 @@
     pkgs.discord
     pkgs.slack
     pkgs.ledger-live-desktop
-    pkgs-stable.protonvpn-gui
     pkgs.direnv
     pkgs.harlequin
+
+    # VPNs
+    pkgs-stable.protonvpn-gui
+    pkgs.wireguard-tools
 
     # Browsers
     pkgs.qutebrowser
