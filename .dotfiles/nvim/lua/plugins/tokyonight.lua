@@ -1,3 +1,5 @@
+-- A dark and light Neovim theme written in Lua ported from the Visual Studio Code TokyoNight theme
+-- https://github.com/folke/tokyonight.nvim
 return {
 	-- the colorscheme should be available when starting Neovim
 	{

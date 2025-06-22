@@ -1,3 +1,6 @@
+-- A better user experience for interacting with and manipulating Vim marks
+-- https://github.com/chentoast/marks.nvim
+-- See :help marks-setup
 return {
 	"chentoast/marks.nvim",
 
