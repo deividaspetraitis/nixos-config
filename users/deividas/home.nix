@@ -206,6 +206,11 @@
         path = ".config/wireguard/private.key";
         reference = "op://development/wireguard-am4/private.key";
       }
+      {
+
+        path = ".config/wireguard/preshared.key";
+        reference = "op://development/wireguard-am4/preshared.key";
+      }
     ];
   };
 
