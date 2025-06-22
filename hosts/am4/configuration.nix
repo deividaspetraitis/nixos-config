@@ -304,6 +304,7 @@
     enable = true;
     allowedTCPPorts = [
       22 # SSH
+      51820 # Clients and peers can use the same port, see listenport
     ];
 
     # If you intend to route all your traffic through the wireguard tunnel, the default configuration 
