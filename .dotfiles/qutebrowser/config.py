@@ -2579,6 +2579,11 @@ def nunmap(key):
 # }}}
 
 
+# Sessions management {{{
+nmap(leader + 'sl', ':cmd-set-text -s :session-load ')
+nmap(leader + 'ss', ':cmd-set-text -s :session-save ')
+# }}}
+
 # Json formatter {{{
 c.aliases['format-json'] = 'spawn --userscript format_json'
 nmap(leader + 'f', 'format-json')
