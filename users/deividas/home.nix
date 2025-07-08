@@ -133,6 +133,7 @@
     pkgs.usbutils
     pkgs.unzip
     pkgs.lz4
+    pkgs.pv
     pkgs.graphviz
     pkgs.fastfetch
     pkgs.unixtools.xxd
@@ -395,6 +396,7 @@
        # Enable Vi mode
        bindkey -v
        bindkey "^?" backward-delete-char # Fix modes N -> I -> I backspace  not working
+       bindkey -M viins '^W' backward-kill-word
 
        export KEYTIMEOUT=1 # timeout for switching between INSERT/NORMAL modes
 
