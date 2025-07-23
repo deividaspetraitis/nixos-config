@@ -16,6 +16,8 @@
 
     # Official NixOS package source, using 25.05 branch here
     nixpkgs-stable.url = "nixpkgs/nixos-25.05";
+
+    # Home manager
     home-manager = {
       url = "github:nix-community/home-manager/master";
       # The `follows` keyword in inputs is used for inheritance.
@@ -29,6 +31,10 @@
     # Opnixs is a secure integration between 1Password and NixOS for managing secrets 
     # during system builds and home directory setup.
     opnix.url = "github:brizzbuzz/opnix";
+
+    # 1Password Shell Plugins allows securely authenticate third-party CLIs with fingerprint, Apple Watch, or system authentication.
+    # CLI credentials are stored in 1Password account, so you never have to manually enter your credentials or store them in plaintext.
+    _1password-shell-plugins.url = "github:1Password/shell-plugins";
 
     # Nix hardware quirks channel.
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
@@ -44,7 +50,7 @@
   # 
   # The `@` syntax here is used to alias the attribute set of the
   # inputs's parameter, making it convenient to use inside the function.
-  outputs = { self, nixpkgs, nixpkgs-stable, opnix, nixos-hardware, home-manager, ... }:
+  outputs = { self, nixpkgs, nixpkgs-stable, opnix, nixos-hardware, home-manager, ... } @ inputs:
     let
       # Target system
       system = "x86_64-linux";
@@ -69,6 +75,8 @@
         };
         overlays = [ overlay-stable ];
       };
+
+      inherit (self) outputs;
 
     in
     {
@@ -200,7 +208,7 @@
 
       homeManagerConfigurations = {
         deividas = home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = { inherit pkgs-stable; };
+          extraSpecialArgs = { inherit pkgs-stable inputs outputs; };
           pkgs = pkgs;
           modules = [
             opnix.homeManagerModules.default

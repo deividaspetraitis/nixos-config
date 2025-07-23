@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs-stable, xdg, lib, ... }:
+{ config, pkgs, pkgs-stable, xdg, inputs, lib, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -199,18 +199,29 @@
     ];
   };
 
+
+  imports = [inputs._1password-shell-plugins.hmModules.default];
+
+  # Enable and setup 1Password shell plugins
+  programs._1password-shell-plugins = {
+    # enable 1Password shell plugins for bash, zsh, and fish shell
+    enable = true;
+    # the specified packages as well as 1Password CLI will be
+    # automatically installed and configured to use shell plugins
+    plugins = with pkgs; [ gh ];
+  };
+
   # Enable and setup opnix module.
   programs.onepassword-secrets = {
     enable = true;
     secrets = [
       {
         path = ".config/wireguard/private.key";
-        reference = "op://development/wireguard-am4/private.key";
+        reference = "op://am4/wireguard-am4/private.key";
       }
       {
-
         path = ".config/wireguard/preshared.key";
-        reference = "op://development/wireguard-am4/preshared.key";
+        reference = "op://am4/wireguard-am4/preshared.key";
       }
     ];
   };
@@ -442,7 +453,7 @@
 
     shellAliases = {
       # Nix related
-      switch-user = "nix build '${config.home.homeDirectory}/nix-config/.#homeManagerConfigurations.${config.home.username}.activationPackage' --out-link ${config.home.homeDirectory}/nix-config/result && ${config.home.homeDirectory}/nix-config/result/activate";
+      switch-user = "nix build --show-trace '${config.home.homeDirectory}/nix-config/.#homeManagerConfigurations.${config.home.username}.activationPackage' --out-link ${config.home.homeDirectory}/nix-config/result && ${config.home.homeDirectory}/nix-config/result/activate";
       switch-system = "sudo nixos-rebuild switch --flake '${config.home.homeDirectory}/nix-config/.#'";
       switch-all = "switch-system && switch-user";
       update-system = "nix flake update --flake ${config.home.homeDirectory}/nix-config --commit-lock-file";
