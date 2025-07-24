@@ -129,17 +129,6 @@
     pulse.enable = true;
   };
 
-  # Enable the 1Password secrets service.
-  services.onepassword-secrets = {
-    enable = true;
-    users = [ "deividas" ]; # Users that need secret access
-    tokenFile = "/etc/opnix-token"; # Default location
-    configFile = pkgs.writeText "opnix-config.json" (builtins.toJSON {
-      secrets = [ ]; # no system secrets
-    });
-    outputDir = "/var/lib/opnix/secrets"; # Optional, this is the default
-  };
-
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
 

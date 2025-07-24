@@ -1,6 +1,13 @@
 { config, pkgs, pkgs-stable, xdg, inputs, lib, ... }:
 
 {
+  nixpkgs.overlays = [
+    (import ../../modules/home-manager/overlays/textual.nix
+      {
+        pinnedTextual = inputs."pinned-textual-nixpkgs";
+      })
+  ];
+
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "deividas";
@@ -84,7 +91,6 @@
     pkgs.slack
     pkgs.ledger-live-desktop
     pkgs.direnv
-    pkgs.harlequin
 
     # VPNs
     pkgs-stable.protonvpn-gui
@@ -200,7 +206,7 @@
   };
 
 
-  imports = [inputs._1password-shell-plugins.hmModules.default];
+  imports = [ inputs._1password-shell-plugins.hmModules.default ];
 
   # Enable and setup 1Password shell plugins
   programs._1password-shell-plugins = {
@@ -214,16 +220,16 @@
   # Enable and setup opnix module.
   programs.onepassword-secrets = {
     enable = true;
-    secrets = [
-      {
+    secrets = {
+      wireguardPrivateKey = {
         path = ".config/wireguard/private.key";
         reference = "op://am4/wireguard-am4/private.key";
-      }
-      {
+      };
+      wireguardPresharedKey = {
         path = ".config/wireguard/preshared.key";
         reference = "op://am4/wireguard-am4/preshared.key";
-      }
-    ];
+      };
+    };
   };
 
   # XDG are defaults for some of the programs.
