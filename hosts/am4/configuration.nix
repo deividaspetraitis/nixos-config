@@ -282,7 +282,13 @@
   };
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    ports = [ 22 ]; # Default SSH port
+    settings = {
+      PasswordAuthentication = false; # Disable password authentication
+    };
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -292,7 +298,6 @@
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [
-      22 # SSH
       51820 # Clients and peers can use the same port, see listenport
     ];
 
@@ -305,6 +310,16 @@
               iptables -I INPUT 2 -s 172.16.0.0/12 -p udp -d 172.17.0.1 -j ACCEPT
       	'';
   };
+
+  # Wireless interface routes configuration
+  # networking.interfaces.wlo1.ipv4.routes = [
+  #   # Route to the WireGuard network
+  #   {
+  #     address = "10.0.0.0/24";
+  #     prefixLength = 24;
+  #     via = "192.168.0.1";
+  #   }
+  # ];
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
