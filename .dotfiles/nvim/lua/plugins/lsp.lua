@@ -1,6 +1,8 @@
+-- Data only repo providing basic, default Nvim LSP client configurations for various LSP servers.
+-- https://github.com/neovim/nvim-lspconfig
 return {
 	"neovim/nvim-lspconfig",
-	tag = "v2.3.0",
+	tag = "v2.4.0",
 	dependencies = {
 		"williamboman/mason.nvim",
 		"williamboman/mason-lspconfig.nvim",

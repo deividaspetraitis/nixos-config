@@ -2,6 +2,13 @@ require("settings")
 require("remap")
 require("config.lazy")
 
+vim.api.nvim_create_autocmd("VimResume", {
+  callback = function()
+    vim.cmd("mode")
+  end,
+  desc = "Fix terminal redraw issues when returning to Neovim caused by hrsh7th/nvim-cmp in tmux terminal",
+})
+
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
