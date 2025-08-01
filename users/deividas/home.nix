@@ -198,6 +198,7 @@
   programs.neovim = {
     enable = true;
     extraConfig = lib.fileContents ../../.dotfiles/nvim/init.lua;
+    package = pkgs.neovim-unwrapped;
     plugins = with pkgs; [
     ];
     extraPackages = with pkgs; [
@@ -250,7 +251,7 @@
     baseIndex = 1;
 
     # Set the $TERM variable.
-    terminal = "xterm-256color";
+    terminal = "tmux-256color";
 
     # Time in milliseconds for which tmux waits after an escape is input.
     # Default escape time of 1s is not acceptable as a Vim user in order to be capable
@@ -262,6 +263,8 @@
 
     # Additional configuration to add to tmux.conf.
     extraConfig = ''
+      set-option -ga terminal-overrides ",tmux-256color:RGB"
+
       # Act like Vim
       # ###########################################################################
       is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
