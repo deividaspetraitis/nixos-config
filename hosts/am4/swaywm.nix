@@ -24,6 +24,7 @@
     wdisplays # tool to configure displays
     wlr-randr
     wayland-utils
+	libinput # Library for handling input devices in Wayland compositors
   ];
 
   programs.sway = {
