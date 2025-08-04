@@ -191,6 +191,9 @@
     # FUSE-based filesystem that allows remote filesystems to be mounted over SSH
     sshfs
 
+	# Command-line utility and library for controlling media players that implement MPRIS
+	playerctl
+
     # Collection of common network programs
     inetutils
 
