@@ -15,7 +15,7 @@ return {
 	},
 	{
 		"mfussenegger/nvim-dap",
-		tag = "0.8.0",
+		tag = "0.10.0",
 		dependencies = {
 			"rcarriga/nvim-dap-ui",
 			"nvim-neotest/nvim-nio",
@@ -60,7 +60,7 @@ return {
 						-- log_file_level = false,
 
 						-- Logging level for output to console. Set to false to disable console output.
-						-- log_console_level = vim.log.levels.ERROR,
+						-- log_console_level = vim.log.levels.DEBUG,
 					})
 				end,
 			},
@@ -103,6 +103,15 @@ return {
 
 			for _, language in ipairs(js_based_languages) do
 				dap.configurations[language] = {
+					{
+						type = "pwa-node",
+						request = "launch",
+						name = "Next.js Node Debug",
+						runtimeExecutable = "${workspaceFolder}/node_modules/next/dist/bin/next",
+						cwd = "${workspaceFolder}/packages/web",
+						sourceMaps = true,
+					},
+
 					-- Debug single nodejs files
 					{
 						type = "pwa-node",
@@ -114,8 +123,20 @@ return {
 					},
 					-- Debug web applications (client side)
 					{
+						type = "pwa-chrome", -- Can also use 'chrome' for Chrome, or 'pwa-chrome' for Chromium
+						request = "attach", -- Change from 'launch' to 'attach'
+						name = "Attach to Chromium",
+						port = 9222, -- This should match the port you specified when launching Chromium
+						webRoot = vim.fn.getcwd(), -- Make sure this points to the root of your project
+						protocol = "inspector",
+						sourceMaps = true,
+						userDataDir = false, -- Optional, set it if you want to avoid session conflicts
+					},
+					-- Debug web applications (client side)
+					{
 						type = "pwa-chrome",
 						request = "launch",
+						port = 9222,
 						name = "Launch & Debug Chrome",
 						url = function()
 							local co = coroutine.running()
@@ -155,7 +176,7 @@ return {
 			-- help dap.txt
 			vim.keymap.set('n', '<leader>d~', function() dapui.toggle() end)
 			vim.keymap.set('n', '<leader>dd', function() dap.disconnect() end)
-			vim.keymap.set('n', '<leader>dr', function() dap.run_last({terminateDebugee=false}) end)
+			vim.keymap.set('n', '<leader>dr', function() dap.run_last({ terminateDebugee = false }) end)
 			vim.keymap.set('n', '<leader>dx', function() dap.repl.open() end)
 			vim.keymap.set('n', '<leader>dt', function() require('dap-go').debug_test() end)
 			vim.keymap.set('n', '<leader>dl', function() require('dap-go').debug_last_test() end)
