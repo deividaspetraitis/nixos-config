@@ -24,7 +24,7 @@ set $browser qutebrowser
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu rofi -show drun -show-icons
+set $menu rofi -show drun -show-icons -transient-window
 
 ### Output configuration
 #
@@ -95,6 +95,12 @@ input "7504:24926:ZMK_Project_ThinkCorne_Mouse" {
 
 	# Set mouse sensitivity (between -1 and 1)
     pointer_accel 1
+}
+
+# Keyboard input settings
+input type:keyboard {
+    xkb_layout us,lt
+    xkb_options grp:ctrl_space_toggle
 }
 
 # Example configuration:

@@ -145,6 +145,7 @@
       "docker" # Provide them access to the socket
       "i2c"
       "onepassword-secrets"
+      "input"
     ];
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDa2OjDgz4VVeOLQTNjpXrLsYIX8XtJOKicgfvhOXpeCoZlMQl0mTCU80rrgLZCckoDMCGB2GRrajs3mwYvX6HSAJgXKIUpGFqVcNHigI6eNXv5dXhJ4Tw1fJl6xgInLqt6IpzYnONKiMM2ZZvNErTa/NuI5upRlpROPyn3EWbVUVTQ/cfppz7aCijoVCrkmNldpepXu8rYlyTnCWF8xZNDyL+ZYAxq2Kap5J9oIgJbqIXZqjtO0pp5oJQC64ExA8QVakC4UH9x9uzDSnvInIG8Ri3v2Jg5IFBCdGBpnK3YUU7YVVkIJ9QBLjDHyqWgrr/0p5lF+Iid6+jfY/OSieTP"
@@ -191,8 +192,8 @@
     # FUSE-based filesystem that allows remote filesystems to be mounted over SSH
     sshfs
 
-	# Command-line utility and library for controlling media players that implement MPRIS
-	playerctl
+    # Command-line utility and library for controlling media players that implement MPRIS
+    playerctl
 
     # Collection of common network programs
     inetutils
