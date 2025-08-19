@@ -30,13 +30,13 @@
         "clock#time"
     ],
     "modules-right": [
+        "sway/scratchpad",
         "network",
+        "privacy",
         "memory",
         "cpu",
         "temperature",
         "wireplumber",
-        "battery",
-        "privacy",
         "custom/keyboard-layout",
         "tray"
     ],
@@ -198,6 +198,14 @@
 				"tooltip-icon-size": 24
 			}
 		]
+	},
+
+	"sway/scratchpad": {
+		"format": "{icon} {count}",
+		"show-empty": false,
+		"format-icons": ["", ""],
+		"tooltip": true,
+		"tooltip-format": "{app}: {title}"
 	},
 
 	"tray": {

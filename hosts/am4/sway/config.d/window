@@ -14,7 +14,9 @@ for_window [instance="obsidian"] move container to workspace 1
 for_window [instance="slack"] move container to workspace 3
 for_window [app_id="foot"] move container to workspace 2
 
+# Setup scratchpad windows
+# for_window [class="1Password"] move to scratchpad, resize set 1024 768
+
 # Inhibit idle
 for_window [app_id="Chromium"] inhibit_idle fullscreen
 for_window [app_id="org.qutebrowser.qutebrowser"] inhibit_idle fullscreen
-
