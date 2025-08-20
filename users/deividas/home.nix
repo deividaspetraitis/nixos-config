@@ -183,6 +183,9 @@
   # if you don't want to manage your shell through Home Manager.
 
   home.sessionVariables = {
+    # Reference OpNix-managed secrets in environment
+    ANTHROPIC_API_KEY = "$(cat ${config.home.homeDirectory}/.config/anthropic/api-key)";
+
     # Default editor
     EDITOR = "nvim";
     VISUAL = "nvim";
@@ -223,13 +226,24 @@
   # https://github.com/brizzbuzz/opnix/blob/main/docs/getting-started.md
   programs.onepassword-secrets = {
     enable = true;
-	# tokenFile = "/etc/opnix-token";
-	tokenFile = "${config.home.homeDirectory}/.config/opnix/token";
+    # tokenFile = "/etc/opnix-token";
+    tokenFile = "${config.home.homeDirectory}/.config/opnix/token";
+
     secrets = {
+      # Anthropic API key
+      anthropicToken = {
+        reference = "op://am4/Anthropic/api-key";
+        path = ".config/anthropic/api-key";
+        mode = "0600";
+      };
+
+      # WireGuard private key
       wireguardPrivateKey = {
         path = ".config/wireguard/private.key";
         reference = "op://am4/wireguard-am4/private.key";
       };
+
+      # WireGuard preshared key
       wireguardPresharedKey = {
         path = ".config/wireguard/preshared.key";
         reference = "op://am4/wireguard-am4/preshared.key";

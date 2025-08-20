@@ -36,7 +36,6 @@
     # CLI credentials are stored in 1Password account, so you never have to manually enter your credentials or store them in plaintext.
     _1password-shell-plugins.url = "github:1Password/shell-plugins";
 
-
 	# Pinning python3.13-textual to a specific commit since it is broken in the latest version.
 	# See: https://github.com/NixOS/nixpkgs/issues/425335
     pinned-textual-nixpkgs.url = "github:nixos/nixpkgs/9b008d60392981ad674e04016d25619281550a9d";
