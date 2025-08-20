@@ -220,8 +220,11 @@
   };
 
   # Enable and setup opnix module.
+  # https://github.com/brizzbuzz/opnix/blob/main/docs/getting-started.md
   programs.onepassword-secrets = {
     enable = true;
+	# tokenFile = "/etc/opnix-token";
+	tokenFile = "${config.home.homeDirectory}/.config/opnix/token";
     secrets = {
       wireguardPrivateKey = {
         path = ".config/wireguard/private.key";
