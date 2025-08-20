@@ -157,6 +157,7 @@
     ".config/gitconfig" = { source = ../../.dotfiles/gitconfig; recursive = true; };
     ".config/qutebrowser" = { source = ../../.dotfiles/qutebrowser; recursive = true; };
     ".config/vifm" = { source = ../../.dotfiles/vifm; recursive = true; };
+    ".config/rofi" = { source = ../../.dotfiles/rofi; recursive = true; };
     ".config/foot" = { source = ../../.dotfiles/foot; recursive = true; };
     ".config/zsh" = { source = ../../.dotfiles/zsh; recursive = true; };
     ".config/hypr" = { source = ../../.dotfiles/hypr; recursive = true; };
