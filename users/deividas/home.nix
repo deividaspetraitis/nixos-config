@@ -1,13 +1,6 @@
 { config, pkgs, pkgs-stable, xdg, inputs, lib, ... }:
 
 {
-  nixpkgs.overlays = [
-    (import ../../modules/home-manager/overlays/textual.nix
-      {
-        pinnedTextual = inputs."pinned-textual-nixpkgs";
-      })
-  ];
-
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "deividas";
