@@ -90,7 +90,7 @@
     pkgs.wireguard-tools
 
     # Browsers
-    pkgs-stable.qutebrowser
+    pkgs.qutebrowser
     pkgs.chromium
     pkgs.brave
 
