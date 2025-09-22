@@ -1,11 +1,14 @@
 # Run bluetooth manager
-exec --no-startup-id blueman-applet
+exec blueman-applet
 
 # Run synology drive
-exec --no-startup-id synology-drive
+exec synology-drive
 
 # Run 1password
-exec --no-startup-id 1password --silent
+exec 1password --silent
+
+# Run Screen color temperature manager
+exec gammastep-indicator
 
 # Notification Daemon
 exec swaync

@@ -85,6 +85,9 @@
     pkgs.ledger-live-desktop
     pkgs.direnv
 
+    # Screen color temperature manager
+    pkgs.gammastep
+
     # VPNs
     pkgs-stable.protonvpn-gui
     pkgs.wireguard-tools
@@ -155,6 +158,7 @@
     ".config/zsh" = { source = ../../.dotfiles/zsh; recursive = true; };
     ".config/hypr" = { source = ../../.dotfiles/hypr; recursive = true; };
     ".config/nvim" = { source = ../../.dotfiles/nvim; recursive = true; };
+    ".config/gammastep" = { source = ../../.dotfiles/gammastep; recursive = true; };
     ".vim/after" = { source = ../../.dotfiles/vim/after; recursive = true; };
 
     # # You can also set the file content immediately.
