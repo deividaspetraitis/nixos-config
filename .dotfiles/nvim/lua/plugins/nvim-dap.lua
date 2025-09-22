@@ -15,13 +15,8 @@ return {
 	},
 	{
 		"mfussenegger/nvim-dap",
-		tag = "0.10.0",
 		dependencies = {
-			"rcarriga/nvim-dap-ui",
-			"nvim-neotest/nvim-nio",
-			"nvim-telescope/telescope-dap.nvim",
-			"theHamsta/nvim-dap-virtual-text",
-			"leoluz/nvim-dap-go",
+			{ "leoluz/nvim-dap-go" },
 			{
 				"microsoft/vscode-js-debug",
 				-- After install, build it and rename the dist directory to out
@@ -64,14 +59,34 @@ return {
 					})
 				end,
 			},
+			{ "igorlfs/nvim-dap-view" },
+			{ "theHamsta/nvim-dap-virtual-text" },
 		},
 		config = function()
-			local dap, dapui = require("dap"), require("dapui")
+			require('dap-view').setup {
+				winbar = {
+					show = true,
+					default_section = "scopes",
+				},
+				windows = {
+					terminal = {
+						hide = { "delve" },
+					},
+					anchor = function()
+						-- proof of concept, can be tweaked
+						local windows = vim.api.nvim_tabpage_list_wins(0)
 
-			dapui.setup({})
+						for _, win in ipairs(windows) do
+							local bufnr = vim.api.nvim_win_get_buf(win)
+							if vim.bo[bufnr].buftype == "terminal" then
+								return win
+							end
+						end
+					end,
+					height = math.ceil(vim.o.lines / 3),
+				},
+			}
 
-			-- Load the dap extension for telescope
-			require('telescope').load_extension('dap')
 			require('dap-go').setup({
 				-- options related to running closest test
 				tests = {
@@ -79,12 +94,8 @@ return {
 					verbose = true,
 				},
 			})
-			-- TODO:
-			--
-			require('dap.ext.vscode').json_decode = require('json5').parse
-			require('dap.ext.vscode').load_launchjs(nil, {})
 
-			-- Enable virtual text
+			-- Setup virtual text
 			require("nvim-dap-virtual-text").setup({
 				enabled = true,
 				enable_commands = true,
@@ -100,6 +111,16 @@ return {
 				virt_lines = false,
 				virt_text_win_col = nil
 			})
+
+			-- -- Set up the signs for the debugger
+			vim.fn.sign_define("DapStopped", { text = vim.g.vinux_diagnostics_signs_warning, texthl = "DiagnosticWarn" })
+			vim.fn.sign_define("DapBreakpoint", { text = vim.g.vinux_diagnostics_signs_info, texthl = "DiagnosticInfo" })
+			vim.fn.sign_define("DapBreakpointRejected",
+				{ text = vim.g.vinux_diagnostics_signs_error, texthl = "DiagnosticError" })
+			vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "DiagnosticInfo" })
+			vim.fn.sign_define("DapLogPoint", { text = ".>", texthl = "DiagnosticInfo" })
+
+			local dap, dapgo, dapview = require("dap"), require('dap-go'), require("dap-view")
 
 			for _, language in ipairs(js_based_languages) do
 				dap.configurations[language] = {
@@ -161,39 +182,23 @@ return {
 				}
 			end
 
-			-- Set up the UI
-			-- dap.listeners.after.event_initialized["dapui_config"] = function()
-			-- 	dapui.open()
-			-- end
-			-- dap.listeners.before.event_terminated["dapui_config"] = function()
-			-- 	dapui.close()
-			-- end
-			-- dap.listeners.before.event_exited["dapui_config"] = function()
-			-- 	dapui.close()
-			-- end
-
 			-- Set up the keybindings
 			-- help dap.txt
-			vim.keymap.set('n', '<leader>d~', function() dapui.toggle() end)
+			vim.keymap.set('n', '<leader>d~', function() dapview.toggle() end)
 			vim.keymap.set('n', '<leader>dd', function() dap.disconnect() end)
-			vim.keymap.set('n', '<leader>dr', function() dap.run_last({ terminateDebugee = false }) end)
+			vim.keymap.set('n', '<leader>dr', function() dap.restart() end)
 			vim.keymap.set('n', '<leader>dx', function() dap.repl.open() end)
-			vim.keymap.set('n', '<leader>dt', function() require('dap-go').debug_test() end)
-			vim.keymap.set('n', '<leader>dl', function() require('dap-go').debug_last_test() end)
-			vim.keymap.set('n', '<leader>dc', function() dap.continue() end)
+			vim.keymap.set('n', '<leader>dt', function() dapgo.debug_test() end)
+			vim.keymap.set('n', '<leader>dl', function() dapgo.debug_last_test() end)
+			vim.keymap.set('n', '<leader>dc', function()
+				require('dap.ext.vscode').json_decode = require('json5').parse
+				dap.continue()
+			end)
 			vim.keymap.set('n', '<leader>dp', function() dap.pause() end)
 			vim.keymap.set('n', '<leader>db', function() dap.toggle_breakpoint() end)
 			vim.keymap.set('n', '<leader>dn', function() dap.step_over() end)
 			vim.keymap.set('n', '<leader>do', function() dap.step_out() end)
 			vim.keymap.set('n', '<leader>di', function() dap.step_into() end)
-
-			-- Set up the signs for the debugger
-			vim.fn.sign_define("DapStopped", { text = vim.g.vinux_diagnostics_signs_warning, texthl = "DiagnosticWarn" })
-			vim.fn.sign_define("DapBreakpoint", { text = vim.g.vinux_diagnostics_signs_info, texthl = "DiagnosticInfo" })
-			vim.fn.sign_define("DapBreakpointRejected",
-				{ text = vim.g.vinux_diagnostics_signs_error, texthl = "DiagnosticError" })
-			vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "DiagnosticInfo" })
-			vim.fn.sign_define("DapLogPoint", { text = ".>", texthl = "DiagnosticInfo" })
 		end
 	},
 }
