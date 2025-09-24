@@ -100,7 +100,7 @@ input "7504:24926:ZMK_Project_ThinkCorne_Mouse" {
 # Keyboard input settings
 input type:keyboard {
     xkb_layout us,lt
-    xkb_options grp:ctrl_space_toggle
+    xkb_options grp:alt_space_toggle
 }
 
 # Example configuration:
