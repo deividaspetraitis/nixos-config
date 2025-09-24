@@ -42,13 +42,12 @@ return {
 			},
 			handlers = {
 				function(server_name) -- default handler (optional)
-					require("lspconfig")[server_name].setup {
+					vim.lsp.config[server_name].setup {
 						capabilities = capabilities
 					}
 				end,
 				["gopls"] = function()
-					local lspconfig = require("lspconfig")
-					lspconfig.gopls.setup {
+					vim.lsp.config.gopls.setup {
 						capabilities = capabilities,
 						settings = {
 							gopls = {
@@ -63,8 +62,7 @@ return {
 					}
 				end,
 				["yamlls"] = function()
-					local lspconfig = require("lspconfig")
-					lspconfig.yamlls.setup {
+					vim.lsp.config.yamlls.setup {
 						on_attach = function(client, bufnr)
 							client.server_capabilities.documentFormattingProvider = true
 						end,
@@ -83,8 +81,7 @@ return {
 					}
 				end,
 				["lua_ls"] = function()
-					local lspconfig = require("lspconfig")
-					lspconfig.lua_ls.setup {
+					vim.lsp.config.lua_ls.setup {
 						capabilities = capabilities,
 						settings = {
 							Lua = {
