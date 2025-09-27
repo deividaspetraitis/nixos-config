@@ -193,17 +193,6 @@
             ./hosts/helix/configuration.nix
           ];
         };
-
-        "darwin" = nixpkgs.lib.nixosSystem {
-          inherit system;
-          modules = [
-            # Overlays-module makes "pkgs.unstable" available in configuration.nix
-            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-stable ]; })
-            nixos-hardware.nixosModules.apple-t2
-
-            ./hosts/darwin/configuration.nix
-          ];
-        };
       };
 
       homeManagerConfigurations = {
