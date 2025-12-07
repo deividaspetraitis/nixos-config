@@ -73,7 +73,6 @@
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
-  hardware.amdgpu.amdvlk.enable = true;
   hardware.amdgpu.initrd.enable = true;
 
   # Whether to enable all firmware regardless of license.

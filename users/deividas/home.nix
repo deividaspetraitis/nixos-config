@@ -120,7 +120,7 @@
     # Python
     (pkgs.python3.withPackages (ps: with ps; [
       ps.jupyter
-      ps.ledgerwallet
+      # ps.ledgerwallet # Library to control Ledger devices, disabled due to CVE-2024-23342
     ]))
 
     # DevOps

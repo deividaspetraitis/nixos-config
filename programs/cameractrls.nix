@@ -1,4 +1,4 @@
-{ lib, python3Packages, SDL2, libjpeg, gobject-introspection, fetchFromGitHub, wrapGAppsHook, glib, gtk4 }:
+{ lib, python3Packages, SDL2, libjpeg, gobject-introspection, fetchFromGitHub, wrapGAppsHook3, glib, gtk4 }:
 python3Packages.buildPythonApplication rec {
   pname = "cameractrls";
   version = "v0.6.3";
@@ -22,7 +22,7 @@ python3Packages.buildPythonApplication rec {
 
   nativeBuildInputs = [
     gobject-introspection
-    wrapGAppsHook
+	wrapGAppsHook3
   ];
 
   propagatedBuildInputs = with python3Packages; [
