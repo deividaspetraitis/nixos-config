@@ -260,6 +260,8 @@ bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86AudioForward exec playerctl position 1+
+bindsym XF86AudioRewind exec playerctl position 1-
 
 #
 # Status Bar:
