@@ -10,6 +10,7 @@ return {
 		opts = {
 			ensure_installed = {
 				'gopls',
+				'buf_ls',
 				'lua_ls',
 				'pylsp',
 				'ts_ls',
