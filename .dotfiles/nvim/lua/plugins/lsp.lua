@@ -120,32 +120,40 @@ return {
 			local luasnip = require("luasnip")
 
 			cmp.setup({
+				completion = {
+					autocomplete = false, -- disable automatic completion popup
+				},
 				snippet = {
 					expand = function(args)
 						require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
 					end,
 				},
 				mapping = cmp.mapping.preset.insert({
+					['<C-Space>'] = cmp.mapping.complete(),
 					['<C-y>'] = cmp.mapping.confirm({ select = true }),
-					["<C-Space>"] = cmp.mapping.complete(),
-					['<C-n>'] = cmp.mapping(function(fallback)
+					['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+					['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+					['<C-e>'] = cmp.mapping(function(fallback)
 						if cmp.visible() then
-							cmp.select_next_item(cmp_select)
-						elseif luasnip.locally_jumpable(1) then
-							luasnip.jump(1)
+							cmp.abort()
 						else
 							fallback()
 						end
-					end, { "i", "s" }),
-					['<C-p>'] = cmp.mapping(function(fallback)
-						if cmp.visible() then
-							cmp.select_prev_item(cmp_select)
-						elseif luasnip.locally_jumpable(-1) then
+					end, { 'i', 'c' }),
+					['<Tab>'] = cmp.mapping(function(fallback)
+						if luasnip.expand_or_jumpable() then
+							luasnip.expand_or_jump()
+						else
+							fallback()
+						end
+					end, { 'i', 's' }),
+					['<S-Tab>'] = cmp.mapping(function(fallback)
+						if luasnip.jumpable(-1) then
 							luasnip.jump(-1)
 						else
 							fallback()
 						end
-					end, { "i", "s" }),
+					end, { 'i', 's' }),
 				}),
 				sources = cmp.config.sources({
 					{ name = 'nvim_lsp' },
