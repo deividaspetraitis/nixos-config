@@ -129,6 +129,8 @@
     pkgs.kubectl
     pkgs.k9s
     pkgs-stable.datadog-agent
+    pkgs.nixos-generators
+    pkgs.sops
 
     # Useful utilities
     pkgs.file
@@ -489,11 +491,7 @@
     '';
 
     shellAliases = {
-      # Nix related
-      switch-user = "nix build --show-trace '${config.home.homeDirectory}/nix-config/.#homeManagerConfigurations.${config.home.username}.activationPackage' --out-link ${config.home.homeDirectory}/nix-config/result && ${config.home.homeDirectory}/nix-config/result/activate";
-      switch-system = "sudo nixos-rebuild switch --flake '${config.home.homeDirectory}/nix-config/.#'";
       switch-all = "switch-system && switch-user";
-      update-system = "nix flake update --flake ${config.home.homeDirectory}/nix-config --commit-lock-file";
     };
 
     history = {

@@ -23,6 +23,9 @@
   # Resume from file, if left empty, the swap partitions are used
   boot.resumeDevice = "/dev/nvme0n1p3";
 
+  # Enable binfmt emulation of aarch64-linux.
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
   # Resume offset can be found with the following command:
   # sudo filefrag -v /var/swap
   boot.kernelParams = [
@@ -169,6 +172,10 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    (import ../scripts/switch-user.nix { inherit pkgs; })
+    (import ../scripts/switch-host.nix { inherit pkgs; })
+    (import ../scripts/update-system.nix { inherit pkgs; })
+
     bluez-alsa
     bluez-tools
 
@@ -206,6 +213,7 @@
 
     protonup-qt
 
+    age
     ncdu
     i2c-tools
     inxi
