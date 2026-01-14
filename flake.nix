@@ -196,6 +196,7 @@
           modules = [
             # Overlays-module makes "pkgs.unstable" available in configuration.nix
             ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-stable ]; })
+            nixos-hardware.nixosModules.raspberry-pi-4
             sops-nix.nixosModules.sops
             ./hosts/cerberus/configuration.nix
           ];

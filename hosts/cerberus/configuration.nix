@@ -7,6 +7,14 @@
     ./hardware-configuration.nix
   ];
 
+  hardware = {
+    raspberry-pi."4".apply-overlays-dtmerge.enable = true;
+    deviceTree = {
+      enable = true;
+      filter = "*rpi-4-*.dtb";
+    };
+  };
+
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
   boot.loader.grub.enable = false;
   # Enables the generation of /boot/extlinux/extlinux.conf
@@ -69,6 +77,10 @@
     ## Network tools
     net-tools
     dig
+
+    ## Raspberry Pi tools
+    libraspberrypi
+    raspberrypi-eeprom
   ];
 
   # Z Shell must be enabled system-wide.
