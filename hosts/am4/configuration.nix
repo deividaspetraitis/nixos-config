@@ -33,6 +33,9 @@
     "resume_offset=61270016"
   ];
 
+  # Enable experimental features
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
   networking.hostName = "am4"; # Define your hostname.
 
   # Pick only one of the below networking options.
