@@ -309,6 +309,9 @@
       # List all windows by a name
       bind w choose-tree -wZ -O name
 
+      # Maintain the zoom state swiching to last pane
+      bind \; last-pane -Z
+
       # Source config
       bind r source-file ${config.home.homeDirectory}/${config.xdg.configFile."tmux/tmux.conf".target}  \; display-message "Config sourced..."
     '';
