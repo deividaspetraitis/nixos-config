@@ -1,0 +1,17 @@
+keys:
+  - &users:
+    - &master DE94482751FF7C231B8ED75390A2C4FB7CFC019C
+  - &hosts:
+    - &cerberus age1fvwm5mp920xwxmzm9efsmz33lc44l2xxqhdmm4ce63cjrzf77vhqfr2zfu
+creation_rules:
+  - path_regex: ^hosts/cerberus/secrets/secrets\.yaml$
+    key_groups:
+      - pgp:
+          - *master
+        age:
+          - *cerberus
+
+  - path_regex: ^hosts/am4/secrets/secrets\.yaml$
+    key_groups:
+      - pgp:
+          - *master

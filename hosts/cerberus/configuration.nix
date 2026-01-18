@@ -16,7 +16,7 @@
     };
   };
 
-  # Poe-HAT fans are annoying loud and can be managed only declaratively, not via /boot/config.txt even docs state otherwise.
+  # Poe-HAT fans are annoyingly loud and can be managed only declaratively, not via /boot/config.txt even if docs state otherwise.
   # See docs: https://github.com/raspberrypi/linux/blob/590178d58b730e981099fdcb405053a000e79820/arch/arm/boot/dts/overlays/README#L4493
   # See source: https://github.com/NixOS/nixos-hardware/blob/cce68f4a54fa4e3d633358364477f5cc1d782440/raspberry-pi/4/poe-plus-hat.nix#L8
   # This overlay customizes the fan speed levels and thermal trip points for the PoE+ HAT fan.
@@ -94,8 +94,65 @@
       address = "192.168.1.1"; # or whichever IP your router is
       interface = "eth0";
     };
-  };
 
+    # Setup wireguard VPN server
+    nat.enable = true;
+
+    nat.externalInterface = "eth0";
+
+    nat.internalInterfaces = [ "wg0" ];
+
+    firewall = {
+      allowedUDPPorts = [ 51820 ];
+    };
+
+    wireguard.interfaces = {
+      # "wg0" is the network interface name. You can name the interface arbitrarily.
+      wg0 = {
+        # Determines the IP address and subnet of the server's end of the tunnel interface.
+        ips = [ "10.100.0.1/24" ];
+
+        # The port that WireGuard listens to. Must be accessible by the client.
+        listenPort = 51820;
+
+        # This allows the wireguard server to route your traffic to the internet and hence be like a VPN
+        # For this to work you have to set the dnsserver IP of your router (or dnsserver of choice) in your clients
+        postSetup = ''
+          ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.100.0.0/24 -o eth0 -j MASQUERADE
+        '';
+
+        # This undoes the above command
+        postShutdown = ''
+          ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.100.0.0/24 -o eth0 -j MASQUERADE
+        '';
+
+        # Path to the private key file.
+        #
+        # Note: The private key can also be included inline via the privateKey option,
+        # but this makes the private key world-readable; thus, using privateKeyFile is
+        # recommended.
+        privateKeyFile = "/run/secrets/wg/private-key";
+
+        peers = [
+          # List of allowed peers.
+          {
+            # am4
+            publicKey = "y3vD51QQxrgoqO1Cu5iIyl8m/4XWNa9++TaWscJhn0M=";
+
+            # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
+            allowedIPs = [ "10.100.0.2/32" ];
+          }
+          {
+            # iPhone
+            publicKey = "M4pBXtecdSp1g0kgwngDx6uDCZwDhCEk1swpJQH1nGY=";
+
+            # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
+            allowedIPs = [ "10.100.0.3/32" ];
+          }
+        ];
+      };
+    };
+  };
 
   # Define the default shell assigned to user accounts.
   users.defaultUserShell = pkgs.zsh;
@@ -141,11 +198,22 @@
     enable = true;
   };
 
+  # This will add secrets.yml to the nix store
+  # You can avoid this by adding a string to the full path instead, i.e.
+  # sops.defaultSopsFile = "/root/.sops/secrets/example.yaml";
+  sops.defaultSopsFile = ./secrets/secrets.yaml;
+
+  # This will automatically import SSH keys as age keys
+  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+
   # This is using an age key that is expected to already be in the filesystem
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
 
   # This will generate a new key if the key specified above does not exist
   sops.age.generateKey = true;
+
+  # This is the actual specification of the secrets.
+  sops.secrets."wg/private-key" = { };
 
   # Enable Pi-hole services
   services.pihole-ftl = {
@@ -357,7 +425,6 @@
       };
     };
   };
-
 
   # Enable the OpenSSH daemon.
   services.openssh = {

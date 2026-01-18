@@ -27,7 +27,7 @@ caligula burn ~/nix-config/cerberus.sd/sd-image/nixos-image-sd-card-26.05.202512
 date -s "2026-01-01 00:00:00"
 ```
 
-- Poe-HAT fans are annoying loud and can be managed only declaratively, not via /boot/config.txt even docs state otherwise.
+- Poe-HAT fans are annoyingly loud and can be managed only declaratively, not via `/boot/config.txt` even if docs state otherwise.
 
 See docs: https://github.com/raspberrypi/linux/blob/590178d58b730e981099fdcb405053a000e79820/arch/arm/boot/dts/overlays/README#L4493
 See source: https://github.com/NixOS/nixos-hardware/blob/cce68f4a54fa4e3d633358364477f5cc1d782440/raspberry-pi/4/poe-plus-hat.nix#L8
