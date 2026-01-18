@@ -9,11 +9,18 @@
 
   hardware = {
     raspberry-pi."4".apply-overlays-dtmerge.enable = true;
+    raspberry-pi."4".poe-plus-hat.enable = true;
     deviceTree = {
       enable = true;
-      filter = "*rpi-4-*.dtb";
+      filter = "bcm2711-rpi-4*.dtb";
     };
   };
+
+
+  # Tweak UDP send/recv buffer size 
+  # To resolve Unbound memory warnings
+  boot.kernel.sysctl."net.core.wmem_max" = 16777216;
+  boot.kernel.sysctl."net.core.rmem_max" = 16777216;
 
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
   boot.loader.grub.enable = false;
@@ -129,6 +136,7 @@
         description = "Steven Black Hosts";
       }
     ];
+
     settings = {
       dns = {
         # Array of upstream DNS servers used by Pi-hole

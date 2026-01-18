@@ -13,13 +13,13 @@
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "usbhid" ];
   boot.initrd.kernelModules = [ ];
+
+  # Allow missing kernel modules
+  # See: https://discourse.nixos.org/t/cannot-build-raspberry-pi-sdimage-module-dw-hdmi-not-found/71804
+  boot.initrd.allowMissingModules = true;
+
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
-  boot.kernelParams = [
-    # Tweak for Unbound memory warnings
-    "net.core.rmem_max=16777216"
-    "net.core.wmem_max=16777216"
-  ];
 
   fileSystems."/" =
     {
