@@ -16,6 +16,51 @@
     };
   };
 
+  # Poe-HAT fans are annoying loud and can be managed only declaratively, not via /boot/config.txt even docs state otherwise.
+  # See docs: https://github.com/raspberrypi/linux/blob/590178d58b730e981099fdcb405053a000e79820/arch/arm/boot/dts/overlays/README#L4493
+  # See source: https://github.com/NixOS/nixos-hardware/blob/cce68f4a54fa4e3d633358364477f5cc1d782440/raspberry-pi/4/poe-plus-hat.nix#L8
+  # This overlay customizes the fan speed levels and thermal trip points for the PoE+ HAT fan.
+  # Note: merge by symbols doesn't work for some reason, so we have to override by path.
+  hardware.deviceTree.overlays = lib.mkAfter [
+    {
+      name = "poe-plus-tune";
+      dtsText = ''
+        /dts-v1/;
+        /plugin/;
+
+        / {
+          compatible = "brcm,bcm2711";
+
+          /* override the node created by the poe overlay by its path */
+          fragment@0 {
+            target-path = "/pwm-fan";
+            __overlay__ {
+              cooling-levels = <0 16 64 160 255>;
+            };
+          };
+
+          /* override trips by path too */
+          fragment@1 {
+            target-path = "/thermal-zones/cpu-thermal/trips/trip0";
+            __overlay__ { temperature = <20000>; hysteresis = <2000>; };
+          };
+          fragment@2 {
+            target-path = "/thermal-zones/cpu-thermal/trips/trip1";
+            __overlay__ { temperature = <25000>; hysteresis = <2000>; };
+          };
+          fragment@3 {
+            target-path = "/thermal-zones/cpu-thermal/trips/trip2";
+            __overlay__ { temperature = <40000>; hysteresis = <2000>; };
+          };
+          fragment@4 {
+            target-path = "/thermal-zones/cpu-thermal/trips/trip3";
+            __overlay__ { temperature = <60000>; hysteresis = <5000>; };
+          };
+        };
+      '';
+    }
+  ];
+
 
   # Tweak UDP send/recv buffer size 
   # To resolve Unbound memory warnings
