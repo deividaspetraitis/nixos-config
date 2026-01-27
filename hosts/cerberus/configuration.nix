@@ -137,7 +137,11 @@
           # List of allowed peers.
           {
             # am4
-            publicKey = "y3vD51QQxrgoqO1Cu5iIyl8m/4XWNa9++TaWscJhn0M=";
+            publicKey = "CrZZmZMjjtxUflLH7139CfXZRMh2U2p5V9yTAhjsEiA=";
+
+            # Additional layer of symmetric-key cryptography to be mixed 
+            # into the already existing public-key cryptography, for post-quantum resistance.
+            presharedKeyFile = "/run/secrets/wg/am4/preshared-key";
 
             # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
             allowedIPs = [ "10.100.0.2/32" ];
@@ -146,8 +150,23 @@
             # iPhone
             publicKey = "M4pBXtecdSp1g0kgwngDx6uDCZwDhCEk1swpJQH1nGY=";
 
+            # Additional layer of symmetric-key cryptography to be mixed 
+            # into the already existing public-key cryptography, for post-quantum resistance.
+            presharedKeyFile = "/run/secrets/wg/iPhone/preshared-key";
+
             # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
             allowedIPs = [ "10.100.0.3/32" ];
+          }
+          {
+            # MBP
+            publicKey = "ZSW2CmLOVAy6XMv/zW8WVIiUHbe63X3JLyQAB15WmwM=";
+
+            # Additional layer of symmetric-key cryptography to be mixed 
+            # into the already existing public-key cryptography, for post-quantum resistance.
+            presharedKeyFile = "/run/secrets/wg/mbp/preshared-key";
+
+            # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
+            allowedIPs = [ "10.100.0.4/32" ];
           }
         ];
       };
