@@ -233,6 +233,9 @@
 
   # This is the actual specification of the secrets.
   sops.secrets."wg/private-key" = { };
+  sops.secrets."wg/am4/preshared-key" = { };
+  sops.secrets."wg/iPhone/preshared-key" = { };
+  sops.secrets."wg/mbp/preshared-key" = { };
 
   # Enable Pi-hole services
   services.pihole-ftl = {
