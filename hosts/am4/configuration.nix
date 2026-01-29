@@ -214,6 +214,9 @@
     # TODO: move to pkgs, install as a user, not system wide?
     (callPackage ../../programs/cameractrls.nix { })
 
+    # Linux user-space NFS utilities
+    nfs-utils
+
     protonup-qt
 
     age
@@ -223,6 +226,7 @@
     pciutils
     lact
     virtualgl
+    killall
   ];
 
   # Whether to enable nix-ld, documentation: https://github.com/Mic92/nix-ld.
