@@ -141,6 +141,8 @@
     pkgs.graphviz
     pkgs.fastfetch
     pkgs.unixtools.xxd
+    pkgs.vlc
+    pkgs.caligula
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
