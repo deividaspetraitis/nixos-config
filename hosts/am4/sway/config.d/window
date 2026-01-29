@@ -1,6 +1,5 @@
 # Set floating windows
 for_window [app_id="(pavucontrol|psensor)"] floating enable
-for_window [instance="1password" class="1Password"] floating enable
 for_window [app_id="blueman-manager"] floating enable, resize set width 680 height 400,  move position center
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="bubble"] floating enable
@@ -15,7 +14,10 @@ for_window [instance="slack"] move container to workspace 3
 for_window [app_id="foot"] move container to workspace 2
 
 # Setup scratchpad windows
-# for_window [class="1Password"] move to scratchpad, resize set 1024 768
+
+# title regex excludes 1Password popups
+for_window [app_id="1password" title="^(?!1Password$)"] move to scratchpad, resize set 1024 768 
+for_window [instance="vlc"] move to scratchpad, resize set 1024 768
 
 # Inhibit idle
 for_window [app_id="Chromium"] inhibit_idle fullscreen

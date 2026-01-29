@@ -23,21 +23,21 @@
 		"hyprland/window",
 		"hyprland/submap",
         "sway/workspaces",
-        "sway/mode"
+        "sway/mode",
+        "sway/scratchpad"
     ],
     "modules-center": [
         "clock#date",
-        "clock#time"
+        "clock#time",
+        "custom/keyboard-layout"
     ],
     "modules-right": [
-        "sway/scratchpad",
-        "network",
-        "privacy",
-        "memory",
-        "cpu",
-        "temperature",
         "wireplumber",
-        "custom/keyboard-layout",
+		"mpris",
+        "network",
+        "cpu",
+        "memory",
+        "temperature",
         "tray"
     ],
 
@@ -211,5 +211,18 @@
 	"tray": {
 		"icon-size": 15,
 		"spacing": 10
+	},
+
+	"mpris": {
+		"format": "DEFAULT: {player_icon} {dynamic}",
+		"format-paused": "DEFAULT: {status_icon} <i>{dynamic}</i>",
+		"player-icons": {
+			"default": "▶",
+			"mpv": "🎵"
+		},
+		"status-icons": {
+			"paused": "⏸"
+		},
+		// "ignored-players": ["firefox"]
 	}
 }
