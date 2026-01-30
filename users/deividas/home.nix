@@ -141,7 +141,7 @@
     pkgs.graphviz
     pkgs.fastfetch
     pkgs.unixtools.xxd
-    pkgs.vlc
+    pkgs.audacious
     pkgs.caligula
   ];
 
