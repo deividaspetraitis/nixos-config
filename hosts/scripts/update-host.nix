@@ -1,6 +1,6 @@
 { pkgs }:
 
-pkgs.writeShellScriptBin "update-system" ''
+pkgs.writeShellScriptBin "update-host" ''
   set -e
 
   CONFIG_DIR="$HOME/nix-config"

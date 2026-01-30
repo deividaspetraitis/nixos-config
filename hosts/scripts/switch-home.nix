@@ -1,6 +1,6 @@
 { pkgs }:
 
-pkgs.writeShellScriptBin "switch-user" ''
+pkgs.writeShellScriptBin "switch-home" ''
   set -e
 
   CONFIG_DIR="$HOME/nix-config"

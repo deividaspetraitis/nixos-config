@@ -195,7 +195,7 @@
   # I use neovim as my text editor, replace with whatever you like
   environment.systemPackages = with pkgs; [
     (import ./scripts/initialize.nix { inherit pkgs; })
-    (import ../scripts/switch-user.nix { inherit pkgs; })
+    (import ../scripts/switch-home.nix { inherit pkgs; })
     (import ../scripts/switch-host.nix { inherit pkgs; })
 
     neovim

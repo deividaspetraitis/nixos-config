@@ -175,9 +175,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    (import ../scripts/switch-user.nix { inherit pkgs; })
+    (import ../scripts/switch-home.nix { inherit pkgs; })
     (import ../scripts/switch-host.nix { inherit pkgs; })
-    (import ../scripts/update-system.nix { inherit pkgs; })
+    (import ../scripts/update-host.nix { inherit pkgs; })
 
     bluetui # Terminal user interface for BlueZ
     bluez-alsa

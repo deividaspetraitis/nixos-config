@@ -93,7 +93,7 @@
 
     shellAliases = {
       # Nix related
-      switch-all = "switch-system && switch-user";
+      switch-all = "switch-host && switch-home";
     };
 
     history = {
