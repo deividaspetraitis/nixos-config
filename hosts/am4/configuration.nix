@@ -137,6 +137,29 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
 
+  # This will add secrets.yml to the nix store
+  # You can avoid this by adding a string to the full path instead, i.e.
+  sops.defaultSopsFile = ./secrets/secrets.yaml;
+
+  # This will automatically import SSH keys as age keys
+  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+
+  # This is using an age key that is expected to already be in the filesystem
+  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+
+  # This will generate a new key if the key specified above does not exist
+  sops.age.generateKey = true;
+
+  # This is the actual specification of the secrets.
+  sops.secrets."anthropic/api-key" = {
+    mode = "0440";
+    owner = config.users.users.deividas.name;
+    group = config.users.users.deividas.group;
+  };
+
+  sops.secrets."wg/private-key" = { };
+  sops.secrets."wg/preshared-key" = { };
+
   # Define the default shell assigned to user accounts.
   users.defaultUserShell = pkgs.zsh;
 
@@ -317,8 +340,15 @@
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [
-      51820 # Clients and peers can use the same port, see listenport
+      51820 # Wireguard: clients and peers can use the same port, see listenport
     ];
+
+    # Allow SSDP discovery (UPnP / DLNA)
+    # TODO: fix does not work!
+    # @link https://github.com/NixOS/nixpkgs/issues/161328
+    extraInputRules = ''
+      ip daddr 239.255.255.250 udp dport 1900 accept
+    '';
 
     # If you intend to route all your traffic through the wireguard tunnel, the default configuration 
     # of the NixOS firewall will block the traffic because of rpfilter.

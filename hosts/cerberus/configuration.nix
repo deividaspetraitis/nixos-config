@@ -219,7 +219,6 @@
 
   # This will add secrets.yml to the nix store
   # You can avoid this by adding a string to the full path instead, i.e.
-  # sops.defaultSopsFile = "/root/.sops/secrets/example.yaml";
   sops.defaultSopsFile = ./secrets/secrets.yaml;
 
   # This will automatically import SSH keys as age keys
