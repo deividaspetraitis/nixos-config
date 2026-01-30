@@ -20,8 +20,9 @@ for_window [app_id="foot"] move container to workspace 2
 # title regex excludes 1Password popups
 for_window [app_id="1password" title="^(?!1Password$)"] move to scratchpad, resize set 1024 768 
 
-# Keep Audacious in scratchpad, window role prevents moving popups
+# Keep Players in scratchpad, window role prevents moving popups
 for_window [instance="audacious" window_role="mainwindow"] move to scratchpad, resize set 1024 768
+for_window [instance="vlc" window_role="vlc-main"] move to scratchpad, resize set 1024 768
 
 # Inhibit idle
 for_window [app_id="Chromium"] inhibit_idle fullscreen
