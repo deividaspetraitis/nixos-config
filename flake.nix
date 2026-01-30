@@ -27,11 +27,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-
-    # Opnixs is a secure integration between 1Password and NixOS for managing secrets 
-    # during system builds and home directory setup.
-    opnix.url = "github:brizzbuzz/opnix";
-
     # Atomic, declarative, and reproducible secret provisioning for NixOS based on sops.
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -56,7 +51,7 @@
   # 
   # The `@` syntax here is used to alias the attribute set of the
   # inputs's parameter, making it convenient to use inside the function.
-  outputs = { self, nixpkgs, nixpkgs-stable, opnix, sops-nix, nixos-hardware, home-manager, ... } @ inputs:
+  outputs = { self, nixpkgs, nixpkgs-stable, sops-nix, nixos-hardware, home-manager, ... } @ inputs:
     let
       # Target system
       system = "x86_64-linux";
@@ -148,7 +143,6 @@
           modules = [
             # Overlays-module makes "pkgs.unstable" available in configuration.nix
             ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-stable overlay-custom ]; })
-            opnix.nixosModules.default
             sops-nix.nixosModules.sops
             ./hosts/am4/configuration.nix
           ];
@@ -252,7 +246,6 @@
           modules = [
             # Overlays-module makes "pkgs.unstable" available in configuration.nix
             ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-stable ]; })
-            opnix.nixosModules.default
             ./hosts/helix/configuration.nix
           ];
         };
@@ -263,7 +256,6 @@
           extraSpecialArgs = { inherit pkgs-stable inputs outputs; };
           pkgs = pkgs;
           modules = [
-            opnix.homeManagerModules.default
             ./users/cerberus/home.nix
           ];
         };
@@ -271,7 +263,6 @@
           extraSpecialArgs = { inherit pkgs-stable inputs outputs; };
           pkgs = pkgs;
           modules = [
-            opnix.homeManagerModules.default
             ./users/deividas/home.nix
           ];
         };

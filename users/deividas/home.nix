@@ -180,6 +180,10 @@
     pkgs.nixos-generators
     pkgs.sops
 
+    # Media players
+    pkgs.audacious
+    pkgs.vlc
+
     # Useful utilities
     pkgs.file
     pkgs.usbutils
@@ -189,7 +193,6 @@
     pkgs.graphviz
     pkgs.fastfetch
     pkgs.unixtools.xxd
-    pkgs.audacious
     pkgs.caligula
   ];
 
@@ -233,7 +236,7 @@
 
   home.sessionVariables = {
     # Reference OpNix-managed secrets in environment
-    ANTHROPIC_API_KEY = "$(cat ${config.home.homeDirectory}/.config/anthropic/api-key)";
+    ANTHROPIC_API_KEY = "$(cat /run/secrets/anthropic/api-key)";
 
     # Default editor
     EDITOR = "nvim";
@@ -269,35 +272,6 @@
     # the specified packages as well as 1Password CLI will be
     # automatically installed and configured to use shell plugins
     plugins = with pkgs; [ gh ];
-  };
-
-  # Enable and setup opnix module.
-  # https://github.com/brizzbuzz/opnix/blob/main/docs/getting-started.md
-  programs.onepassword-secrets = {
-    enable = true;
-    # tokenFile = "/etc/opnix-token";
-    tokenFile = "${config.home.homeDirectory}/.config/opnix/token";
-
-    secrets = {
-      # Anthropic API key
-      anthropicToken = {
-        reference = "op://am4/Anthropic/api-key";
-        path = ".config/anthropic/api-key";
-        mode = "0600";
-      };
-
-      # WireGuard private key
-      wireguardPrivateKey = {
-        path = ".config/wireguard/private.key";
-        reference = "op://am4/wireguard-am4/private.key";
-      };
-
-      # WireGuard preshared key
-      wireguardPresharedKey = {
-        path = ".config/wireguard/preshared.key";
-        reference = "op://am4/wireguard-am4/preshared.key";
-      };
-    };
   };
 
   # Tmux setup
