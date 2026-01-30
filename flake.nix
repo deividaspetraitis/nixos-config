@@ -73,17 +73,21 @@
         };
       };
 
+      # Custom packages overlay
+      overlay-custom = final: prev: {
+        raiseorrun = import hosts/scripts/raise-or-run.nix { pkgs = final; };
+      };
+
       # Setup packages
       pkgs = import nixpkgs {
         inherit system;
         config = {
           allowUnfree = true;
         };
-        overlays = [ overlay-stable ];
+        overlays = [ overlay-stable overlay-custom ];
       };
 
       inherit (self) outputs;
-
     in
     {
       nixosConfigurations = {
@@ -143,7 +147,7 @@
           # specialArgs = {...};  # pass custom arguments into all sub module.
           modules = [
             # Overlays-module makes "pkgs.unstable" available in configuration.nix
-            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-stable ]; })
+            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-stable overlay-custom ]; })
             opnix.nixosModules.default
             sops-nix.nixosModules.sops
             ./hosts/am4/configuration.nix

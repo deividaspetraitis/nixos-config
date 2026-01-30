@@ -39,6 +39,55 @@
     };
   };
 
+  # XDG are defaults for some of the programs.
+  xdg.userDirs = {
+    enable = true;
+    createDirectories = true;
+  };
+
+  #  Desktop Entries allow applications to be shown in your desktop environment's app launcher.
+  xdg.desktopEntries = {
+    pulsemixer = {
+      name = "Pulsemixer";
+      genericName = "Volume Mixer";
+      icon = "audio-volume-high-symbolic";
+      type = "Application";
+      terminal = true;
+      exec = "${pkgs.raiseorrun}/bin/raiseorrun --app_id pulsemixer --title pulsemixer -- pulsemixer";
+      categories = [ "Audio" ];
+    };
+    bluetui = {
+      name = "Bluetui";
+      genericName = "Bluetooth Manager";
+      icon = "bluetui";
+      type = "Application";
+      terminal = true;
+      categories = [ "Utility" "Settings" "ConsoleOnly" ];
+      exec = "${pkgs.raiseorrun}/bin/raiseorrun --app_id bluetui --title bluetui -- bluetui";
+    };
+    vifm = {
+      name = "Vifm";
+      genericName = "File Manager";
+      comment = "Vim-like ncurses based file manager";
+      icon = "vifm";
+      type = "Application";
+      terminal = true;
+      categories = [ "System" "FileManager" "Utility" "ConsoleOnly" ];
+      exec = "${pkgs.raiseorrun}/bin/raiseorrun --app_id vifm --title vifm -- vifm";
+    };
+    htop = {
+      name = "Htop";
+      comment = "Show System Processes";
+      genericName = "Process Viewer";
+      icon = "htop";
+      type = "Application";
+      terminal = true;
+      categories = [ "System" "Monitor" "ConsoleOnly" ];
+      exec = "${pkgs.raiseorrun}/bin/raiseorrun --app_id htop --title htop -- htop";
+    };
+  };
+
+
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
@@ -69,7 +118,6 @@
     pkgs.act
     pkgs.git-crypt
     pkgs.pcmanfm
-    pkgs.vifm
     pkgs.nix-prefetch-github
     pkgs.wrk
     pkgs.jq
@@ -250,12 +298,6 @@
         reference = "op://am4/wireguard-am4/preshared.key";
       };
     };
-  };
-
-  # XDG are defaults for some of the programs.
-  xdg.userDirs = {
-    enable = true;
-    createDirectories = true;
   };
 
   # Tmux setup

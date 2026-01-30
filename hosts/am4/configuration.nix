@@ -179,10 +179,11 @@
     (import ../scripts/switch-host.nix { inherit pkgs; })
     (import ../scripts/update-system.nix { inherit pkgs; })
 
+    bluetui # Terminal user interface for BlueZ
     bluez-alsa
     bluez-tools
 
-    pavucontrol # PulseAudio Volume Control
+    pulsemixer # A lightweight pulseaudio command-line mixer for ALSA
 
     i2c-tools
     time
@@ -206,6 +207,9 @@
 
     # Collection of common network programs
     inetutils
+
+    # A ncurses-based file manager with vi-like keybindings
+    vifm-full
 
     # AMD
     stable.rocmPackages.clr
@@ -288,9 +292,6 @@
 
   # Enable thermald, the temperature management daemon.
   services.thermald.enable = true;
-
-  # Enable the blueman service, which provides blueman-applet and blueman-manager.
-  services.blueman.enable = true;
 
   # udev rules
   services.udev = {

@@ -2,6 +2,7 @@
 # https://nixos.wiki/wiki/Sway
 {
   environment.systemPackages = with pkgs; [
+    raiseorrun
     wayland
     kdePackages.qtwayland
     waybar # Highly customizable Wayland bar for Sway and Wlroots based compositors
@@ -16,15 +17,15 @@
     grim # screenshot functionality
     slurp # screenshot a region of the screen
     swappy # native snapshot and editor tool
-	libnotify # A library that sends desktop notifications to a notification daemon
+    libnotify # A library that sends desktop notifications to a notification daemon
     swaynotificationcenter # notification center for sway
-    rofi # Rofi is a window switcher, application launcher and dmenu replacement
+    fuzzel # General-purpose menu for wlroots-based compositors
     wf-recorder # screen recorder for wlroots-based compositors
     wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
     wdisplays # tool to configure displays
     wlr-randr
     wayland-utils
-	libinput # Library for handling input devices in Wayland compositors
+    libinput # Library for handling input devices in Wayland compositors
   ];
 
   programs.sway = {

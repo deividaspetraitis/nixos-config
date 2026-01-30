@@ -1,11 +1,13 @@
 # Set floating windows
 for_window [app_id="(pavucontrol|psensor)"] floating enable
-for_window [app_id="blueman-manager"] floating enable, resize set width 680 height 400,  move position center
+for_window [app_id="blueman-manager"] floating enable, resize set width 680 height 400, move position center
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="bubble"] floating enable
 for_window [window_role="task_dialog"] floating enable
 for_window [window_type="dialog"] floating enable
 for_window [window_type="menu"] floating enable
+for_window [app_id="pulsemixer"] floating enable resize set width 1024 height 768, move position center
+for_window [app_id="bluetui"] floating enable resize set width 1024 height 768, move position center
 
 # Move windows to workspaces
 for_window [app_id="org.qutebrowser.qutebrowser"] move container to workspace 1
@@ -14,7 +16,7 @@ for_window [instance="slack"] move container to workspace 3
 for_window [app_id="foot"] move container to workspace 2
 
 # Setup scratchpad windows
-
+# 
 # title regex excludes 1Password popups
 for_window [app_id="1password" title="^(?!1Password$)"] move to scratchpad, resize set 1024 768 
 
