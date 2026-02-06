@@ -3,6 +3,10 @@
 {
   environment.systemPackages = with pkgs; [
     raiseorrun
+    mprisvolume
+    mprisscroll
+    mprisposition
+    zscroll
     wayland
     kdePackages.qtwayland
     waybar # Highly customizable Wayland bar for Sway and Wlroots based compositors

@@ -1,7 +1,6 @@
 * {
-    /* `otf-font-awesome` is required to be installed for icons */
-    font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
-    font-size: 13px;
+	font-family: "JetBrainsMono Nerd Font";
+	font-size: 14px;
 }
 
 window#waybar {
@@ -244,4 +243,8 @@ label:focus {
 }
 
 #privacy-item.audio-out {
+}
+
+#custom-mpris-scroll {
+    padding: 0 10px;
 }

@@ -257,17 +257,18 @@ bindsym $mod+Shift+n exec swaync-client -t -sw
 
 # Media keys
 # Reference: https://wiki.archlinux.org/title/WirePlumber
-bindsym XF86AudioRaiseVolume exec  wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.5%+
-bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.5%-
-bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
-
+# Note that playerctl is used to control media players that support MPRIS
+# most browsers does not support MPRIS, so media keys won't work with them by default
+# but you can try to find supported extensions for your browser.
+bindsym XF86AudioRaiseVolume exec  playerctl volume 0.02+
+bindsym XF86AudioLowerVolume exec playerctl volume 0.02-
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 bindsym XF86AudioForward exec playerctl position 1+
 bindsym XF86AudioRewind exec playerctl position 1-
-
+bindsym XF86ChannelUp exec playerctld shift
+bindsym XF86ChannelDown exec playerctld unshift
 #
 # Status Bar:
 #
