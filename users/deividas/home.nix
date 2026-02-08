@@ -330,6 +330,13 @@
       # Maintain the zoom state swiching to last pane
       bind \; last-pane -Z
 
+      # Extract URL from the current pane and open in a popup
+      # Note: tmuxPlugins.urlview is not used as it distrupts the workflow
+      # by opening a pane below
+      bind-key u capture-pane \; \
+      save-buffer /tmp/tmux-buffer \; \
+      display-popup -E '${pkgs.extract_url}/bin/extract_url /tmp/tmux-buffer'
+
       # Source config
       bind r source-file ${config.home.homeDirectory}/${config.xdg.configFile."tmux/tmux.conf".target}  \; display-message "Config sourced..."
     '';
