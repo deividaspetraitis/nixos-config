@@ -6,8 +6,8 @@
 
 ### Variables
 #
-# Logo key. Use Mod1 for Alt.
-set $mod Mod1
+# No rest for the wicked, make that pinky do something useful
+set $mod Mod4
 
 # Home row direction keys, like vim
 set $left h
