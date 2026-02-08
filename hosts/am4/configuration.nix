@@ -157,6 +157,12 @@
     group = config.users.users.deividas.group;
   };
 
+  sops.secrets."weechat/sasl-password" = {
+    mode = "0440";
+    owner = config.users.users.deividas.name;
+    group = config.users.users.deividas.group;
+  };
+
   sops.secrets."wg/private-key" = { };
   sops.secrets."wg/preshared-key" = { };
 

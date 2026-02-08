@@ -127,11 +127,15 @@
     pkgs.obsidian
     pkgs.jellyfin-ffmpeg
     pkgs.synology-drive-client
+    pkgs.ledger-live-desktop
+    pkgs.direnv
+
+
+    # Communication
     pkgs.telegram-desktop
     pkgs.discord
     pkgs.slack
-    pkgs.ledger-live-desktop
-    pkgs.direnv
+    pkgs.weechat
 
     # Screen color temperature manager
     pkgs.gammastep
@@ -214,6 +218,7 @@
     ".config/hypr" = { source = ../../.dotfiles/hypr; recursive = true; };
     ".config/nvim" = { source = ../../.dotfiles/nvim; recursive = true; };
     ".config/gammastep" = { source = ../../.dotfiles/gammastep; recursive = true; };
+    ".config/weechat" = { source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nix-config/.dotfiles/weechat"; };
     ".vim/after" = { source = ../../.dotfiles/vim/after; recursive = true; };
 
     # # You can also set the file content immediately.
