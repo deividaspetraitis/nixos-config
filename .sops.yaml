@@ -17,3 +17,7 @@ creation_rules:
           - *master
         age:
           - *cerberus
+  - path_regex: ^hosts/matrix/secrets/secrets\.yaml$
+    key_groups:
+      - pgp:
+          - *master
