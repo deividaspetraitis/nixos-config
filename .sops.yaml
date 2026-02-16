@@ -21,3 +21,7 @@ creation_rules:
     key_groups:
       - pgp:
           - *master
+  - path_regex: ^hosts/edge/secrets/secrets\.yaml$
+    key_groups:
+      - pgp:
+          - *master
