@@ -129,7 +129,7 @@
     pkgs.synology-drive-client
     pkgs.ledger-live-desktop
     pkgs.direnv
-
+    pkgs.unixtools.netstat
 
     # Communication
     pkgs.telegram-desktop
@@ -154,6 +154,7 @@
 
     # Lmstudio
     pkgs.lmstudio
+    pkgs.codex
 
     # Go related packages
     pkgs.go
@@ -220,6 +221,7 @@
     ".config/gammastep" = { source = ../../.dotfiles/gammastep; recursive = true; };
     ".config/weechat" = { source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nix-config/.dotfiles/weechat"; };
     ".vim/after" = { source = ../../.dotfiles/vim/after; recursive = true; };
+    ".emacs.d/init.el" = { source = ../../.dotfiles/emacs/init.el; recursive = true; };
 
     # # You can also set the file content immediately.
     # ".gradle/gradle.properties".text = ''
@@ -277,6 +279,11 @@
     # the specified packages as well as 1Password CLI will be
     # automatically installed and configured to use shell plugins
     plugins = with pkgs; [ gh ];
+  };
+
+  # Emacs setup
+  programs.emacs = {
+    enable = true;
   };
 
   # Tmux setup
