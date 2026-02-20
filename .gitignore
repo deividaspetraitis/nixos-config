@@ -10,5 +10,10 @@
 .*.swp
 .*.swo
 
+# Emacs temp files
+.#*
+*~
+\#*#
+
 # Build result
 result
