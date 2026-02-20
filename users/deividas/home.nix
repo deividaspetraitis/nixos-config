@@ -130,6 +130,7 @@
     pkgs.ledger-live-desktop
     pkgs.direnv
     pkgs.unixtools.netstat
+    pkgs.texliveFull
 
     # Communication
     pkgs.telegram-desktop
@@ -221,7 +222,7 @@
     ".config/gammastep" = { source = ../../.dotfiles/gammastep; recursive = true; };
     ".config/weechat" = { source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nix-config/.dotfiles/weechat"; };
     ".vim/after" = { source = ../../.dotfiles/vim/after; recursive = true; };
-    ".emacs.d/init.el" = { source = ../../.dotfiles/emacs/init.el; recursive = true; };
+    ".emacs.d/init.el" = { source = config.lib.file.mkOutOfStoreSymlink ../../.dotfiles/emacs/init.el; };
 
     # # You can also set the file content immediately.
     # ".gradle/gradle.properties".text = ''
