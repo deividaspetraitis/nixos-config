@@ -118,12 +118,30 @@
         # This allows the wireguard server to route your traffic to the internet and hence be like a VPN
         # For this to work you have to set the dnsserver IP of your router (or dnsserver of choice) in your clients
         postSetup = ''
-          ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.100.0.0/24 -o eth0 -j MASQUERADE
+          IPT=${pkgs.iptables}/bin/iptables
+
+          # NAT for WG clients going out via eth0 (internet / upstream)
+          $IPT -t nat -A POSTROUTING -s 10.100.0.0/24 -o eth0 -j MASQUERADE
+
+          # -------- Restrict clients to ONLY reach DNS server on LAN --------
+          # Put DROP first (insert at top), then allow the one host.
+
+          # Drop from client 10.100.0.x to entire LAN
+          $IPT -I FORWARD 1 -i wg0 -s 10.100.0.3/32 -d 192.168.1.0/24 -j DROP # iPhone
+
+          # Allow from client 10.100.0.x to DNS host (must be above drop OR be more specific and inserted before)
+          $IPT -I FORWARD 1 -i wg0 -s 10.100.0.3/32 -d 192.168.1.2/32 -j ACCEPT # iPhone
         '';
 
         # This undoes the above command
         postShutdown = ''
-          ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.100.0.0/24 -o eth0 -j MASQUERADE
+          IPT=${pkgs.iptables}/bin/iptables
+
+          # Undo in reverse order. (Exact match required.)
+          $IPT -D FORWARD -i wg0 -s 10.100.0.3/32 -d 192.168.1.2/32 -j ACCEPT # iPhone
+          $IPT -D FORWARD -i wg0 -s 10.100.0.3/32 -d 192.168.1.0/24 -j DROP # iPhone
+
+          $IPT -t nat -D POSTROUTING -s 10.100.0.0/24 -o eth0 -j MASQUERADE
         '';
 
         # Path to the private key file.
