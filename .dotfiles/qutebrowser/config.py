@@ -1154,7 +1154,7 @@ for site in ALLOW_JAVASCRIPT_WEBSITES:
 # - allow-all: Allows all navigation requests to URLs with unknown schemes.
 c.content.unknown_url_scheme_policy = 'allow-from-user-interaction'
 with config.pattern('*.slack.com') as p:
-     p.content.unknown_url_scheme_policy = 'allow-all'
+    p.content.unknown_url_scheme_policy = 'allow-all'
 
 # List of user stylesheet filenames to use.
 # Type: List of File, or File
@@ -2203,7 +2203,7 @@ c.url.searchengines = {
 
 # Default zoom level.
 # Type: Perc
-# c.zoom.default = '100%'
+c.zoom.default = '150%'
 
 # Available zoom levels.
 # Type: List of Perc
