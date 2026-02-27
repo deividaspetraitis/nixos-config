@@ -17,6 +17,8 @@
 
 (save-place-mode 1)   ;; Automatically save place for each file, so we can do like in Vim `0
 
+(windmove-default-keybindings 'meta) ;; Jump across windows with Alt + arrow keys
+
 (global-set-key (kbd "M-n") #'scroll-up-line)     ;; scroll down 1 line
 (global-set-key (kbd "M-p") #'scroll-down-line)   ;; scroll up 1 line
 
@@ -50,8 +52,19 @@
 	 ("M-X" . execute-extended-command) ;; global command dispatcher
          ("C-x b" . consult-buffer)         ;; buffer switch
          ("C-x C-f" . find-file)            ;; find-file for browsing FS
-         ("C-s" . consult-line)             ;; like swiper
+         ("C-s" . consult-line-literal)     ;; like swiper
          ("C-c s" . consult-ripgrep)))      ;; project search (rg)
+
+;; Use `substring` completion style
+;; for consult-line as it better reflects
+;; use case for phrase search behaviory
+;; source: https://github.com/minad/consult/wiki#consult-line-literal-which-matches-only-literally
+(defun consult-line-literal ()
+  (interactive)
+  (let ((completion-styles '(substring))
+        (completion-category-defaults nil)
+        (completion-category-overrides nil))
+    (consult-line)))
 
 ;; Rich annotations (replaces ivy-rich)
 (use-package marginalia
@@ -108,7 +121,7 @@
         (plist-put org-format-latex-options :scale 1.8)) ; Increase scaling for LaTeX
   :bind (("C-c a" . org-agenda)
          ("C-c c" . org-capture)
-	     ("C-c l s" . org-store-link)
+	 ("C-c l s" . org-store-link)
          ("C-c l n" . org-next-link)
          ("C-c l p" . org-previous-link)
          ("C-c l o" . org-open-at-point)
