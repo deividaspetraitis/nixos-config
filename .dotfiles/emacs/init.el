@@ -48,23 +48,11 @@
 ;; Consult: enhanced commands (replaces most counsel/swiper use-cases)
 (use-package consult
   :ensure t
-  :bind (("M-x" . consult-mode-command)      ;; filtered, contextual subset command dispatcher
+  :bind (("M-x" . consult-mode-command)     ;; filtered, contextual subset command dispatcher
 	 ("M-X" . execute-extended-command) ;; global command dispatcher
          ("C-x b" . consult-buffer)         ;; buffer switch
-         ("C-x C-f" . find-file)            ;; find-file for browsing FS
-         ("C-s" . consult-line-literal)     ;; like swiper
+         ("C-x C-f" . find-file)            ;; find-file for browsing 
          ("C-c s" . consult-ripgrep)))      ;; project search (rg)
-
-;; Use `substring` completion style
-;; for consult-line as it better reflects
-;; use case for phrase search behaviory
-;; source: https://github.com/minad/consult/wiki#consult-line-literal-which-matches-only-literally
-(defun consult-line-literal ()
-  (interactive)
-  (let ((completion-styles '(substring))
-        (completion-category-defaults nil)
-        (completion-category-overrides nil))
-    (consult-line)))
 
 ;; Rich annotations (replaces ivy-rich)
 (use-package marginalia
