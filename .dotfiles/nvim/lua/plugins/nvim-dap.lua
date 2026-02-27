@@ -8,15 +8,32 @@ local js_based_languages = {
 
 return {
 	{
-		"Joakker/lua-json5",
-		build = "./install.sh",
-		lazy = false,
-		priority = 1000
-	},
-	{
 		"mfussenegger/nvim-dap",
 		dependencies = {
-			{ "leoluz/nvim-dap-go" },
+			{
+				"leoluz/nvim-dap-go",
+				config = function()
+					require('dap-go').setup({
+						dap_configurations = {
+							{
+								type = "go",
+								name = "Attach remote",
+								mode = "remote",
+								request = "attach",
+							},
+						},
+						-- options related to running closest test
+						tests = {
+							-- enables verbosity when running the test.
+							verbose = true,
+						},
+						-- delve configurations
+						delve = {
+							port = "38697", -- default delve port, for attach remote
+						},
+					})
+				end,
+			},
 			{
 				"microsoft/vscode-js-debug",
 				-- After install, build it and rename the dist directory to out
@@ -63,38 +80,6 @@ return {
 			{ "theHamsta/nvim-dap-virtual-text" },
 		},
 		config = function()
-			require('dap-view').setup {
-				winbar = {
-					show = true,
-					default_section = "scopes",
-				},
-				windows = {
-					terminal = {
-						hide = { "delve" },
-					},
-					anchor = function()
-						-- proof of concept, can be tweaked
-						local windows = vim.api.nvim_tabpage_list_wins(0)
-
-						for _, win in ipairs(windows) do
-							local bufnr = vim.api.nvim_win_get_buf(win)
-							if vim.bo[bufnr].buftype == "terminal" then
-								return win
-							end
-						end
-					end,
-					height = math.ceil(vim.o.lines / 3),
-				},
-			}
-
-			require('dap-go').setup({
-				-- options related to running closest test
-				tests = {
-					-- enables verbosity when running the test.
-					verbose = true,
-				},
-			})
-
 			-- Setup virtual text
 			require("nvim-dap-virtual-text").setup({
 				enabled = true,
@@ -120,7 +105,10 @@ return {
 			vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "DiagnosticInfo" })
 			vim.fn.sign_define("DapLogPoint", { text = ".>", texthl = "DiagnosticInfo" })
 
-			local dap, dapgo, dapview = require("dap"), require('dap-go'), require("dap-view")
+			local dap, dapgo = require("dap"), require('dap-go')
+
+			-- 1) Make dap log everything (this is the big one)
+			dap.set_log_level("TRACE")
 
 			for _, language in ipairs(js_based_languages) do
 				dap.configurations[language] = {
@@ -184,7 +172,6 @@ return {
 
 			-- Set up the keybindings
 			-- help dap.txt
-			vim.keymap.set('n', '<leader>d~', function() dapview.toggle() end)
 			vim.keymap.set('n', '<leader>dd', function() dap.disconnect() end)
 			vim.keymap.set('n', '<leader>dr', function() dap.restart() end)
 			vim.keymap.set('n', '<leader>dx', function() dap.repl.open() end)
