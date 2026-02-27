@@ -145,6 +145,11 @@
   ;; t  => show descriptive links
   ;; nil => show raw [[...]] links
   (setq-local org-link-descriptive my/org-readerish-enabled)
+
+  ;; Toggle LaTeX preview overlays
+  (if my/org-readerish-enabled
+      (org-latex-preview)      ;; create previews
+    (org-latex-preview '(4)))  ;; C-u => clear/remove previews
   
   ;; Refresh display
   (org-font-lock-flush)
