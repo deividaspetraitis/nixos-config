@@ -94,11 +94,64 @@
   :config
   (setq which-key-idle-delay 1)) ; delay delays the popup
 
+;; Helper function creating note files creating a slug
+;; from title to be used as a file name
+(defun my/org-create-note (dir)
+  (let* ((title (read-string "Title: "))
+         (slug (let ((s (downcase title)))
+                 (setq s (replace-regexp-in-string "[[:space:]]+" "-" s))
+                 (setq s (replace-regexp-in-string "[^a-z0-9-]" "" s))
+                 (setq s (replace-regexp-in-string "-+" "-" s))
+                 (replace-regexp-in-string "^-\\|-$" "" s)))
+         (file (expand-file-name (format "%s.org" slug) dir)))
+    (setq org-capture-last-title title)
+    file))
+
+;; Helper to specify org-agenda files
+(defun my/org-agenda-files ()
+  (directory-files-recursively org-directory "\\.org$"))
+
+;; repeat-todo extends built-in
+;; repeater by adding support for
+;; only-weekdays and others
+(use-package repeat-todo
+  :vc (:url "https://github.com/cashpw/repeat-todo"
+            :rev :newest))
+
 ;; Install org mode
 (use-package org
   :config
-  (setq org-agenda-files
-        '("~/SynologyDrive/OrgFiles/Tasks.org"))
+  (setq org-directory "~/SynologyDrive/org/")
+  (setq org-agenda-files (my/org-agenda-files))
+
+;; Capture templates
+(setq org-capture-templates
+      '(("i" "Inbox task"
+         entry
+         (file+headline "~/SynologyDrive/org/inbox.org" "Tasks")
+         "* TODO %?\nCREATED: %U\n")
+
+        ("t" "Regular Task"
+         plain
+         (file (lambda () (my/org-create-note "~/SynologyDrive/org/tasks/")))
+         "* TODO %(identity org-capture-last-title)\n#+created: %U\n:PROPERTIES:\n:SPRINT: %^{Sprint|}\n:EFFORT: %^{Effort|1:00}\n:END:\n\n** Context\n\n** Log\n\n")
+
+	("p" "Project"
+         plain
+         (file (lambda () (my/org-create-note "~/SynologyDrive/org/projects/")))
+	 "* TODO %^{Project name} :project:\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n** Goal\n%?\n\n** TODO First step\n\n
+** Notes\n")))
+
+;; Rescan for TODOs before opening org-agenda
+(advice-add 'org-agenda :before
+            (lambda (&rest _)
+              (setq org-agenda-files (my/org-agenda-files))))
+
+;; Rescan for TODOs before executing org-agenda-redo ( r )
+(advice-add 'org-agenda-redo :before
+            (lambda (&rest _)
+              (setq org-agenda-files (my/org-agenda-files))))
+
   ;; LaTeX rendering by default looks not reader friendly
   ;; so we switch to SVG rendering, match LaTeX backround to
   ;; tmee and finally scale a bit to make font a bit bigger
