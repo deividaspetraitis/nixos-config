@@ -17,7 +17,7 @@
   };
 
   imports =
-    [ 
+    [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
 
@@ -33,12 +33,12 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.kernelModules = [ 
+  boot.kernelModules = [
     # I²C or I2C (Inter-IC) is a synchronous, multi-controller/multi-target (controller/target), 
     # packet switched, single-ended, serial communication bus invented in 1982 by Philips Semiconductors.
     #
     # It is used by many hardware boards to communicate with general purpose I/O (GPIO) devices.
-    "i2c-dev" 
+    "i2c-dev"
 
     # A pair of Linux kernel drivers for DDC/CI monitors.
     # DDC/CI is a control protocol for monitor settings supported by most monitors since about 2005
@@ -55,7 +55,7 @@
   networking.hostName = "helix"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Europe/Vilnius";
@@ -100,23 +100,24 @@
   # Enables support for Bluetooth
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
-  hardware.bluetooth.settings = { # modern headsets will generally try to connect using the A2DP prof
+  hardware.bluetooth.settings = {
+    # modern headsets will generally try to connect using the A2DP prof
     General = {
       Enable = "Source,Sink,Media,Socket";
     };
   };
 
   nixpkgs.config.packageOverrides = pkgs: {
-    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+    intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
   };
 
   hardware.opengl = {
     enable = true;
     extraPackages = with pkgs; [
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
-      vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
       intel-ocl
-      vaapiVdpau
+      libva-vdpau-driver
       libvdpau-va-gl
     ];
   };
@@ -131,11 +132,11 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.deividas = {
     isNormalUser = true;
-    extraGroups = [ 
+    extraGroups = [
       "wheel" # Enable ‘sudo’ for the user.
-      "networkmanager" 
+      "networkmanager"
       "docker" # Provide them access to the socket
-    ]; 
+    ];
     packages = with pkgs; [
       tree
     ];
@@ -198,12 +199,13 @@
   powerManagement.enable = true;
 
   # Power management settings.
-  services.logind.extraConfig = ''
-    HandlePowerKey=suspend
-    IdleAction=suspend
-    IdleActionSec=30min
-  '';
-  
+  # TODO:
+  # services.logind.extraConfig = ''
+  #   HandlePowerKey=suspend
+  #   IdleAction=suspend
+  #   IdleActionSec=30min
+  # '';
+
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 

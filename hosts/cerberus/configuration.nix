@@ -4,6 +4,9 @@
 
 {
   imports = [
+    # Include common configuration
+    ../../modules/configuration.nix
+
     ./hardware-configuration.nix
   ];
 
@@ -69,32 +72,24 @@
 
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
   boot.loader.grub.enable = false;
+
   # Enables the generation of /boot/extlinux/extlinux.conf
   boot.loader.generic-extlinux-compatible.enable = true;
 
-  # Set your time zone.
-  time.timeZone = "Europe/Vilnius";
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  # Enable experimental features
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  # networking config. important for ssh!
-  networking = {
+  host = {
     hostName = "cerberus";
-    interfaces.eth0 = {
-      ipv4.addresses = [{
-        address = "192.168.1.2";
-        prefixLength = 24;
-      }];
-    };
-    defaultGateway = {
-      address = "192.168.1.1"; # or whichever IP your router is
-      interface = "eth0";
-    };
+    interface = "eth0";
+    ipv4Address = "192.168.1.2";
+    gateway = "192.168.1.1";
+    username = "ops";
+    sshKeys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDa2OjDgz4VVeOLQTNjpXrLsYIX8XtJOKicgfvhOXpeCoZlMQl0mTCU80rrgLZCckoDMCGB2GRrajs3mwYvX6HSAJgXKIUpGFqVcNHigI6eNXv5dXhJ4Tw1fJl6xgInLqt6IpzYnONKiMM2ZZvNErTa/NuI5upRlpROPyn3EWbVUVTQ/cfppz7aCijoVCrkmNldpepXu8rYlyTnCWF8xZNDyL+ZYAxq2Kap5J9oIgJbqIXZqjtO0pp5oJQC64ExA8QVakC4UH9x9uzDSnvInIG8Ri3v2Jg5IFBCdGBpnK3YUU7YVVkIJ9QBLjDHyqWgrr/0p5lF+Iid6+jfY/OSieTP"
+    ];
+    sopsFile = ./secrets/secrets.yaml;
+  };
 
+  # networking config
+  networking = {
     # Setup wireguard VPN server
     nat.enable = true;
 
@@ -191,64 +186,15 @@
     };
   };
 
-  # Define the default shell assigned to user accounts.
-  users.defaultUserShell = pkgs.zsh;
 
-  # the user account on the machine
-  users.users.cerberus = {
-    isNormalUser = true;
-    initialHashedPassword = "";
-    extraGroups = [
-      "wheel" # Enable ‘sudo’ for the user.
-    ];
-    openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDa2OjDgz4VVeOLQTNjpXrLsYIX8XtJOKicgfvhOXpeCoZlMQl0mTCU80rrgLZCckoDMCGB2GRrajs3mwYvX6HSAJgXKIUpGFqVcNHigI6eNXv5dXhJ4Tw1fJl6xgInLqt6IpzYnONKiMM2ZZvNErTa/NuI5upRlpROPyn3EWbVUVTQ/cfppz7aCijoVCrkmNldpepXu8rYlyTnCWF8xZNDyL+ZYAxq2Kap5J9oIgJbqIXZqjtO0pp5oJQC64ExA8QVakC4UH9x9uzDSnvInIG8Ri3v2Jg5IFBCdGBpnK3YUU7YVVkIJ9QBLjDHyqWgrr/0p5lF+Iid6+jfY/OSieTP"
-    ];
-  };
-
-  # A list of permissible login shells for user accounts.
-  # /bin/sh is placed into this list implicitly.
-  environment.shells = with pkgs; [ zsh ];
-
-  # I use neovim as my text editor, replace with whatever you like
+  # List packages installed in system profile
   environment.systemPackages = with pkgs; [
-    (import ../scripts/initialize.nix { inherit pkgs; })
-    (import ../scripts/switch-home.nix { inherit pkgs; })
-    (import ../scripts/switch-host.nix { inherit pkgs; })
-
-    neovim
-    wget
-    git
-
-    ## Network tools
-    net-tools
-    dig
-
     ## Raspberry Pi tools
     libraspberrypi
     raspberrypi-eeprom
   ];
 
-  # Z Shell must be enabled system-wide.
-  # Otherwise it won't source the necessary files.
-  programs.zsh = {
-    enable = true;
-  };
-
-  # This will add secrets.yml to the nix store
-  # You can avoid this by adding a string to the full path instead, i.e.
-  sops.defaultSopsFile = ./secrets/secrets.yaml;
-
-  # This will automatically import SSH keys as age keys
-  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-
-  # This is using an age key that is expected to already be in the filesystem
-  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
-
-  # This will generate a new key if the key specified above does not exist
-  sops.age.generateKey = true;
-
-  # This is the actual specification of the secrets.
+  # This is the actual specification of the secrets
   sops.secrets."wg/private-key" = { };
   sops.secrets."wg/am4/preshared-key" = { };
   sops.secrets."wg/iPhone/preshared-key" = { };
@@ -382,7 +328,6 @@
     ];
   };
 
-
   services.unbound = {
     enable = true;
     settings = {
@@ -464,16 +409,6 @@
       };
     };
   };
-
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    ports = [ 22 ]; # Default SSH port
-    settings = {
-      PasswordAuthentication = false; # Disable password authentication
-    };
-  };
-
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
