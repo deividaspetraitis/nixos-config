@@ -120,6 +120,8 @@
 
 ;; Install org mode
 (use-package org
+  :hook ((org-mode . visual-line-mode) ;; Wrap lines
+         (org-mode . org-indent-mode)) ;; Align text with headlines
   :config
   (setq org-directory "~/SynologyDrive/org/")
   (setq org-agenda-files (my/org-agenda-files))
