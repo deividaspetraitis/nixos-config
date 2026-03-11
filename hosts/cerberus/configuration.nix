@@ -53,11 +53,11 @@
           };
           fragment@3 {
             target-path = "/thermal-zones/cpu-thermal/trips/trip2";
-            __overlay__ { temperature = <40000>; hysteresis = <2000>; };
+            __overlay__ { temperature = <65000>; hysteresis = <2000>; };
           };
           fragment@4 {
             target-path = "/thermal-zones/cpu-thermal/trips/trip3";
-            __overlay__ { temperature = <60000>; hysteresis = <5000>; };
+            __overlay__ { temperature = <70000>; hysteresis = <5000>; };
           };
         };
       '';

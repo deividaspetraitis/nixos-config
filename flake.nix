@@ -171,6 +171,17 @@
           ];
         };
 
+        "k3s-server" = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            # Overlays-module makes "pkgs.unstable" available in configuration.nix
+            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-stable ]; })
+            nixos-hardware.nixosModules.raspberry-pi-4
+            sops-nix.nixosModules.sops
+            ./hosts/k3s-server/configuration.nix
+          ];
+        };
+
         "m715q-0" = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
@@ -203,6 +214,7 @@
 
       # deploy-rs hosts
       deploy.nodes = {
+        k3s-server = mkDeployNode { host = "k3s-server"; system = "aarch64-linux"; };
         m715q-0 = mkDeployNode { host = "m715q-0"; system = "x86_64-linux"; };
         m715q-1 = mkDeployNode { host = "m715q-1"; system = "x86_64-linux"; };
         cerberus = mkDeployNode { host = "cerberus"; system = "aarch64-linux"; };
@@ -211,6 +223,7 @@
       # This is highly advised, and will prevent many possible mistakes
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 
+      # Home manager configurations for home-manager to generate user profiles
       homeManagerConfigurations = {
         deividas = home-manager.lib.homeManagerConfiguration {
           extraSpecialArgs = { inherit pkgs-stable inputs outputs; };
