@@ -174,8 +174,13 @@
     # Python
     (pkgs.python3.withPackages (ps: with ps; [
       ps.jupyter
+      ps.numpy
+      ps.matplotlib
       # ps.ledgerwallet # Library to control Ledger devices, disabled due to CVE-2024-23342
     ]))
+
+    # Emacs packages
+    pkgs.emacsPackages.zmq # Used by emacs-jupyter
 
     # DevOps
     pkgs.lychee
@@ -185,6 +190,7 @@
     pkgs-stable.datadog-agent
     pkgs.nixos-generators
     pkgs.sops
+    pkgs.minikube
 
     # Media players
     pkgs.audacious
