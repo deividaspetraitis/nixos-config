@@ -111,23 +111,60 @@
 (defun my/org-agenda-files ()
   (directory-files-recursively org-directory "\\.org$"))
 
-;; repeat-todo extends built-in
-;; repeater by adding support for
-;; only-weekdays and others
-(use-package repeat-todo
-  :vc (:url "https://github.com/cashpw/repeat-todo"
-            :rev :newest))
+(setq debug-on-error t)
+(setq use-package-verbose t)
+
+;; Required by jupyter
+(use-package zmq
+  :ensure t
+  :config
+  (require 'zmq)
+  (zmq-load))
+
+;; Emacs jupyter is used for plotting graphs
+(use-package jupyter
+  :vc (:url "git@github.com:emacs-jupyter/jupyter.git"
+       :rev "2059d79")
+;; (use-package jupyter
+;;  :ensure t
+  :after (org zmq)
+  :config
+  (require 'zmq)
+  (require 'ob-jupyter)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (python . t)
+     (julia . t)
+     (jupyter . t))))
 
 ;; Install org mode
 (use-package org
-  :hook ((org-mode . visual-line-mode) ;; Wrap lines
-         (org-mode . org-indent-mode)) ;; Align text with headlines
+  :hook ((org-mode . visual-line-mode)) ;; Wrap lines
+        ;; (org-mode . org-indent-mode)) ;; Align text with headlines
   :config
   (setq org-directory "~/SynologyDrive/org/")
   (setq org-agenda-files (my/org-agenda-files))
+  ;;(setq org-src-preserve-indentation t)
+  ;;(setq org-edit-src-content-indentation 0)
+  ;;(setq org-adapt-indentation nil)
 
-;; Capture templates
-(setq org-capture-templates
+  ;; LaTeX rendering by default looks less reader-friendly,
+  ;; so switch to SVG, match the background to the theme,
+  ;; and scale it up a bit.
+  (setq org-preview-latex-default-process 'dvisvgm)                    ;; Switch to SVG rendering for LaTeX
+  (setf (plist-get org-format-latex-options :background) "Transparent" ;; Match LaTeX backround to theme
+        (plist-get org-format-latex-options :scale) 1.8)              ;; Increase scaling for LaTeX
+
+  (setq org-refile-targets
+	'(("~/SynologyDrive/org/inbox.org" :maxlevel . 1)
+          ("~/SynologyDrive/org/personal.org" :maxlevel . 1)
+	  ("~/SynologyDrive/org/math.org" :maxlevel . 1)
+	  ("~/SynologyDrive/org/infra.org" :maxlevel . 1)
+         ("~SynologyDrive/org/tasks.org" :maxlevel . 1)))
+  
+  ;; Capture templates
+  (setq org-capture-templates
       '(("i" "Inbox task"
          entry
          (file+headline "~/SynologyDrive/org/inbox.org" "Tasks")
@@ -140,28 +177,19 @@
 
 	("p" "Project"
          plain
-         (file (lambda () (my/org-create-note "~/SynologyDrive/org/projects/")))
+         (file (lambda () (my/org-create-note "~/SynologyDrive/org/")))
 	 "* TODO %^{Project name} :project:\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n** Goal\n%?\n\n** TODO First step\n\n
 ** Notes\n")))
 
-;; Rescan for TODOs before opening org-agenda
-(advice-add 'org-agenda :before
+  ;; Rescan for TODOs before opening org-agenda
+  (advice-add 'org-agenda :before
             (lambda (&rest _)
               (setq org-agenda-files (my/org-agenda-files))))
 
-;; Rescan for TODOs before executing org-agenda-redo ( r )
-(advice-add 'org-agenda-redo :before
+  ;; Rescan for TODOs before executing org-agenda-redo ( r )
+  (advice-add 'org-agenda-redo :before
             (lambda (&rest _)
               (setq org-agenda-files (my/org-agenda-files))))
-
-  ;; LaTeX rendering by default looks not reader friendly
-  ;; so we switch to SVG rendering, match LaTeX backround to
-  ;; tmee and finally scale a bit to make font a bit bigger
-  (setq org-preview-latex-default-process 'dvisvgm) ; Switch to SVG rendering for LaTeX
-  (setq org-format-latex-options
-        (plist-put org-format-latex-options :background "Transparent")); Match LaTeX backround to theme
-   (setq org-format-latex-options
-        (plist-put org-format-latex-options :scale 1.8)) ; Increase scaling for LaTeX
   :bind (("C-c a" . org-agenda)
          ("C-c c" . org-capture)
 	 ("C-c l s" . org-store-link)
@@ -239,6 +267,11 @@
          :if-new (file+head "Permanent/%<%Y%m%d%H%M%S>-${slug}.org"
                             "#+title: ${title}\n#+date: %U\n#+filetags: :permanent:\n\n")
          :unnarrowed t)))
+  ;; Along the note template it quite useful to see tags providing
+  ;; more context as same concept may fall/span under multiple areas
+  (setq org-roam-node-display-template
+      (concat "${title:*} "
+              (propertize "${tags:20}" 'face 'org-tag)))
   :bind (("C-c n f" . org-roam-node-find)      ;; find/open node    
         ("C-c n i" . org-roam-node-insert)    ;; insert link to node
         ("C-c n c" . org-roam-capture)        ;; capture/create node
