@@ -9,6 +9,7 @@
     [
       # Include common configuration
       ../../modules/configuration.nix
+      ../../modules/k3s-agent.nix
 
       # Include the results of the hardware scan.
       ./hardware-configuration.nix

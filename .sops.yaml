@@ -4,6 +4,8 @@ keys:
   - &hosts:
     - &am4 age1cdw2r3yew4dxwkfk5yxv25jky0cpvsfdhnu0nasjgmwvzckmsqzsnkadrh
     - &cerberus age1fvwm5mp920xwxmzm9efsmz33lc44l2xxqhdmm4ce63cjrzf77vhqfr2zfu
+    - &m715q-0 age1lkugq74dywvh6ppkyuk4j3d5qyplavl0mt3mxuvftsjpecy2xq8qc8kvda
+    - &m715q-1 age1s6p5284vkf5pacpk6p0wnh5fneunwr5gygpqhurf3zd20kfvt3wqe3az82
 creation_rules:
   - path_regex: ^hosts/am4/secrets/secrets\.yaml$
     key_groups:
@@ -17,11 +19,15 @@ creation_rules:
           - *master
         age:
           - *cerberus
-  - path_regex: ^hosts/matrix/secrets/secrets\.yaml$
+  - path_regex: ^hosts/m715q-0/secrets/secrets\.yaml$
     key_groups:
       - pgp:
           - *master
-  - path_regex: ^hosts/edge/secrets/secrets\.yaml$
+        age:
+          - *m715q-0
+  - path_regex: ^hosts/m715q-1/secrets/secrets\.yaml$
     key_groups:
       - pgp:
           - *master
+        age:
+          - *m715q-1
