@@ -190,7 +190,7 @@
     pkgs-stable.datadog-agent
     pkgs.nixos-generators
     pkgs.sops
-    pkgs.minikube
+    pkgs.fluxcd
 
     # Media players
     pkgs.audacious
