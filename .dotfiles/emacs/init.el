@@ -39,6 +39,17 @@
 (require 'use-package)                 ; Require use-package for managing packages
 (setq use-package-always-ensure t)     ; Always ensure that packages are installed
 
+;; Org Tempo expands snippets to structures
+;; See: https://orgmode.org/manual/Structure-Templates.html
+;; A list specifies language specific shortucts, for exampe <py <TAB>
+;; for exapanding Python source code block
+(require 'org-tempo)
+(add-to-list 'org-structure-template-alist '("py" . "src python"))
+(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+(add-to-list 'org-structure-template-alist '("js" . "src javascript"))
+(add-to-list 'org-structure-template-alist '("rs" . "src rust"))
+
 ;; Minibuffer completion UI (replaces ivy)
 (use-package vertico
   :ensure t
@@ -53,6 +64,26 @@
          ("C-x b" . consult-buffer)         ;; buffer switch
          ("C-x C-f" . find-file)            ;; find-file for browsing 
          ("C-c s" . consult-ripgrep)))      ;; project search (rg)
+
+(use-package consult-notes
+  :commands (consult-notes
+             consult-notes-search-in-all-notes
+             ;; if using org-roam 
+             consult-notes-org-roam-find-node
+             consult-notes-org-roam-find-node-relation)
+  :config
+   ;; Set notes dir(s), see below
+  (setq consult-notes-file-dir-sources
+      '(("Org"             ?o "~/SynologyDrive/org/")
+        ("Org Refile"      ?r "~/SynologyDrive/org/roam/")))
+  ;; Set org-roam integration, denote integration, or org-heading integration e.g.:
+  ;;(setq consult-notes-org-headings-files '("~/path/to/file1.org"
+  ;;                                         "~/path/to/file2.org"))
+  ;; (consult-notes-org-headings-mode)
+  (when (locate-library "denote")
+    (consult-notes-denote-mode))
+  ;; search only for text files in denote dir
+  (setq consult-notes-denote-files-function (lambda () (denote-directory-files nil t t))))
 
 ;; Rich annotations (replaces ivy-rich)
 (use-package marginalia
@@ -136,6 +167,7 @@
    '((emacs-lisp . t)
      (python . t)
      (julia . t)
+     (rust . t)
      (jupyter . t))))
 
 ;; Install org mode
@@ -143,8 +175,15 @@
   :hook ((org-mode . visual-line-mode)) ;; Wrap lines
         ;; (org-mode . org-indent-mode)) ;; Align text with headlines
   :config
-  (setq org-directory "~/SynologyDrive/org/")
-  (setq org-agenda-files (my/org-agenda-files))
+  (setq org-directory "~/SynologyDrive/org")
+  (setq org-agenda-files 
+      '("~/SynologyDrive/org/habits.org"
+        "~/SynologyDrive/org/inbox.org"
+	"~/SynologyDrive/org/personal.org"
+	"~/SynologyDrive/org/refinement.org"
+	"~/SynologyDrive/org/inbox.org"
+	"~/SynologyDrive/org/math.org"
+        "~/SynologyDrive/org/infra.org"))
   ;;(setq org-src-preserve-indentation t)
   ;;(setq org-edit-src-content-indentation 0)
   ;;(setq org-adapt-indentation nil)
@@ -161,6 +200,7 @@
           ("~/SynologyDrive/org/personal.org" :maxlevel . 1)
 	  ("~/SynologyDrive/org/math.org" :maxlevel . 1)
 	  ("~/SynologyDrive/org/infra.org" :maxlevel . 1)
+	  ("~/SynologyDrive/org/refinement.org" :maxlevel . 1)
          ("~SynologyDrive/org/tasks.org" :maxlevel . 1)))
   
   ;; Capture templates
@@ -181,15 +221,6 @@
 	 "* TODO %^{Project name} :project:\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n** Goal\n%?\n\n** TODO First step\n\n
 ** Notes\n")))
 
-  ;; Rescan for TODOs before opening org-agenda
-  (advice-add 'org-agenda :before
-            (lambda (&rest _)
-              (setq org-agenda-files (my/org-agenda-files))))
-
-  ;; Rescan for TODOs before executing org-agenda-redo ( r )
-  (advice-add 'org-agenda-redo :before
-            (lambda (&rest _)
-              (setq org-agenda-files (my/org-agenda-files))))
   :bind (("C-c a" . org-agenda)
          ("C-c c" . org-capture)
 	 ("C-c l s" . org-store-link)
@@ -246,7 +277,7 @@
 (use-package org-roam
   :ensure t
   :custom
-  (org-roam-directory (file-truename "~/SynologyDrive/org-roam/")) ;; Set a location for storing Org-roam files
+  (org-roam-directory (file-truename "~/SynologyDrive/org/roam/")) ;; Set a location for storing Org-roam files
   :config
   (org-roam-db-autosync-mode)       ;; ensure Org-roam is available at startup
   (setq org-roam-capture-templates  ;; org-roam capture templates
