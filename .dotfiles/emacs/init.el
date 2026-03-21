@@ -22,6 +22,10 @@
 (global-set-key (kbd "M-n") #'scroll-up-line)     ;; scroll down 1 line
 (global-set-key (kbd "M-p") #'scroll-down-line)   ;; scroll up 1 line
 
+;; Enable debug errors
+(setq debug-on-error t)
+(setq use-package-verbose t)
+
 ;; Initialize package sources
 (require 'package) ; Require the package module to manage packages
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -104,6 +108,11 @@
   :init
   (savehist-mode 1))
 
+;; Allow to edit language specific source code blocks with C-c '
+(use-package yaml-mode)
+(use-package rust-mode)
+(use-package go-mode)
+
 ; Emacs has similar concept of jump list as vim
 ; so you can jump back with C-u C-SPC however it
 ; lacks capability of jumping backwars.
@@ -138,13 +147,6 @@
     (setq org-capture-last-title title)
     file))
 
-;; Helper to specify org-agenda files
-(defun my/org-agenda-files ()
-  (directory-files-recursively org-directory "\\.org$"))
-
-(setq debug-on-error t)
-(setq use-package-verbose t)
-
 ;; Required by jupyter
 (use-package zmq
   :ensure t
@@ -167,7 +169,6 @@
    '((emacs-lisp . t)
      (python . t)
      (julia . t)
-     (rust . t)
      (jupyter . t))))
 
 ;; Install org mode
