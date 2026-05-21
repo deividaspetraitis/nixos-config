@@ -110,6 +110,7 @@ input type:keyboard {
 seat "*" {
     hide_cursor 3000
     hide_cursor when-typing enable
+    xcursor_theme Adwaita 24
 }
 
 # Example configuration:
