@@ -43,6 +43,7 @@
   xdg.userDirs = {
     enable = true;
     createDirectories = true;
+    setSessionVariables = true;
   };
 
   #  Desktop Entries allow applications to be shown in your desktop environment's app launcher.
@@ -131,6 +132,7 @@
     pkgs.direnv
     pkgs.unixtools.netstat
     pkgs.texliveFull
+    pkgs.bat
 
     # Communication
     pkgs.telegram-desktop
@@ -167,6 +169,7 @@
     # Event-driven I/O framework for the V8 JavaScript engine
     # programs: corepack node npm npx
     pkgs.nodejs
+    pkgs.bun
 
     # The Rust toolchain installer
     pkgs.rustup
@@ -271,6 +274,8 @@
     package = pkgs.neovim-unwrapped;
     plugins = with pkgs; [
     ];
+    withRuby = true;
+    withPython3 = true;
     extraPackages = with pkgs; [
       cargo
     ];
@@ -409,7 +414,7 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks."*" = {
+    settings."*" = {
       forwardAgent = false;
       addKeysToAgent = "no";
       compression = false;
