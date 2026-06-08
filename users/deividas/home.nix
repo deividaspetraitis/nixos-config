@@ -184,6 +184,9 @@
 
     # Emacs packages
     pkgs.emacsPackages.zmq # Used by emacs-jupyter
+    pkgs.emacsPackages.gnuplot
+
+    pkgs.gnuplot
 
     # DevOps
     pkgs.lychee
