@@ -366,6 +366,12 @@
       	'';
   };
 
+  networking.hosts = {
+    "192.168.1.3" = [ "m715q-0" ];
+    "192.168.1.4" = [ "m715q-1" ];
+    "192.168.1.5" = [ "k3s-server" "checkers.game" "api.checkers.game" ];
+  };
+
   # Wireless interface routes configuration
   # networking.interfaces.wlo1.ipv4.routes = [
   #   # Route to the WireGuard network
