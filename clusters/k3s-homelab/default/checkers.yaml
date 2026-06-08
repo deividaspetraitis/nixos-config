@@ -1,0 +1,144 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkers-mono-client
+  namespace: default
+  labels:
+    app: checkers-mono-client # Pods with such label belongs to this specific deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: checkers-mono-client
+  template: # This is a template for our delpoyment pods
+    metadata:
+      labels:
+        app: checkers-mono-client
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: m715q-0 # client image is available only on this node
+      containers:
+        - name: checkers-mono-client
+          image: checkers-mono/client
+          imagePullPolicy: Never
+          env:
+            - name: VITE_API_BASE_URL
+              value: "http://checkers.game/api"
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: checkers-mono-server
+data:
+  app.env: |
+    HTTP_ADDRESS=:8000
+    HTTP_GRPC=:9000
+    GRPC_ADDRESS=:9000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkers-mono-server
+  namespace: default
+  labels:
+    app: checkers-mono-server # Pods with such label belongs to this specific deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: checkers-mono-server
+  template: # This is a template for our delpoyment pods
+    metadata:
+      labels:
+        app: checkers-mono-server
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: m715q-1 # server image is available only on this node
+      containers:
+        - name: checkers-mono-server
+          image: checkers-mono/server
+          imagePullPolicy: Never
+          args: ["-config=/etc/config/app.env"]
+          volumeMounts:
+            - name: checkers-mono-server-config # maps with volumes name
+              mountPath: /etc/config
+          ports:
+      volumes:
+        - name: checkers-mono-server-config
+          configMap:
+            name: checkers-mono-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: checkers-mono-server-svc
+spec:
+  selector:
+    app: checkers-mono-server
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: checkers-mono-client-svc
+spec:
+  selector:
+    app: checkers-mono-client
+  ports:
+    - port: 80
+      targetPort: 80
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: checkers-mono-gateway
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 8000 # See https://github.com/traefik/traefik-helm-chart/blob/e66342de879b16214216b9196dba9aece36a5d7a/traefik/values.yaml#L842
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: checkers-mono-client-route
+spec:
+  parentRefs:
+    - name: checkers-mono-gateway
+      sectionName: http # bind to http listener in gateway
+      kind: Gateway
+  hostnames:
+    - checkers.game
+  rules:
+    - backendRefs:
+        - name: checkers-mono-client-svc
+          port: 80
+          weight: 1
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: checkers-mono-server-route
+spec:
+  parentRefs:
+    - name: checkers-mono-gateway
+      sectionName: http # bind to http listener in gateway
+      kind: Gateway
+  hostnames:
+    - api.checkers.game
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: "/"
+      backendRefs:
+        - name: checkers-mono-server-svc
+          port: 8080
+          weight: 1
