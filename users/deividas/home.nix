@@ -268,6 +268,7 @@
   # expanded by the shell. However, since expressions like ~ or* are escaped, they will end up in the PATH verbatim.
   home.sessionPath = [
     "$HOME/go/bin"
+    "$HOME/.cargo/bin"
   ];
 
   # Enable NeoVim.
