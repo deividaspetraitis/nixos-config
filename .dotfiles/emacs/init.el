@@ -169,6 +169,7 @@
    '((emacs-lisp . t)
      (python . t)
      (julia . t)
+     (gnuplot . t)
      (jupyter . t))))
 
 ;; Install org mode
@@ -180,10 +181,11 @@
   (setq org-agenda-files 
       '("~/SynologyDrive/org/habits.org"
         "~/SynologyDrive/org/inbox.org"
+	"~/SynologyDrive/org/today.org"
 	"~/SynologyDrive/org/personal.org"
 	"~/SynologyDrive/org/refinement.org"
 	"~/SynologyDrive/org/inbox.org"
-	"~/SynologyDrive/org/math.org"
+	"~/SynologyDrive/org/study.org"
         "~/SynologyDrive/org/infra.org"))
   ;;(setq org-src-preserve-indentation t)
   ;;(setq org-edit-src-content-indentation 0)
@@ -199,7 +201,7 @@
   (setq org-refile-targets
 	'(("~/SynologyDrive/org/inbox.org" :maxlevel . 1)
           ("~/SynologyDrive/org/personal.org" :maxlevel . 1)
-	  ("~/SynologyDrive/org/math.org" :maxlevel . 1)
+	  ("~/SynologyDrive/org/study.org" :maxlevel . 1)
 	  ("~/SynologyDrive/org/infra.org" :maxlevel . 1)
 	  ("~/SynologyDrive/org/refinement.org" :maxlevel . 1)
          ("~SynologyDrive/org/tasks.org" :maxlevel . 1)))
@@ -309,6 +311,14 @@
         ("C-c n c" . org-roam-capture)        ;; capture/create node
         ("C-c n g" . org-roam-graph)          ;; graph (if you use it)
         ("C-c n b" . org-roam-buffer-toggle))) ;; backlinks buffer
+
+(defun my/org-roam-rg-search ()
+  "Search org-roam directory using consult-ripgrep. With live-preview."
+  (interactive)
+  (require 'org-roam)
+  (let ((consult-ripgrep-command "rg --null --ignore-case --type org --line-buffered --color=always --max-columns=500 --no-heading --line-number . -e ARG OPTS"))
+    (consult-ripgrep org-roam-directory)))
+(global-set-key (kbd "C-c ns") 'my/org-roam-rg-search)
 
 ;; Backup files and auto save files polutes working
 ;; directory.
