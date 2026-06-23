@@ -2,14 +2,14 @@
 -- https://github.com/nvim-treesitter/nvim-treesitter
 return {
 	"nvim-treesitter/nvim-treesitter",
-	tag = "v0.10.0",
+	branch = "main",
 	dependencies = {
 		"nvim-treesitter/nvim-treesitter-textobjects",
 	},
 	lazy = false,
 	build = ":TSUpdate",
 	config = function()
-		require("nvim-treesitter.configs").setup({
+		require("nvim-treesitter").setup({
 			-- A list of parser names, or "all"
 			ensure_installed = { "python", "markdown", "json", "javascript", "typescript", "c", "lua", "rust", "go" },
 
