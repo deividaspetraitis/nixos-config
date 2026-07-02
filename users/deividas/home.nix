@@ -133,6 +133,7 @@
     pkgs.unixtools.netstat
     pkgs.texliveFull
     pkgs.bat
+    pkgs.imagemagick
 
     # Communication
     pkgs.telegram-desktop
