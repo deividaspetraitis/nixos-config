@@ -56,6 +56,34 @@ return {
 		end)
 
 		-- Keymaps for moving to next/previous text objects
+		-- Methods
+		vim.keymap.set({ "n", "x", "o" }, "]m", function()
+			require("nvim-treesitter-textobjects.move").goto_next_start("@method.outer", "textobjects")
+		end)
+		vim.keymap.set({ "n", "x", "o" }, "]M", function()
+			require("nvim-treesitter-textobjects.move").goto_next_end("@method.outer", "textobjects")
+		end)
+		vim.keymap.set({ "n", "x", "o" }, "[m", function()
+			require("nvim-treesitter-textobjects.move").goto_previous_start("@method.outer", "textobjects")
+		end)
+		vim.keymap.set({ "n", "x", "o" }, "[M", function()
+			require("nvim-treesitter-textobjects.move").goto_previous_end("@method.outer", "textobjects")
+		end)
+
+		-- Functions
+		vim.keymap.set({ "n", "x", "o" }, "]f", function()
+			require("nvim-treesitter-textobjects.move").goto_next_start("@function.outer", "textobjects")
+		end)
+		vim.keymap.set({ "n", "x", "o" }, "]F", function()
+			require("nvim-treesitter-textobjects.move").goto_next_end("@function.outer", "textobjects")
+		end)
+		vim.keymap.set({ "n", "x", "o" }, "[f", function()
+			require("nvim-treesitter-textobjects.move").goto_previous_start("@function.outer", "textobjects")
+		end)
+		vim.keymap.set({ "n", "x", "o" }, "[F", function()
+			require("nvim-treesitter-textobjects.move").goto_previous_end("@function.outer", "textobjects")
+		end)
+
 		vim.keymap.set({ "n", "x", "o" }, "]/", function()
 			require("nvim-treesitter-textobjects.move").goto_next_start("@comment.outer", "textobjects")
 		end)
