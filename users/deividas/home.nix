@@ -363,7 +363,7 @@
       # by opening a pane below
       bind-key u capture-pane \; \
       save-buffer /tmp/tmux-buffer \; \
-      display-popup -E '${pkgs.extract_url}/bin/extract_url /tmp/tmux-buffer'
+      display-popup -E '${pkgs.extract_url}/bin/extract_url /tmp/tmux-buffer 2> /tmp/extract_url_err.log'
 
       # Source config
       bind r source-file ${config.home.homeDirectory}/${config.xdg.configFile."tmux/tmux.conf".target}  \; display-message "Config sourced..."
