@@ -262,6 +262,9 @@
     # Default editor
     EDITOR = "nvim";
     VISUAL = "nvim";
+
+    # Default browser
+    BROWSER = "qutebrowser";
   };
 
   # Extra directories to add to PATH.
