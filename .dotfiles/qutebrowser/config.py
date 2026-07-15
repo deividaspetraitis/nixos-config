@@ -914,6 +914,12 @@ ALLOW_JAVASCRIPT_WEBSITES = (
 for site in ALLOW_JAVASCRIPT_WEBSITES:
     config.set("content.javascript.clipboard", "access-paste", site)
 
+# See https://github.com/qutebrowser/qutebrowser/issues/7498#issuecomment-1656476471
+c.content.javascript.log_message.excludes = {
+    "userscript:_qute_stylesheet": ["*Refused to apply inline style because it violates the following Content Security Policy directive: *"], 
+    "userscript:_qute_js": ["*TrustedHTML*"],
+}
+
 # Enable JavaScript.
 # Type: Bool
 # c.content.javascript.enabled = True
@@ -2290,6 +2296,8 @@ config.bind('J', 'tab-prev')
 config.bind('K', 'tab-next')
 # config.bind('L', 'forward')
 # config.bind('M', 'bookmark-add')
+config.bind(",m", "spawn mpv {url}")
+config.bind(";m", "hint links spawn --detach mpv {hint-url}")
 # config.bind('N', 'search-prev')
 # config.bind('O', 'cmd-set-text -s :open -t')
 # config.bind('PP', 'open -t -- {primary}')
@@ -2578,6 +2586,11 @@ def nunmap(key):
     unmap(key, mode='normal')
 # }}}
 
+
+# Navigate history with Ctrl-p and Ctrl-n in command mode
+# like in bash
+cmap('<Ctrl-n>', 'completion-item-focus --history next')
+cmap('<Ctrl-p>', 'completion-item-focus --history prev')
 
 # Sessions management {{{
 nmap(leader + 'sl', ':cmd-set-text -s :session-load ')

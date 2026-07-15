@@ -202,6 +202,9 @@
     # Media players
     pkgs.audacious
     pkgs.vlc
+    pkgs.mpv
+    pkgs.mpvScripts.mpris # so MPV can be controlled via MPRIS
+    pkgs.yt-dlp # so MPV can run yt-dlp directly from the path ( used for debugging )
 
     # Useful utilities
     pkgs.file
