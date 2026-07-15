@@ -112,6 +112,7 @@
 (use-package yaml-mode)
 (use-package rust-mode)
 (use-package go-mode)
+(use-package jtsx)
 
 ; Emacs has similar concept of jump list as vim
 ; so you can jump back with C-u C-SPC however it

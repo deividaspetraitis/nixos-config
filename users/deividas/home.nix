@@ -1,5 +1,16 @@
 { config, pkgs, pkgs-stable, xdg, inputs, lib, ... }:
-
+let
+  emacsPackages = pkgs-stable.emacsPackagesFor pkgs-stable.emacs;
+  emacs = emacsPackages.emacsWithPackages (epkgs:
+    with epkgs; [
+      gnuplot
+      zmq
+      org
+      jupyter
+      treesit-grammars.with-all-grammars
+    ]
+  );
+in
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -183,10 +194,6 @@
       # ps.ledgerwallet # Library to control Ledger devices, disabled due to CVE-2024-23342
     ]))
 
-    # Emacs packages
-    pkgs.emacsPackages.zmq # Used by emacs-jupyter
-    pkgs.emacsPackages.gnuplot
-
     pkgs.gnuplot
 
     # DevOps
@@ -306,6 +313,7 @@
   # Emacs setup
   programs.emacs = {
     enable = true;
+    package = emacs;
   };
 
   # Tmux setup
