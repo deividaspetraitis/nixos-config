@@ -1714,6 +1714,8 @@ c.fonts.default_family = ["8pt monospace"]
 # variable to null/None will unset it.
 # Type: Dict
 # c.qt.environ = {}
+# See: https://github.com/qutebrowser/qutebrowser/issues/8908
+c.qt.environ = {"QTWEBENGINE_FORCE_USE_GBM": "0"}
 
 # Force a Qt platform to use. This sets the `QT_QPA_PLATFORM`
 # environment variable and is useful to force using the XCB plugin when
