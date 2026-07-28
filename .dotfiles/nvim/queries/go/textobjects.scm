@@ -120,15 +120,15 @@
 
 ; arguments
 (argument_list
-  "," @parameter.outer
+  "," @argument.outer
   .
-  (_) @parameter.inner @parameter.outer)
+  (_) @argument.inner @argument.outer)
 
 (argument_list
   .
-  (_) @parameter.inner @parameter.outer
+  (_) @argument.inner @argument.outer
   .
-  ","? @parameter.outer)
+  ","? @argument.outer)
 
 ; assignments
 (short_var_declaration

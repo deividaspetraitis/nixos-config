@@ -56,39 +56,54 @@ return {
 		end)
 
 		-- Keymaps for moving to next/previous text objects
-		-- Methods
-		vim.keymap.set({ "n", "x", "o" }, "]m", function()
-			require("nvim-treesitter-textobjects.move").goto_next_start("@method.outer", "textobjects")
-		end)
-		vim.keymap.set({ "n", "x", "o" }, "]M", function()
-			require("nvim-treesitter-textobjects.move").goto_next_end("@method.outer", "textobjects")
-		end)
-		vim.keymap.set({ "n", "x", "o" }, "[m", function()
-			require("nvim-treesitter-textobjects.move").goto_previous_start("@method.outer", "textobjects")
-		end)
-		vim.keymap.set({ "n", "x", "o" }, "[M", function()
-			require("nvim-treesitter-textobjects.move").goto_previous_end("@method.outer", "textobjects")
-		end)
+		local move = require("nvim-treesitter-textobjects.move")
+		local function textobject_move(key, query)
+			vim.keymap.set({ "n", "x", "o" }, "]" .. key, function()
+				move.goto_next_start(query, "textobjects")
+			end)
 
-		-- Functions
-		vim.keymap.set({ "n", "x", "o" }, "]f", function()
-			require("nvim-treesitter-textobjects.move").goto_next_start("@function.outer", "textobjects")
-		end)
-		vim.keymap.set({ "n", "x", "o" }, "]F", function()
-			require("nvim-treesitter-textobjects.move").goto_next_end("@function.outer", "textobjects")
-		end)
-		vim.keymap.set({ "n", "x", "o" }, "[f", function()
-			require("nvim-treesitter-textobjects.move").goto_previous_start("@function.outer", "textobjects")
-		end)
-		vim.keymap.set({ "n", "x", "o" }, "[F", function()
-			require("nvim-treesitter-textobjects.move").goto_previous_end("@function.outer", "textobjects")
-		end)
+			vim.keymap.set({ "n", "x", "o" }, "]" .. key:upper(), function()
+				move.goto_next_end(query, "textobjects")
+			end)
 
-		vim.keymap.set({ "n", "x", "o" }, "]/", function()
-			require("nvim-treesitter-textobjects.move").goto_next_start("@comment.outer", "textobjects")
-		end)
-		vim.keymap.set({ "n", "x", "o" }, "[/", function()
-			require("nvim-treesitter-textobjects.move").goto_previous_start("@comment.outer", "textobjects")
-		end)
+			vim.keymap.set({ "n", "x", "o" }, "[" .. key, function()
+				move.goto_previous_start(query, "textobjects")
+			end)
+
+			vim.keymap.set({ "n", "x", "o" }, "[" .. key:upper(), function()
+				move.goto_previous_end(query, "textobjects")
+			end)
+		end
+
+		local function textobject_jump(key, query)
+			vim.keymap.set({ "n", "x", "o" }, "]" .. key, function()
+				move.goto_next_start(query, "textobjects")
+			end)
+
+			vim.keymap.set({ "n", "x", "o" }, "[" .. key, function()
+				move.goto_previous_start(query, "textobjects")
+			end)
+		end
+
+		textobject_jump("/", "@comment.outer")
+
+		local objects = {
+			m = "@method.outer",
+			b = "@block.outer",
+			c = "@call.outer",
+			i = "@conditional.outer",
+			s = "@statement.outer",
+			l = "@loop.outer",
+			p = "@parameter.outer",
+			a = "@argument.outer",
+			f = "@function.outer",
+			r = "@return_statement.outer",
+			t = "@assignment.rhs",
+			T = "@assignment.lhs",
+		}
+
+		for key, query in pairs(objects) do
+			textobject_move(key, query)
+		end
 	end,
 }
