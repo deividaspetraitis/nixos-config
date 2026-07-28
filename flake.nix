@@ -72,12 +72,7 @@
       };
 
       # Custom packages overlay
-      overlay-custom = final: prev: {
-        raiseorrun = import hosts/scripts/raise-or-run.nix { pkgs = final; };
-        mprisvolume = import .dotfiles/waybar/scripts/mpris-volume.nix { pkgs = final; };
-        mprisscroll = import .dotfiles/waybar/scripts/mpris-scroll.nix { pkgs = final; };
-        mprisposition = import .dotfiles/waybar/scripts/mpris-position.nix { pkgs = final; };
-      };
+      overlay-custom = import ./nixpkgs/default.nix;
 
       # Custom helper to generate deploy-rs node configuration
       # to be used in `deploy.nodes` in the output

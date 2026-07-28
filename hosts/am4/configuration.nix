@@ -257,7 +257,7 @@
     i2c-tools
     inxi
     pciutils
-    lact
+    # lact
     virtualgl
     killall
   ];

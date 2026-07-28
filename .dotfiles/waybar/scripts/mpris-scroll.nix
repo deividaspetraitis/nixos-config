@@ -21,5 +21,5 @@ pkgs.writeShellScriptBin "mpris-scroll" ''
   export -f get_line
 
   zscroll -u true -U 1 -l 20 -d 0.2 -n true -e true \
-    get_line
+  get_line
 ''
